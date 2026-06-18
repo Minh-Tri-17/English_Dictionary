@@ -1,102 +1,11 @@
 [
   {
     "id": "1781754116519",
-    "sentence": "Actions speak louder than words.",
-    "pronunciation": "/ˈæk.ʃənz spiːk ˈlaʊ.dər ðən wɜːrdz/",
-    "translation": "Hành động nói lên tất cả hơn là lời nói.",
-    "category": "proverb",
-    "note": "Dùng để nhấn mạnh rằng việc bạn làm quan trọng hơn những gì bạn nói.",
-    "createdAt": "2026-06-18T03:41:56.521Z",
-    "updatedAt": "2026-06-18T04:08:00.000Z"
-  },
-  {
-    "id": "1781760000001",
-    "sentence": "The early bird catches the worm.",
-    "pronunciation": "/ðə ˈɜːr.li bɜːrd ˈkæʧ.ɪz ðə wɜːrm/",
-    "translation": "Chim dậy sớm bắt được sâu. (Người dậy sớm, làm việc chăm chỉ sẽ thành công.)",
-    "category": "proverb",
-    "note": "Khuyến khích sự siêng năng và chủ động. Tương đương với 'Có công mài sắt, có ngày nên kim'.",
-    "createdAt": "2026-06-18T04:08:00.001Z"
-  },
-  {
-    "id": "1781760000002",
-    "sentence": "It's raining cats and dogs.",
-    "pronunciation": "/ɪts ˈreɪ.nɪŋ kæts ənd dɒɡz/",
-    "translation": "Trời đang mưa như trút nước.",
-    "category": "idiom",
-    "note": "Thành ngữ mô tả cơn mưa rất to, dữ dội. Không dùng theo nghĩa đen.",
-    "createdAt": "2026-06-18T04:08:00.002Z"
-  },
-  {
-    "id": "1781760000003",
-    "sentence": "She has a strong command of the English language.",
-    "pronunciation": "/ʃiː hæz ə strɒŋ kəˈmɑːnd əv ðə ˈɪŋ.ɡlɪʃ ˈlæŋ.ɡwɪdʒ/",
-    "translation": "Cô ấy có khả năng sử dụng tiếng Anh rất thành thạo.",
-    "category": "collocations",
-    "note": "Collocation: 'have a command of' (có khả năng làm chủ ngôn ngữ). Tương tự: 'a good command of', 'a poor command of'.",
-    "createdAt": "2026-06-18T04:08:00.003Z"
-  },
-  {
-    "id": "1781760000004",
-    "sentence": "Don't judge a book by its cover.",
-    "pronunciation": "/doʊnt dʒʌdʒ ə bʊk baɪ ɪts ˈkʌv.ər/",
-    "translation": "Đừng đánh giá người khác qua vẻ bề ngoài.",
-    "category": "proverb",
-    "note": "Tục ngữ nhắc nhở không nên kết luận vội vàng chỉ dựa trên hình thức.",
-    "createdAt": "2026-06-18T04:08:00.004Z"
-  },
-  {
-    "id": "1781760000005",
-    "sentence": "The project is currently under development.",
-    "pronunciation": "/ðə ˈprɒdʒ.ekt ɪz ˈkʌr.ənt.li ˈʌn.dər dɪˈvel.əp.mənt/",
-    "translation": "Dự án hiện đang trong quá trình phát triển.",
+    "sentence": "Hello, nice to meet you.",
+    "pronunciation": "/həˈloʊ, naɪs tu miːt juː/",
+    "translation": "Xin chào, rất vui được gặp bạn.",
     "category": "general",
-    "note": "Cụm từ thông dụng trong môi trường công sở và công nghệ. 'under development' = đang được phát triển/xây dựng.",
-    "createdAt": "2026-06-18T04:08:00.005Z"
-  },
-  {
-    "id": "1781760000006",
-    "sentence": "She hit the nail on the head.",
-    "pronunciation": "/ʃiː hɪt ðə neɪl ɒn ðə hed/",
-    "translation": "Cô ấy đã nói/làm đúng trọng tâm vấn đề.",
-    "category": "idiom",
-    "note": "Thành ngữ dùng để khen ai đó đã nhận xét hoặc làm điều gì đó hoàn toàn chính xác.",
-    "createdAt": "2026-06-18T04:08:00.006Z"
-  },
-  {
-    "id": "1781760000007",
-    "sentence": "We need to make a decision as soon as possible.",
-    "pronunciation": "/wiː niːd tə meɪk ə dɪˈsɪʒ.ən æz suːn æz ˈpɒs.ɪ.bəl/",
-    "translation": "Chúng ta cần đưa ra quyết định càng sớm càng tốt.",
-    "category": "general",
-    "note": "Collocation: 'make a decision' (đưa ra quyết định). ASAP = as soon as possible.",
-    "createdAt": "2026-06-18T04:08:00.007Z"
-  },
-  {
-    "id": "1781760000008",
-    "sentence": "Time flies when you're having fun.",
-    "pronunciation": "/taɪm flaɪz wen jɔːr ˈhæv.ɪŋ fʌn/",
-    "translation": "Thời gian trôi nhanh khi bạn đang vui vẻ.",
-    "category": "idiom",
-    "note": "Thành ngữ phổ biến diễn tả cảm giác thời gian qua nhanh khi mình đang tận hưởng.",
-    "createdAt": "2026-06-18T04:08:00.008Z"
-  },
-  {
-    "id": "1781760000009",
-    "sentence": "He burst into tears when he heard the news.",
-    "pronunciation": "/hiː bɜːrst ˈɪn.tə tɪərz wen hiː hɜːrd ðə njuːz/",
-    "translation": "Anh ấy bật khóc khi nghe tin đó.",
-    "category": "collocations",
-    "note": "Collocation: 'burst into tears' (bật khóc đột ngột). Tương tự: 'burst out laughing' (phá ra cười), 'burst into flames' (bùng cháy).",
-    "createdAt": "2026-06-18T04:08:00.009Z"
-  },
-  {
-    "id": "1781760000010",
-    "sentence": "Where there's a will, there's a way.",
-    "pronunciation": "/wer ðerz ə wɪl, ðerz ə weɪ/",
-    "translation": "Có chí thì nên. Nơi có ý chí, nơi đó có con đường.",
-    "category": "proverb",
-    "note": "Tục ngữ khích lệ sự kiên trì. Dùng khi muốn động viên ai đó không bỏ cuộc.",
-    "createdAt": "2026-06-18T04:08:00.010Z"
+    "note": "A common greeting when meeting someone for the first time.",
+    "createdAt": "2026-06-18T08:16:00.000Z"
   }
 ]

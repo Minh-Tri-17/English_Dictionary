@@ -2011,6 +2011,31 @@ form {
   font-weight: 600;
 }
 
+/* Mobile Header Bar & Backdrop Defaults */
+.mobile-header-bar {
+  display: none;
+}
+.sidebar-close-btn {
+  display: none;
+}
+.sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(45, 49, 57, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 1040;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.sidebar-backdrop.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 /* Responsive Styles Updates */
 @media (max-width: 1024px) {
   .sidebar {
@@ -2034,57 +2059,168 @@ form {
   .app-container {
     flex-direction: column;
   }
-  .sidebar {
-    width: 100%;
-    border-right: none;
+
+  /* Show Mobile Header Bar */
+  .mobile-header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background-color: var(--bg-sidebar);
     border-bottom: 1px solid var(--border-color);
-    padding: 24px;
+    width: 100%;
+    height: 60px;
+    flex-shrink: 0;
+    z-index: 100;
   }
-  .sidebar h1 {
-    font-size: 1.3rem;
+  .mobile-menu-btn {
+    background: none;
+    border: none;
+    color: var(--text-main);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    transition: background-color 0.2s;
   }
-  .tagline {
-    margin-bottom: 20px;
+  .mobile-menu-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
   }
+  .mobile-menu-btn i {
+    width: 24px;
+    height: 24px;
+  }
+  .mobile-logo-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo-icon-sm {
+    width: 28px;
+    height: 28px;
+    background-color: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(95, 91, 246, 0.2);
+  }
+  .logo-icon-sm i {
+    width: 14px;
+    height: 14px;
+  }
+  .mobile-app-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--text-main), #5f5bf6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Mobile Drawer Sidebar styling */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 280px;
+    z-index: 1050;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-lg);
+    background-color: var(--bg-sidebar);
+    border-right: 1px solid var(--border-color);
+    padding: 40px 24px;
+    overflow-y: auto;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  .sidebar-close-btn {
+    display: flex;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .sidebar-close-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--text-main);
+  }
+  .sidebar-close-btn i {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Keep stats panels and navigation vertical in the drawer */
   .primary-nav {
-    flex-direction: row;
-    border-bottom: none;
-    padding-bottom: 0;
-    margin-bottom: 16px;
+    flex-direction: column;
+    gap: 8px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
+    margin-bottom: 24px;
   }
   .nav-main-item {
-    flex: 1;
-    justify-content: center;
-    padding: 10px;
-    font-size: 0.85rem;
+    justify-content: flex-start;
+    padding: 12px 16px;
+    font-size: 0.95rem;
   }
   .sub-panel {
-    gap: 12px;
+    gap: 16px;
   }
   .stat-items {
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 8px;
   }
   .stat-item {
-    flex-grow: 1;
-    padding: 8px 12px;
+    padding: 12px 16px;
   }
   .sidebar-footer {
     display: none;
   }
+
+  /* Main Content Area mobile layout */
   .main-content {
     width: 100%;
-    padding: 24px;
-    gap: 24px;
+    height: calc(100vh - 60px);
+    padding: 20px 16px 80px 16px;
+    gap: 20px;
+    overflow-y: auto;
   }
+
+  /* Compact header with icon-only action button on mobile */
   .header {
-    flex-direction: column-reverse;
-    align-items: stretch;
-    gap: 16px;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+  .header .btn span {
+    display: none;
+  }
+  .header .btn {
+    padding: 12px;
+    width: 46px;
+    height: 46px;
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
   }
   .search-wrapper {
     max-width: 100%;
+    flex-grow: 1;
   }
+
   .word-grid,
   .tense-grid,
   .structures-layout,
@@ -2092,13 +2228,33 @@ form {
   .reported-guides {
     grid-template-columns: 1fr;
   }
-  .modal {
+
+  /* Fix Custom Modal scaling on mobile */
+  .custom-modal {
+    padding: 20px;
+    width: 92%;
+    max-width: 500px;
+  }
+  .custom-dialog {
     padding: 24px;
-    max-width: 90%;
+    width: 90%;
+    max-width: 400px;
   }
   .form-row-2 {
     grid-template-columns: 1fr;
     gap: 16px;
+  }
+
+  /* Responsive fixes for Grammar dashboard cards and containers */
+  .quick-access-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .chart-card {
+    padding: 16px;
+  }
+  .chart-container {
+    height: 240px;
   }
 }
 

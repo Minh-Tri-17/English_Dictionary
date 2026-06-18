@@ -29,8 +29,25 @@
   </head>
   <body>
     <div class="app-container">
+      <!-- Mobile Header Bar -->
+      <div class="mobile-header-bar">
+        <button id="mobile-menu-toggle" class="mobile-menu-btn" aria-label="Open menu">
+          <i data-lucide="menu"></i>
+        </button>
+        <div class="mobile-logo-area">
+          <div class="logo-icon-sm">
+            <i data-lucide="book-open"></i>
+          </div>
+          <span class="mobile-app-title">LexiKeep</span>
+        </div>
+      </div>
+
       <!-- Sidebar -->
       <aside class="sidebar">
+        <!-- Close Button (visible on mobile only) -->
+        <button class="sidebar-close-btn" id="sidebar-close-btn" aria-label="Close menu">
+          <i data-lucide="x"></i>
+        </button>
         <div class="logo-area">
           <div class="logo-icon">
             <i data-lucide="book-open"></i>
@@ -519,6 +536,9 @@
           </section>
         </div>
       </main>
+
+      <!-- Sidebar Backdrop for Mobile Drawer -->
+      <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
     </div>
 
     <!-- Modal for Add/Edit Sentence (Used by Sentence Vault) -->

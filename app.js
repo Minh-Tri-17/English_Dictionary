@@ -332,6 +332,7 @@ function setupEventListeners() {
       item.classList.add('active');
       activeFilter = item.getAttribute('data-filter');
       filterAndRenderWords();
+      closeSidebarMobile();
     });
   });
 
@@ -349,8 +350,24 @@ function setupEventListeners() {
       item.classList.add('active');
       const viewId = item.getAttribute('data-grammar-view');
       switchGrammarView(viewId);
+      closeSidebarMobile();
     });
   });
+
+  // Mobile drawer events
+  const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+  const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
+  const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+
+  if (mobileMenuToggle) {
+    mobileMenuToggle.addEventListener('click', openSidebarMobile);
+  }
+  if (sidebarCloseBtn) {
+    sidebarCloseBtn.addEventListener('click', closeSidebarMobile);
+  }
+  if (sidebarBackdrop) {
+    sidebarBackdrop.addEventListener('click', closeSidebarMobile);
+  }
 }
 
 // Switch between Main Dictionary View and Grammar Handbook View
@@ -1046,6 +1063,9 @@ const sentDeleteCancelBtn    = document.getElementById('sent-delete-cancel-btn')
 
 // Extended app switcher — supports 'dictionary', 'grammar', and 'sentences'
 function switchAppViewExtended(view) {
+  // Close mobile sidebar drawer if open
+  closeSidebarMobile();
+
   // Always reset sentences view & button
   sentencesView.style.display      = 'none';
   panelSentenceStats.style.display = 'none';
@@ -1119,6 +1139,7 @@ sentStatItems.forEach(item => {
     item.classList.add('active');
     activeSentenceFilter = item.getAttribute('data-sent-filter');
     filterAndRenderSentences();
+    closeSidebarMobile();
   });
 });
 
@@ -1387,6 +1408,21 @@ async function confirmDeleteSentence() {
       showToastNotification('Could not delete sentence.', 'error');
     }
   }
+}
+
+// Mobile Sidebar Drawer Helpers
+function openSidebarMobile() {
+  const sidebar = document.querySelector('.sidebar');
+  const backdrop = document.getElementById('sidebar-backdrop');
+  if (sidebar) sidebar.classList.add('open');
+  if (backdrop) backdrop.classList.add('show');
+}
+
+function closeSidebarMobile() {
+  const sidebar = document.querySelector('.sidebar');
+  const backdrop = document.getElementById('sidebar-backdrop');
+  if (sidebar) sidebar.classList.remove('open');
+  if (backdrop) backdrop.classList.remove('show');
 }
 
 // Kick off sentence data fetch on load
