@@ -2,6 +2,16 @@
 // 1. DICTIONARY STATE & DATA
 // ==========================================================================
 let words = [];
+
+// Set to true to force static client-only mode (localStorage) for local testing
+const forceStaticMode = false;
+const isStaticMode = forceStaticMode || 
+                     window.location.hostname.includes('github.io') || 
+                     (window.location.hostname !== 'localhost' && 
+                      window.location.hostname !== '127.0.0.1' && 
+                      window.location.hostname !== '::1' && 
+                      window.location.hostname !== '[::1]' && 
+                      !window.location.hostname.startsWith('192.168.'));
 let activeFilter = 'all';
 let deleteTargetId = null;
 
@@ -379,14 +389,27 @@ function switchAppView(view) {
 // Fetch word list
 async function fetchWords() {
   try {
-    const response = await fetch('/api/words');
-    if (!response.ok) throw new Error('Could not download dictionary files.');
-    words = await response.json();
+    if (isStaticMode) {
+      let storedWords = localStorage.getItem('lexikeep_words');
+      if (storedWords) {
+        words = JSON.parse(storedWords);
+      } else {
+        // Fetch default JSON from root folder
+        const response = await fetch('./dictionary.json');
+        if (!response.ok) throw new Error('Could not load default dictionary file.');
+        words = await response.json();
+        localStorage.setItem('lexikeep_words', JSON.stringify(words));
+      }
+    } else {
+      const response = await fetch('/api/words');
+      if (!response.ok) throw new Error('Could not download dictionary files.');
+      words = await response.json();
+    }
     updateDictionaryStats();
     filterAndRenderWords();
   } catch (error) {
     console.error('Error fetching words:', error);
-    showToastNotification('Failed to connect to word storage API.', 'error');
+    showToastNotification('Failed to connect to word storage.', 'error');
   }
 }
 
@@ -524,31 +547,77 @@ async function handleWordFormSubmit(e) {
   };
 
   const isEditMode = id !== '';
-  const url = isEditMode ? `/api/words/${id}` : '/api/words';
-  const method = isEditMode ? 'PUT' : 'POST';
 
-  try {
-    const response = await fetch(url, {
-      method: method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
+  if (isStaticMode) {
+    try {
+      if (!payload.word || !payload.definition) {
+        throw new Error('Word and definition are required');
+      }
 
-    if (!response.ok) {
-      const errorMsg = await response.json();
-      throw new Error(errorMsg.error || 'Server error occurred');
+      if (isEditMode) {
+        const idx = words.findIndex(w => w.id === id);
+        if (idx === -1) throw new Error('Word not found');
+        words[idx] = {
+          ...words[idx],
+          word: payload.word,
+          pronunciation: payload.pronunciation,
+          type: payload.type,
+          definition: payload.definition,
+          example: payload.example,
+          updatedAt: new Date().toISOString()
+        };
+      } else {
+        const newWord = {
+          id: Date.now().toString(),
+          word: payload.word,
+          pronunciation: payload.pronunciation,
+          type: payload.type,
+          definition: payload.definition,
+          example: payload.example,
+          createdAt: new Date().toISOString()
+        };
+        words.unshift(newWord);
+      }
+
+      localStorage.setItem('lexikeep_words', JSON.stringify(words));
+      closeWordModal();
+      showToastNotification(
+        isEditMode ? `Updated "${payload.word}" successfully!` : `Added "${payload.word}" successfully!`,
+        'success'
+      );
+      updateDictionaryStats();
+      filterAndRenderWords();
+    } catch (error) {
+      console.error('Error submitting form (static):', error);
+      showToastNotification(error.message || 'Operation failed.', 'error');
     }
+  } else {
+    const url = isEditMode ? `/api/words/${id}` : '/api/words';
+    const method = isEditMode ? 'PUT' : 'POST';
 
-    const savedWord = await response.json();
-    closeWordModal();
-    showToastNotification(
-      isEditMode ? `Updated "${savedWord.word}" successfully!` : `Added "${savedWord.word}" successfully!`,
-      'success'
-    );
-    await fetchWords();
-  } catch (error) {
-    console.error('Error submitting form:', error);
-    showToastNotification(error.message || 'Operation failed.', 'error');
+    try {
+      const response = await fetch(url, {
+        method: method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        const errorMsg = await response.json();
+        throw new Error(errorMsg.error || 'Server error occurred');
+      }
+
+      const savedWord = await response.json();
+      closeWordModal();
+      showToastNotification(
+        isEditMode ? `Updated "${savedWord.word}" successfully!` : `Added "${savedWord.word}" successfully!`,
+        'success'
+      );
+      await fetchWords();
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      showToastNotification(error.message || 'Operation failed.', 'error');
+    }
   }
 }
 
@@ -576,19 +645,33 @@ function closeDeleteDialog() {
 async function confirmDeleteWord() {
   if (!deleteTargetId) return;
 
-  try {
-    const response = await fetch(`/api/words/${deleteTargetId}`, {
-      method: 'DELETE'
-    });
+  if (isStaticMode) {
+    try {
+      words = words.filter(w => w.id !== deleteTargetId);
+      localStorage.setItem('lexikeep_words', JSON.stringify(words));
+      closeDeleteDialog();
+      showToastNotification('Word deleted successfully!', 'success');
+      updateDictionaryStats();
+      filterAndRenderWords();
+    } catch (error) {
+      console.error('Error deleting word (static):', error);
+      showToastNotification('Could not delete target word.', 'error');
+    }
+  } else {
+    try {
+      const response = await fetch(`/api/words/${deleteTargetId}`, {
+        method: 'DELETE'
+      });
 
-    if (!response.ok) throw new Error('Deletion request failed.');
+      if (!response.ok) throw new Error('Deletion request failed.');
 
-    closeDeleteDialog();
-    showToastNotification('Word deleted successfully!', 'success');
-    await fetchWords();
-  } catch (error) {
-    console.error('Error deleting word:', error);
-    showToastNotification('Could not delete target word.', 'error');
+      closeDeleteDialog();
+      showToastNotification('Word deleted successfully!', 'success');
+      await fetchWords();
+    } catch (error) {
+      console.error('Error deleting word:', error);
+      showToastNotification('Could not delete target word.', 'error');
+    }
   }
 }
 
@@ -1052,14 +1135,27 @@ sentDeleteConfirmBtn.addEventListener('click', confirmDeleteSentence);
 
 async function fetchSentences() {
   try {
-    const response = await fetch('/api/sentences');
-    if (!response.ok) throw new Error('Could not load sentence data.');
-    sentences = await response.json();
+    if (isStaticMode) {
+      let storedSentences = localStorage.getItem('lexikeep_sentences');
+      if (storedSentences) {
+        sentences = JSON.parse(storedSentences);
+      } else {
+        // Fetch default JSON from root folder
+        const response = await fetch('./sentences.json');
+        if (!response.ok) throw new Error('Could not load default sentences file.');
+        sentences = await response.json();
+        localStorage.setItem('lexikeep_sentences', JSON.stringify(sentences));
+      }
+    } else {
+      const response = await fetch('/api/sentences');
+      if (!response.ok) throw new Error('Could not load sentence data.');
+      sentences = await response.json();
+    }
     updateSentenceStats();
     filterAndRenderSentences();
   } catch (error) {
     console.error('Error fetching sentences:', error);
-    showToastNotification('Failed to connect to sentence storage API.', 'error');
+    showToastNotification('Failed to connect to sentence storage.', 'error');
   }
 }
 
@@ -1185,30 +1281,76 @@ async function handleSentenceFormSubmit(e) {
   };
 
   const isEdit = id !== '';
-  const url    = isEdit ? `/api/sentences/${id}` : '/api/sentences';
-  const method = isEdit ? 'PUT' : 'POST';
 
-  try {
-    const response = await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
+  if (isStaticMode) {
+    try {
+      if (!payload.sentence || !payload.translation) {
+        throw new Error('Sentence and translation are required');
+      }
 
-    if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error || 'Server error');
+      if (isEdit) {
+        const idx = sentences.findIndex(s => s.id === id);
+        if (idx === -1) throw new Error('Sentence not found');
+        sentences[idx] = {
+          ...sentences[idx],
+          sentence: payload.sentence,
+          translation: payload.translation,
+          pronunciation: payload.pronunciation,
+          category: payload.category,
+          note: payload.note,
+          updatedAt: new Date().toISOString()
+        };
+      } else {
+        const newItem = {
+          id: Date.now().toString(),
+          sentence: payload.sentence,
+          translation: payload.translation,
+          pronunciation: payload.pronunciation,
+          category: payload.category,
+          note: payload.note,
+          createdAt: new Date().toISOString()
+        };
+        sentences.unshift(newItem);
+      }
+
+      localStorage.setItem('lexikeep_sentences', JSON.stringify(sentences));
+      closeSentenceModal();
+      showToastNotification(
+        isEdit ? 'Sentence updated successfully!' : 'Sentence added successfully!',
+        'success'
+      );
+      updateSentenceStats();
+      filterAndRenderSentences();
+    } catch (error) {
+      console.error('Error submitting sentence form (static):', error);
+      showToastNotification(error.message || 'Operation failed.', 'error');
     }
+  } else {
+    const url    = isEdit ? `/api/sentences/${id}` : '/api/sentences';
+    const method = isEdit ? 'PUT' : 'POST';
 
-    closeSentenceModal();
-    showToastNotification(
-      isEdit ? 'Sentence updated successfully!' : 'Sentence added successfully!',
-      'success'
-    );
-    await fetchSentences();
-  } catch (error) {
-    console.error('Error submitting sentence form:', error);
-    showToastNotification(error.message || 'Operation failed.', 'error');
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.error || 'Server error');
+      }
+
+      closeSentenceModal();
+      showToastNotification(
+        isEdit ? 'Sentence updated successfully!' : 'Sentence added successfully!',
+        'success'
+      );
+      await fetchSentences();
+    } catch (error) {
+      console.error('Error submitting sentence form:', error);
+      showToastNotification(error.message || 'Operation failed.', 'error');
+    }
   }
 }
 
@@ -1220,16 +1362,30 @@ function closeSentenceDeleteDialog() {
 async function confirmDeleteSentence() {
   if (!sentenceDeleteTargetId) return;
 
-  try {
-    const response = await fetch(`/api/sentences/${sentenceDeleteTargetId}`, { method: 'DELETE' });
-    if (!response.ok) throw new Error('Deletion request failed.');
+  if (isStaticMode) {
+    try {
+      sentences = sentences.filter(s => s.id !== sentenceDeleteTargetId);
+      localStorage.setItem('lexikeep_sentences', JSON.stringify(sentences));
+      closeSentenceDeleteDialog();
+      showToastNotification('Sentence deleted successfully!', 'success');
+      updateSentenceStats();
+      filterAndRenderSentences();
+    } catch (error) {
+      console.error('Error deleting sentence (static):', error);
+      showToastNotification('Could not delete sentence.', 'error');
+    }
+  } else {
+    try {
+      const response = await fetch(`/api/sentences/${sentenceDeleteTargetId}`, { method: 'DELETE' });
+      if (!response.ok) throw new Error('Deletion request failed.');
 
-    closeSentenceDeleteDialog();
-    showToastNotification('Sentence deleted successfully!', 'success');
-    await fetchSentences();
-  } catch (error) {
-    console.error('Error deleting sentence:', error);
-    showToastNotification('Could not delete sentence.', 'error');
+      closeSentenceDeleteDialog();
+      showToastNotification('Sentence deleted successfully!', 'success');
+      await fetchSentences();
+    } catch (error) {
+      console.error('Error deleting sentence:', error);
+      showToastNotification('Could not delete sentence.', 'error');
+    }
   }
 }
 

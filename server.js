@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = process.env.PORT || 3000;
-const PUBLIC_DIR = path.join(__dirname, 'public');
+const PUBLIC_DIR = __dirname;
 const DB_FILE = path.join(__dirname, 'dictionary.json');
 const SENTENCES_FILE = path.join(__dirname, 'sentences.json');
 
@@ -321,15 +321,22 @@ const server = http.createServer(async (req, res) => {
   }
 
   // 2. STATIC FILES
-  // Normalize client path to public folder
-  let filePath = path.join(PUBLIC_DIR, urlPath === '/' ? 'index.html' : urlPath);
+  const ALLOWED_STATIC_FILES = [
+    'index.html',
+    'style.css',
+    'app.js',
+    'dictionary.json',
+    'sentences.json'
+  ];
 
-  // Prevent Directory Traversal
-  if (!filePath.startsWith(PUBLIC_DIR)) {
+  const relativePath = urlPath === '/' ? 'index.html' : urlPath.substring(1);
+  if (!ALLOWED_STATIC_FILES.includes(relativePath)) {
     res.statusCode = 403;
     res.setHeader('Content-Type', 'text/plain');
     return res.end('Access Forbidden');
   }
+
+  const filePath = path.join(PUBLIC_DIR, relativePath);
 
   fs.stat(filePath, (err, stats) => {
     if (err || !stats.isFile()) {
