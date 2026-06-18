@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="LexiKeep - Personal English Vocabulary Vault and Interactive English Grammar Handbook." />
+    <title>LexiKeep - English Dictionary & Grammar Handbook</title>
+
+    <!-- Google Fonts: Plus Jakarta Sans for clean typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Bootstrap CSS Framework -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous" />
+
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Lucide Icons for premium look -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Chart.js for Grammar complexity map -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="logo-area">
+          <div class="logo-icon">
+            <i data-lucide="book-open"></i>
+          </div>
+          <h1>LexiKeep</h1>
+        </div>
+
+        <p class="tagline">Vocabulary, Sentences & Grammar</p>
+
+        <!-- Primary App Navigation -->
+        <nav class="primary-nav">
+          <button id="nav-dictionary-btn" class="nav-main-item active">
+            <i data-lucide="book"></i>
+            <span>Vocabulary Vault</span>
+          </button>
+          <button id="nav-sentences-btn" class="nav-main-item">
+            <i data-lucide="message-square-text"></i>
+            <span>Sentence Vault</span>
+          </button>
+          <button id="nav-grammar-btn" class="nav-main-item">
+            <i data-lucide="graduation-cap"></i>
+            <span>Grammar Handbook</span>
+          </button>
+        </nav>
+
+        <!-- Sub-panel: DICTIONARY STATS (Visible when Dictionary view is active) -->
+        <div class="sub-panel" id="panel-dictionary-stats">
+          <h2 class="panel-title">Vocabulary Stats</h2>
+          <div class="stat-items">
+            <div class="stat-item active" data-filter="all">
+              <span class="stat-label"><i data-lucide="layers" class="mini-icon"></i> Total Words</span>
+              <span class="stat-count" id="stat-total">0</span>
+            </div>
+            <div class="stat-item" data-filter="noun">
+              <span class="stat-label"><span class="pos-dot noun-dot"></span> Nouns</span>
+              <span class="stat-count" id="stat-noun">0</span>
+            </div>
+            <div class="stat-item" data-filter="verb">
+              <span class="stat-label"><span class="pos-dot verb-dot"></span> Verbs</span>
+              <span class="stat-count" id="stat-verb">0</span>
+            </div>
+            <div class="stat-item" data-filter="adjective">
+              <span class="stat-label"><span class="pos-dot adj-dot"></span> Adjectives</span>
+              <span class="stat-count" id="stat-adj">0</span>
+            </div>
+            <div class="stat-item" data-filter="adverb">
+              <span class="stat-label"><span class="pos-dot adv-dot"></span> Adverbs</span>
+              <span class="stat-count" id="stat-adv">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub-panel: SENTENCE STATS (Visible when Sentence view is active) -->
+        <div class="sub-panel" id="panel-sentence-stats" style="display: none">
+          <h2 class="panel-title">Sentence Stats</h2>
+          <div class="stat-items">
+            <div class="stat-item active" data-sent-filter="all">
+              <span class="stat-label"><i data-lucide="layers" class="mini-icon"></i> Total Sentences</span>
+              <span class="stat-count" id="sent-stat-total">0</span>
+            </div>
+            <div class="stat-item" data-sent-filter="general">
+              <span class="stat-label"><span class="pos-dot" style="background: #6366f1"></span> General</span>
+              <span class="stat-count" id="sent-stat-general">0</span>
+            </div>
+            <div class="stat-item" data-sent-filter="idiom">
+              <span class="stat-label"><span class="pos-dot" style="background: #f59e0b"></span> Idiom</span>
+              <span class="stat-count" id="sent-stat-idiom">0</span>
+            </div>
+            <div class="stat-item" data-sent-filter="proverb">
+              <span class="stat-label"><span class="pos-dot" style="background: #10b981"></span> Proverb</span>
+              <span class="stat-count" id="sent-stat-proverb">0</span>
+            </div>
+            <div class="stat-item" data-sent-filter="collocations">
+              <span class="stat-label"><span class="pos-dot" style="background: #ec4899"></span> Collocations</span>
+              <span class="stat-count" id="sent-stat-collocations">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub-panel: GRAMMAR SECTIONS (Visible when Grammar view is active) -->
+        <div class="sub-panel" id="panel-grammar-nav" style="display: none">
+          <h2 class="panel-title">Grammar Index</h2>
+          <div class="stat-items">
+            <div class="stat-item active" data-grammar-view="dashboard">
+              <span class="stat-label"><i data-lucide="layout-dashboard" class="mini-icon"></i> Overview (Tổng quan)</span>
+            </div>
+            <div class="stat-item" data-grammar-view="tenses">
+              <span class="stat-label"><i data-lucide="clock" class="mini-icon"></i> 12 Tenses (12 Thì)</span>
+            </div>
+            <div class="stat-item" data-grammar-view="structures">
+              <span class="stat-label"><i data-lucide="shuffle" class="mini-icon"></i> Sentence Structures</span>
+            </div>
+            <div class="stat-item" data-grammar-view="reference">
+              <span class="stat-label"><i data-lucide="help-circle" class="mini-icon"></i> Symbols & Reference</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="main-content">
+        <!-- ==================== VIEW 1: DICTIONARY VIEW ==================== -->
+        <div id="dictionary-view-container" class="app-view">
+          <!-- Header / Search and Control Bar -->
+          <header class="header">
+            <div class="search-wrapper">
+              <i data-lucide="search" class="search-icon"></i>
+              <input type="text" id="search-input" placeholder="Search words..." autocomplete="off" />
+              <button id="clear-search" class="clear-btn" style="display: none">
+                <i data-lucide="x"></i>
+              </button>
+            </div>
+
+            <button id="add-word-btn" class="btn btn-primary">
+              <i data-lucide="plus"></i>
+              <span>Add Word</span>
+            </button>
+          </header>
+
+          <!-- Word Display Feed -->
+          <section class="word-section">
+            <div class="section-header">
+              <h2 id="section-heading">All Words</h2>
+              <span class="results-indicator" id="results-count">Showing 0 words</span>
+            </div>
+
+            <!-- Word List Grid -->
+            <div class="word-grid" id="word-grid">
+              <!-- Dynamically filled with JS -->
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="empty-state" style="display: none">
+              <div class="empty-icon">
+                <i data-lucide="search-x"></i>
+              </div>
+              <h3>No Words Found</h3>
+              <p>We couldn't find any words matching your search criteria. Try a different search, change filters, or add a new word!</p>
+              <button id="empty-add-btn" class="btn btn-secondary">
+                <i data-lucide="plus"></i>
+                <span>Add New Word</span>
+              </button>
+            </div>
+          </section>
+        </div>
+
+        <!-- ==================== VIEW 2: SENTENCE VAULT VIEW ==================== -->
+        <div id="sentences-view-container" class="app-view" style="display: none">
+          <!-- Header / Search and Control Bar -->
+          <header class="header">
+            <div class="search-wrapper">
+              <i data-lucide="search" class="search-icon"></i>
+              <input type="text" id="sent-search-input" class="sentence-search" placeholder="Search sentences..." autocomplete="off" />
+              <button id="sent-clear-search" class="clear-btn" style="display: none">
+                <i data-lucide="x"></i>
+              </button>
+            </div>
+            <button id="add-sentence-btn" class="btn btn-primary">
+              <i data-lucide="plus"></i>
+              <span>Add Sentence</span>
+            </button>
+          </header>
+
+          <!-- Sentence Display Feed -->
+          <section class="word-section">
+            <div class="section-header">
+              <h2 id="sent-section-heading">All Sentences</h2>
+              <span class="results-indicator" id="sent-results-count">Showing 0 sentences</span>
+            </div>
+
+            <!-- Sentence List Grid -->
+            <div class="word-grid" id="sentence-grid">
+              <!-- Dynamically filled with JS -->
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="sent-empty-state" style="display: none">
+              <div class="empty-icon">
+                <i data-lucide="search-x"></i>
+              </div>
+              <h3>No Sentences Found</h3>
+              <p>We couldn't find any sentences matching your search. Try a different keyword or add a new one!</p>
+              <button id="sent-empty-add-btn" class="btn btn-secondary">
+                <i data-lucide="plus"></i>
+                <span>Add New Sentence</span>
+              </button>
+            </div>
+          </section>
+        </div>
+
+        <!-- ==================== VIEW 3: GRAMMAR VIEW ==================== -->
+        <div id="grammar-view-container" class="app-view" style="display: none">
+          <!-- SUB-SECTION 1: DASHBOARD / OVERVIEW -->
+          <section id="gm-view-dashboard" class="gm-section">
+            <div class="gm-hero">
+              <h2>English Grammar Overview</h2>
+              <p>An interactive cheat sheet to master 12 tenses, passive voice, conditionals, and core sentence structures.</p>
+            </div>
+
+            <!-- Complexity Chart -->
+            <div class="chart-card">
+              <div class="chart-header">
+                <h3>Tense Complexity Comparison Map</h3>
+                <p>Comparing formula length (number of grammatical components) across tense groups</p>
+              </div>
+              <div class="chart-container">
+                <canvas id="grammarChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Quick Access Cards -->
+            <div class="quick-access-grid">
+              <div class="quick-card border-blue" onclick="switchGrammarView('tenses')">
+                <div class="quick-card-icon bg-blue-light text-blue"><i data-lucide="clock"></i></div>
+                <h4>12 Tenses System</h4>
+                <p>Check positive, negative, and question formulas with memorization tips.</p>
+              </div>
+              <div class="quick-card border-green" onclick="switchGrammarView('structures')">
+                <div class="quick-card-icon bg-green-light text-green"><i data-lucide="shuffle"></i></div>
+                <h4>Sentence Structures</h4>
+                <p>Passive voice converter, reported speech patterns, and conditionals.</p>
+              </div>
+              <div class="quick-card border-amber" onclick="switchGrammarView('reference')">
+                <div class="quick-card-icon bg-amber-light text-amber"><i data-lucide="help-circle"></i></div>
+                <h4>Symbols & Guides</h4>
+                <p>Decipher syntax shorthand (S, V, O, V3/pp) and auxiliary guides.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- SUB-SECTION 2: 12 TENSES -->
+          <section id="gm-view-tenses" class="gm-section" style="display: none">
+            <div class="gm-card">
+              <div class="gm-card-header">
+                <div class="header-left">
+                  <h3>12 Basic English Tenses</h3>
+                  <p>Select temporal groups to filter. <strong>Click any formula (+, -, ?) to highlight it.</strong></p>
+                </div>
+
+                <!-- Tense Filters -->
+                <div class="tense-filters" id="tense-filters">
+                  <button class="filter-pill active" data-group="all">All</button>
+                  <button class="filter-pill" data-group="Present">Present (Hiện tại)</button>
+                  <button class="filter-pill" data-group="Past">Past (Quá khứ)</button>
+                  <button class="filter-pill" data-group="Future">Future (Tương lai)</button>
+                </div>
+              </div>
+
+              <div class="tense-scroll-container">
+                <div class="tense-grid" id="tense-grid">
+                  <!-- Dynamically populated -->
+                </div>
+
+                <!-- Tips Alert -->
+                <div class="tips-box">
+                  <div class="tips-header">
+                    <i data-lucide="zap"></i>
+                    <h4>Quick Formula Memory Mnemonics</h4>
+                  </div>
+                  <ul class="tips-list">
+                    <li><strong>Continuous (Tiếp diễn):</strong> Must contain helper <code class="tip-code">BE + V-ing</code>.</li>
+                    <li><strong>Perfect (Hoàn thành):</strong> Must contain helper <code class="tip-code">HAVE + V3/pp (Past Participle)</code>.</li>
+                    <li><strong>Future (Tương lai):</strong> Always has modal helper <code class="tip-code">WILL</code> in front of base verbs.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- SUB-SECTION 3: STRUCTURES -->
+          <section id="gm-view-structures" class="gm-section" style="display: none">
+            <div class="structures-layout">
+              <!-- Left Panel navigation -->
+              <div class="structures-nav">
+                <h4>Topics</h4>
+                <button onclick="switchStructureTopic('passive')" class="struct-nav-item active" data-topic="passive">Passive Voice (Bị động)</button>
+                <button onclick="switchStructureTopic('reported')" class="struct-nav-item" data-topic="reported">Reported Speech (Tường thuật)</button>
+                <button onclick="switchStructureTopic('conditionals')" class="struct-nav-item" data-topic="conditionals">Conditionals & Wish (Điều kiện)</button>
+                <button onclick="switchStructureTopic('relative')" class="struct-nav-item" data-topic="relative">Relative Clauses (Mệnh đề QH)</button>
+                <button onclick="switchStructureTopic('comparison')" class="struct-nav-item" data-topic="comparison">Comparisons (So sánh)</button>
+              </div>
+
+              <!-- Right Panel Content Container -->
+              <div class="structures-content">
+                <!-- Topic A: Passive Voice -->
+                <div id="struct-passive" class="topic-content">
+                  <h3>Passive Voice (Câu Bị Động)</h3>
+                  <p class="topic-desc">General Rule: Active <code class="syntax-inline">S + V + O</code> &rarr; Passive <code class="syntax-inline">S + BE + V3/pp (+ by O)</code></p>
+
+                  <div class="selector-box">
+                    <label for="passive-select">Choose active tense to see conversion:</label>
+                    <select id="passive-select">
+                      <!-- Options injected dynamically -->
+                    </select>
+                  </div>
+
+                  <div id="passive-result-box">
+                    <!-- Injected by JS -->
+                  </div>
+                </div>
+
+                <!-- Topic B: Reported Speech -->
+                <div id="struct-reported" class="topic-content" style="display: none">
+                  <h3>Reported Speech (Câu Tường Thuật)</h3>
+                  <p class="topic-desc">When reporting what someone said, shift tenses backward, adjust pronouns, and update time expressions.</p>
+
+                  <div class="reported-guides">
+                    <div class="guide-card bg-indigo-light border-indigo">
+                      <h4>1. Backshifting Tenses (Lùi Thì)</h4>
+                      <ul id="reported-tense-list" class="check-list"></ul>
+                    </div>
+                    <div class="guide-card bg-amber-light border-amber">
+                      <h4>2. Place & Time Adjustments</h4>
+                      <ul id="reported-adv-list" class="check-list"></ul>
+                    </div>
+                  </div>
+
+                  <h4 class="sub-heading">3. Sentence Construction Formulas</h4>
+                  <div class="formula-deck">
+                    <div class="formula-card">
+                      <span class="formula-tag">Statements (Câu kể)</span>
+                      <code>S + said (that) + S + V (backshifted)</code>
+                    </div>
+                    <div class="formula-card">
+                      <span class="formula-tag">Yes/No Questions</span>
+                      <code>S + asked (O) + if / whether + S + V (backshifted)</code>
+                    </div>
+                    <div class="formula-card">
+                      <span class="formula-tag">Wh- Questions</span>
+                      <code>S + asked (O) + Wh-word + S + V (backshifted)</code>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Topic C: Conditionals & Wish -->
+                <div id="struct-conditionals" class="topic-content" style="display: none">
+                  <h3>Conditionals & Wish (Câu Điều Kiện & Ước)</h3>
+                  <p class="topic-desc">Structure matches imaginary or factual events placed in past, present, or future contexts.</p>
+
+                  <div class="table-wrapper">
+                    <table class="grammar-table">
+                      <thead>
+                        <tr>
+                          <th>Time & Reality</th>
+                          <th>If Conditionals</th>
+                          <th>Wish Clause</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><strong>Present/Future</strong><br /><span class="label-info">Factual / Possible</span></td>
+                          <td>
+                            <span class="tag-type green">Type 1</span>
+                            <div class="code-wrap">If + Present Simple,<br />S + will + Vo</div>
+                          </td>
+                          <td>
+                            <span class="tag-type purple">Future Wish</span>
+                            <div class="code-wrap">S + wish + S + would + Vo</div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><strong>Present</strong><br /><span class="label-info">Unreal / Imaginary</span></td>
+                          <td>
+                            <span class="tag-type green">Type 2</span>
+                            <div class="code-wrap">If + Past Simple,<br />S + would + Vo</div>
+                          </td>
+                          <td>
+                            <span class="tag-type purple">Present Wish</span>
+                            <div class="code-wrap">S + wish + S + V2/ed (were)</div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><strong>Past</strong><br /><span class="label-info">Unreal in the Past</span></td>
+                          <td>
+                            <span class="tag-type green">Type 3</span>
+                            <div class="code-wrap">If + Past Perfect,<br />S + would have + V3/pp</div>
+                          </td>
+                          <td>
+                            <span class="tag-type purple">Past Wish</span>
+                            <div class="code-wrap">S + wish + S + had + V3/pp</div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Topic D: Relative Clauses -->
+                <div id="struct-relative" class="topic-content" style="display: none">
+                  <h3>Relative Clauses (Mệnh Đề Quan Hệ)</h3>
+                  <p class="topic-desc">Adjectival clauses modifying nouns. Utilizes relative pronouns depending on grammatical roles.</p>
+
+                  <div class="relative-pron-grid">
+                    <div class="pron-item">
+                      <div class="pron-header"><span class="pron-badge text-indigo bg-indigo-light">WHO</span> <span>Subject (People)</span></div>
+                      <code class="pron-code">... N (people) + WHO + V</code>
+                    </div>
+                    <div class="pron-item">
+                      <div class="pron-header"><span class="pron-badge text-indigo bg-indigo-light">WHOM</span> <span>Object (People)</span></div>
+                      <code class="pron-code">... N (people) + WHOM + S + V</code>
+                    </div>
+                    <div class="pron-item">
+                      <div class="pron-header"><span class="pron-badge text-indigo bg-indigo-light">WHICH</span> <span>Subject/Object (Things)</span></div>
+                      <code class="pron-code">... N (thing) + WHICH + V or S+V</code>
+                    </div>
+                    <div class="pron-item border-amber-light bg-amber-light">
+                      <div class="pron-header"><span class="pron-badge text-amber bg-amber-light">THAT</span> <span class="text-amber">Special Case</span></div>
+                      <p class="pron-desc">Can replace who, whom, which in defining clauses. Mandatory after:</p>
+                      <ul class="pron-sublist">
+                        <li>Superlatives (the best, the tallest)</li>
+                        <li>Adjectives: only, first, last</li>
+                        <li>Indefinite Pronouns (everything, something, all)</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Topic E: Comparisons -->
+                <div id="struct-comparison" class="topic-content" style="display: none">
+                  <h3>Comparisons (Cấu Trúc So Sánh)</h3>
+                  <p class="topic-desc">Formulas vary depending on syllable lengths of adjectives/adverbs (Short vs. Long).</p>
+
+                  <div class="comparison-grid">
+                    <div class="comparison-col">
+                      <h4>Short Adjectives / Adverbs</h4>
+                      <div class="comp-box">
+                        <span class="comp-tag">Comparative (Hơn)</span>
+                        <code>adj-er + than</code>
+                      </div>
+                      <div class="comp-box">
+                        <span class="comp-tag">Superlative (Nhất)</span>
+                        <code>the + adj-est</code>
+                      </div>
+                    </div>
+                    <div class="comparison-col">
+                      <h4>Long Adjectives / Adverbs</h4>
+                      <div class="comp-box">
+                        <span class="comp-tag">Comparative (Hơn)</span>
+                        <code>more + adj + than</code>
+                      </div>
+                      <div class="comp-box">
+                        <span class="comp-tag">Superlative (Nhất)</span>
+                        <code>the + most + adj</code>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- SUB-SECTION 4: REFERENCE -->
+          <section id="gm-view-reference" class="gm-section" style="display: none">
+            <div class="gm-card">
+              <h3 class="ref-section-title">Symbols & Legend (Ký hiệu viết tắt)</h3>
+              <div class="symbol-deck" id="symbol-grid">
+                <!-- Dynamically populated -->
+              </div>
+
+              <h3 class="ref-section-title margin-top-lg">Additional Auxiliary Structures</h3>
+              <div class="aux-grid">
+                <div class="aux-card">
+                  <h4>So ... that / Such ... that</h4>
+                  <ul class="aux-list">
+                    <li><code>So + Adj/Adv + that + clause</code> (Quá... đến nỗi mà)</li>
+                    <li><code>Such + a/an + Adj + N + that + clause</code></li>
+                  </ul>
+                </div>
+                <div class="aux-card">
+                  <h4>Too ... to V / Enough ... to V</h4>
+                  <ul class="aux-list">
+                    <li><code>Too + Adj/Adv + (for O) + to-V</code> (Quá... để làm gì)</li>
+                    <li><code>Adj/Adv + enough + (for O) + to-V</code> (Đủ... để làm gì)</li>
+                  </ul>
+                </div>
+                <div class="aux-card">
+                  <h4>Concessions (Sự nhượng bộ)</h4>
+                  <p><code>Although / Even though / Though + Clause</code> &rarr; followed by main clause.</p>
+                </div>
+                <div class="aux-card">
+                  <h4>Gerund (V-ing) Followers</h4>
+                  <p>Gerunds are mandatory after verbs like: <em>avoid, enjoy, finish, keep, mind, suggest, can't help, look forward to.</em></p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal for Add/Edit Sentence (Used by Sentence Vault) -->
+    <div class="custom-modal-backdrop" id="sentence-modal" style="display: none">
+      <div class="custom-modal">
+        <div class="custom-modal-header">
+          <h3 id="sent-modal-title">Add New Sentence</h3>
+          <button class="custom-modal-close" id="sent-modal-close-btn">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        <form id="sentence-form">
+          <input type="hidden" id="sent-id" />
+
+          <div class="form-group">
+            <label for="input-sentence">English Sentence (Câu tiếng Anh) *</label>
+            <textarea id="input-sentence" rows="3" placeholder="Enter the English sentence here..." required></textarea>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="input-sent-pronunciation">Pronunciation (Phiên âm)</label>
+              <input type="text" id="input-sent-pronunciation" placeholder="e.g. /ˌæk.ʃənz ˈspiːk/" autocomplete="off" />
+            </div>
+            <div class="form-group">
+              <label for="input-sent-category">Category (Thể loại)</label>
+              <select id="input-sent-category">
+                <option value="general">General (Thông thường)</option>
+                <option value="idiom">Idiom (Thành ngữ)</option>
+                <option value="proverb">Proverb (Tục ngữ)</option>
+                <option value="collocations">Collocations (Kết hợp từ)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="input-translation">Translation (Ý nghĩa) *</label>
+            <textarea id="input-translation" rows="2" placeholder="Nhập nghĩa tiếng Việt của câu..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="input-sent-note">Note (Ghi chú)</label>
+            <textarea id="input-sent-note" rows="2" placeholder="Optional: grammar note, context, or usage tip..."></textarea>
+          </div>
+
+          <div class="custom-modal-footer">
+            <button type="button" class="btn btn-secondary" id="sent-modal-cancel-btn">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="sent-modal-submit-btn">Save Sentence</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Dialog for Sentence Vault -->
+    <div class="custom-dialog-backdrop" id="sent-delete-dialog" style="display: none">
+      <div class="custom-dialog">
+        <div class="custom-dialog-icon danger">
+          <i data-lucide="trash-2"></i>
+        </div>
+        <h3>Delete Sentence</h3>
+        <p>Are you sure you want to delete this sentence? This action cannot be undone.</p>
+        <div class="custom-dialog-footer">
+          <button class="btn btn-secondary" id="sent-delete-cancel-btn">Cancel</button>
+          <button class="btn btn-danger" id="sent-delete-confirm-btn">Yes, Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for Add/Edit Word (Used by Dictionary) -->
+    <div class="custom-modal-backdrop" id="word-modal" style="display: none">
+      <div class="custom-modal">
+        <div class="custom-modal-header">
+          <h3 id="modal-title">Add New Word</h3>
+          <button class="custom-modal-close" id="modal-close-btn">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        <form id="word-form">
+          <input type="hidden" id="word-id" />
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="input-word">Word (Từ) *</label>
+              <input type="text" id="input-word" placeholder="e.g. Serendipity" required autocomplete="off" />
+            </div>
+
+            <div class="form-group">
+              <label for="input-pronunciation">Pronunciation (Phiên âm)</label>
+              <input type="text" id="input-pronunciation" placeholder="e.g. /ˌserənˈdipədē/" autocomplete="off" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="input-type">Part of Speech (Từ loại)</label>
+            <select id="input-type">
+              <option value="noun">Noun (Danh từ)</option>
+              <option value="verb">Verb (Động từ)</option>
+              <option value="adjective">Adjective (Tính từ)</option>
+              <option value="adverb">Adverb (Trạng từ)</option>
+              <option value="other">Other (Khác)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="input-definition">Definition (Ý nghĩa) *</label>
+            <textarea id="input-definition" rows="3" placeholder="Explain the meaning of the word..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="input-example">Example Sentence (Ví dụ)</label>
+            <textarea id="input-example" rows="2" placeholder="Write a sentence demonstrating how to use this word..."></textarea>
+          </div>
+
+          <div class="custom-modal-footer">
+            <button type="button" class="btn btn-secondary" id="modal-cancel-btn">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="modal-submit-btn">Save Word</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Toast / Dialog -->
+    <div class="custom-dialog-backdrop" id="delete-dialog" style="display: none">
+      <div class="custom-dialog">
+        <div class="custom-dialog-icon danger">
+          <i data-lucide="trash-2"></i>
+        </div>
+        <h3>Delete Word</h3>
+        <p>Are you sure you want to delete "<strong id="delete-word-name"></strong>"? This action cannot be undone.</p>
+        <div class="custom-dialog-footer">
+          <button class="btn btn-secondary" id="delete-cancel-btn">Cancel</button>
+          <button class="btn btn-danger" id="delete-confirm-btn">Yes, Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="toast">
+      <i data-lucide="check-circle" class="toast-icon" id="toast-icon"></i>
+      <span class="toast-message" id="toast-message">Word saved successfully!</span>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"></script>
+
+    <!-- App Main Javascript -->
+    <script src="app.js"></script>
+  </body>
+</html>

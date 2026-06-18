@@ -1,0 +1,92 @@
+[
+  {
+    "id": "1718612300001",
+    "word": "Pernicious",
+    "type": "adjective",
+    "pronunciation": "/pərˈnɪʃəs/",
+    "definition": "Having a harmful effect, especially in a gradual or subtle way.",
+    "example": "The pernicious influence of the rumor spread quickly through the office.",
+    "createdAt": "2026-06-18T02:15:00.000Z"
+  },
+  {
+    "id": "1718612300002",
+    "word": "Obfuscate",
+    "type": "verb",
+    "pronunciation": "/ˈɒbfʌsˌkeɪt/",
+    "definition": "Render obscure, unclear, or unintelligible.",
+    "example": "The speaker chose to obfuscate the issue with complex jargon.",
+    "createdAt": "2026-06-18T02:15:10.000Z"
+  },
+  {
+    "id": "1718612300003",
+    "word": "Mellifluous",
+    "type": "adjective",
+    "pronunciation": "/məˈlɪfluəs/",
+    "definition": "Sweet or musical; pleasant to hear (typically of a voice or words).",
+    "example": "The singer wowed the audience with her mellifluous voice.",
+    "createdAt": "2026-06-18T02:15:20.000Z"
+  },
+  {
+    "id": "1718612300004",
+    "word": "Alacrity",
+    "type": "noun",
+    "pronunciation": "/əˈlæk rɪ ti/",
+    "definition": "Brisk and cheerful readiness.",
+    "example": "She accepted the job offer with alacrity and started the next day.",
+    "createdAt": "2026-06-18T02:15:30.000Z"
+  },
+  {
+    "id": "1718612300005",
+    "word": "Cacophony",
+    "type": "noun",
+    "pronunciation": "/kəˈkɒfəni/",
+    "definition": "A harsh, discordant mixture of sounds.",
+    "example": "The street was filled with a loud cacophony of car horns and construction noise.",
+    "createdAt": "2026-06-18T02:15:40.000Z"
+  },
+  {
+    "id": "1718612300006",
+    "word": "Ethereal",
+    "type": "adjective",
+    "pronunciation": "/ɪˈθɪəriəl/",
+    "definition": "Extremely delicate and light in a way that seems too perfect for this world.",
+    "example": "The morning mist gave the forest an ethereal, fairytale-like quality.",
+    "createdAt": "2026-06-18T02:15:50.000Z"
+  },
+  {
+    "id": "1718612300007",
+    "word": "Ephemeral",
+    "type": "adjective",
+    "pronunciation": "/ɪˈfemərəl/",
+    "definition": "Lasting for a very short time.",
+    "example": "The beauty of cherry blossoms is ephemeral, lasting only a few weeks.",
+    "createdAt": "2026-06-18T02:16:00.000Z"
+  },
+  {
+    "id": "1718612300008",
+    "word": "Ubiquitous",
+    "type": "adjective",
+    "pronunciation": "/juːˈbɪkwɪtəs/",
+    "definition": "Present, appearing, or found everywhere.",
+    "example": "Smartphones have become ubiquitous in modern society.",
+    "createdAt": "2026-06-18T02:16:10.000Z"
+  },
+  {
+    "id": "1718612300009",
+    "word": "Mitigate",
+    "type": "verb",
+    "pronunciation": "/ˈmɪtɪɡeɪt/",
+    "definition": "Make less severe, serious, or painful.",
+    "example": "Proper planning can help mitigate the risks associated with the new project.",
+    "createdAt": "2026-06-18T02:16:20.000Z"
+  },
+  {
+    "id": "1718612300010",
+    "word": "Assiduously",
+    "type": "adverb",
+    "pronunciation": "/əˈsɪdʒuəsli/",
+    "definition": "With great care, attention, and perseverance.",
+    "example": "She worked assiduously to complete the research paper on time.",
+    "createdAt": "2026-06-18T02:16:30.000Z"
+  }
+]
