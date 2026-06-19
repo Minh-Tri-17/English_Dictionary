@@ -67,6 +67,10 @@
             <i data-lucide="message-square-text"></i>
             <span>Sentence Vault</span>
           </button>
+          <button id="nav-videos-btn" class="nav-main-item">
+            <i data-lucide="video"></i>
+            <span>Video Vault</span>
+          </button>
           <button id="nav-grammar-btn" class="nav-main-item">
             <i data-lucide="graduation-cap"></i>
             <span>Grammar Handbook</span>
@@ -146,15 +150,38 @@
           </div>
         </div>
 
+        <!-- Sub-panel: VIDEO CATEGORIES (Visible when Video view is active) -->
+        <div class="sub-panel" id="panel-video-categories" style="display: none">
+          <h2 class="panel-title">Video Categories</h2>
+          <div class="stat-items">
+            <div class="stat-item active" data-video-filter="all">
+              <span class="stat-label"><i data-lucide="layers" class="mini-icon"></i> All Videos</span>
+              <span class="stat-count" id="video-stat-total">0</span>
+            </div>
+            <div class="stat-item" data-video-filter="Grammar">
+              <span class="stat-label"><span class="pos-dot" style="background: #3b82f6"></span> Grammar</span>
+              <span class="stat-count" id="video-stat-grammar">0</span>
+            </div>
+            <div class="stat-item" data-video-filter="Speaking">
+              <span class="stat-label"><span class="pos-dot" style="background: #10b981"></span> Speaking</span>
+              <span class="stat-count" id="video-stat-speaking">0</span>
+            </div>
+            <div class="stat-item" data-video-filter="Vocabulary">
+              <span class="stat-label"><span class="pos-dot" style="background: #f59e0b"></span> Vocabulary</span>
+              <span class="stat-count" id="video-stat-vocabulary">0</span>
+            </div>
+          </div>
+        </div>
+
         <!-- Sub-panel: DATA UTILITIES (Backup & Restore) -->
         <div class="sub-panel mt-4" id="panel-backup-restore">
           <h2 class="panel-title">Data Backup</h2>
           <div class="backup-actions d-grid gap-2">
-            <button id="backup-export-btn" class="btn btn-secondary d-flex align-items-center justify-content-center gap-2 py-2" style="font-size: 0.85rem;">
+            <button id="backup-export-btn" class="btn btn-secondary d-flex align-items-center justify-content-center gap-2 py-2" style="font-size: 0.85rem">
               <i data-lucide="download" class="mini-icon"></i>
               <span>Export Backup (.json)</span>
             </button>
-            <button id="backup-import-btn" class="btn btn-secondary d-flex align-items-center justify-content-center gap-2 py-2" style="font-size: 0.85rem;">
+            <button id="backup-import-btn" class="btn btn-secondary d-flex align-items-center justify-content-center gap-2 py-2" style="font-size: 0.85rem">
               <i data-lucide="upload" class="mini-icon"></i>
               <span>Import Backup (.json)</span>
             </button>
@@ -550,6 +577,61 @@
               </div>
             </div>
           </section>
+        </div>
+
+        <!-- ==================== VIEW 4: VIDEO VAULT VIEW ==================== -->
+        <div id="videos-view-container" class="app-view" style="display: none">
+          <div class="video-split-layout">
+            <!-- Left Column: Search & Video Grid List -->
+            <div class="video-left-col">
+              <!-- Header / Search and Control Bar -->
+              <header class="header">
+                <div class="search-wrapper">
+                  <i data-lucide="search" class="search-icon"></i>
+                  <input type="text" id="video-search-input" placeholder="Search videos by title or description..." autocomplete="off" />
+                  <button id="video-clear-search" class="clear-btn" style="display: none">
+                    <i data-lucide="x"></i>
+                  </button>
+                </div>
+              </header>
+
+              <!-- Grid of Curated Videos -->
+              <section class="word-section">
+                <div class="section-header">
+                  <h2 id="video-section-heading">All Videos</h2>
+                  <span class="results-indicator" id="video-results-count">Showing 0 videos</span>
+                </div>
+
+                <!-- Video List Grid -->
+                <div class="video-grid" id="video-grid">
+                  <!-- Dynamically filled with JS -->
+                </div>
+
+                <!-- Empty State -->
+                <div class="empty-state" id="video-empty-state" style="display: none">
+                  <div class="empty-icon">
+                    <i data-lucide="search-x"></i>
+                  </div>
+                  <h3>No Videos Found</h3>
+                  <p>We couldn't find any videos matching your search. Try a different keyword!</p>
+                </div>
+              </section>
+            </div>
+
+            <!-- Right Column: Widescreen Video Player -->
+            <div class="video-right-col" id="active-video-player" style="display: none">
+              <div class="active-video-player-card">
+                <div class="iframe-container">
+                  <iframe id="main-youtube-player" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="player-info-meta mt-3">
+                  <span class="pos-badge" id="player-video-category" style="background-color: var(--primary-light); color: var(--primary)">Category</span>
+                  <h3 class="player-video-title mt-2 mb-2" id="player-video-title" style="font-weight: 700; font-size: 1.3rem">Video Title</h3>
+                  <p class="player-video-desc text-muted mb-0" id="player-video-desc">Video description...</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
 

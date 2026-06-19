@@ -326,7 +326,8 @@ const server = http.createServer(async (req, res) => {
     'style.css',
     'app.js',
     'dictionary.json',
-    'sentences.json'
+    'sentences.json',
+    'videos.json'
   ];
 
   const relativePath = urlPath === '/' ? 'index.html' : urlPath.substring(1);

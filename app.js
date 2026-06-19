@@ -15,6 +15,10 @@ const isStaticMode = forceStaticMode ||
 let activeFilter = 'all';
 let deleteTargetId = null;
 
+// Video Vault State
+let videos = [];
+let activeVideoFilter = 'all';
+
 // ==========================================================================
 // 2. GRAMMAR EXPLORER STATIC DATA
 // ==========================================================================
@@ -202,6 +206,28 @@ const grammarView = document.getElementById('grammar-view-container');
 const panelDictionaryStats = document.getElementById('panel-dictionary-stats');
 const panelGrammarNav = document.getElementById('panel-grammar-nav');
 
+// Video Vault DOM elements
+const navVideosBtn = document.getElementById('nav-videos-btn');
+const videosView = document.getElementById('videos-view-container');
+const panelVideoCategories = document.getElementById('panel-video-categories');
+const videoSearchInput = document.getElementById('video-search-input');
+const videoClearSearchBtn = document.getElementById('video-clear-search');
+const videoGrid = document.getElementById('video-grid');
+const videoEmptyState = document.getElementById('video-empty-state');
+const videoSectionHeading = document.getElementById('video-section-heading');
+const videoResultsCount = document.getElementById('video-results-count');
+const videoStatTotal = document.getElementById('video-stat-total');
+const videoStatGrammar = document.getElementById('video-stat-grammar');
+const videoStatSpeaking = document.getElementById('video-stat-speaking');
+const videoStatVocabulary = document.getElementById('video-stat-vocabulary');
+const videoStatItems = document.querySelectorAll('#panel-video-categories .stat-item');
+
+const activeVideoPlayer = document.getElementById('active-video-player');
+const mainYoutubePlayer = document.getElementById('main-youtube-player');
+const playerVideoCategory = document.getElementById('player-video-category');
+const playerVideoTitle = document.getElementById('player-video-title');
+const playerVideoDesc = document.getElementById('player-video-desc');
+
 // Dictionary View Elements
 const searchInput = document.getElementById('search-input');
 const clearSearchBtn = document.getElementById('clear-search');
@@ -283,6 +309,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 4. Check scheduled auto-backup (runs in client-only static mode)
   setTimeout(checkAutoBackup, 1500);
+
+  // 5. Setup Video Vault
+  fetchVideosData();
 });
 
 // Main App Event Listeners
@@ -386,6 +415,38 @@ function setupEventListeners() {
   if (backupFileInput) {
     backupFileInput.addEventListener('change', handleBackupImport);
   }
+
+  // Video Vault navigation switcher
+  if (navVideosBtn) {
+    navVideosBtn.addEventListener('click', () => switchAppViewExtended('videos'));
+  }
+
+  // Video Search debounce
+  if (videoSearchInput) {
+    videoSearchInput.addEventListener('input', () => {
+      clearTimeout(videoSearchInput._debounce);
+      videoSearchInput._debounce = setTimeout(filterAndRenderVideos, 150);
+    });
+  }
+
+  if (videoClearSearchBtn) {
+    videoClearSearchBtn.addEventListener('click', () => {
+      videoSearchInput.value = '';
+      videoClearSearchBtn.style.display = 'none';
+      filterAndRenderVideos();
+    });
+  }
+
+  // Video category sidebar clicks
+  videoStatItems.forEach(item => {
+    item.addEventListener('click', () => {
+      videoStatItems.forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      activeVideoFilter = item.getAttribute('data-video-filter');
+      filterAndRenderVideos();
+      closeSidebarMobile();
+    });
+  });
 }
 
 // Switch between Main Dictionary View and Grammar Handbook View
@@ -1079,15 +1140,34 @@ const sentDeleteCancelBtn    = document.getElementById('sent-delete-cancel-btn')
 // 9. SENTENCE VAULT — NAVIGATION INTEGRATION
 // ==========================================================================
 
-// Extended app switcher — supports 'dictionary', 'grammar', and 'sentences'
+// Extended app switcher — supports 'dictionary', 'grammar', 'sentences', and 'videos'
 function switchAppViewExtended(view) {
   // Close mobile sidebar drawer if open
   closeSidebarMobile();
+
+  // Reset scroll positions of main content to prevent layout shifts
+  const mainContent = document.querySelector('.main-content');
+  if (mainContent) {
+    mainContent.scrollTop = 0;
+  }
 
   // Always reset sentences view & button
   sentencesView.style.display      = 'none';
   panelSentenceStats.style.display = 'none';
   navSentencesBtn.classList.remove('active');
+
+  // Always reset videos view & button
+  if (videosView) videosView.style.display = 'none';
+  if (panelVideoCategories) panelVideoCategories.style.display = 'none';
+  if (navVideosBtn) navVideosBtn.classList.remove('active');
+
+  // Stop video playback when leaving section
+  if (mainYoutubePlayer) {
+    mainYoutubePlayer.src = '';
+  }
+  if (activeVideoPlayer) {
+    activeVideoPlayer.style.display = 'none';
+  }
 
   if (view === 'sentences') {
     // Hide other views
@@ -1102,6 +1182,20 @@ function switchAppViewExtended(view) {
     sentencesView.style.display      = 'flex';
     panelSentenceStats.style.display = 'flex';
     navSentencesBtn.classList.add('active');
+    lucide.createIcons();
+  } else if (view === 'videos') {
+    // Hide other views
+    dictionaryView.style.display       = 'none';
+    grammarView.style.display          = 'none';
+    panelDictionaryStats.style.display = 'none';
+    panelGrammarNav.style.display      = 'none';
+    navDictionaryBtn.classList.remove('active');
+    navGrammarBtn.classList.remove('active');
+
+    // Show videos
+    if (videosView) videosView.style.display = 'flex';
+    if (panelVideoCategories) panelVideoCategories.style.display = 'flex';
+    if (navVideosBtn) navVideosBtn.classList.add('active');
     lucide.createIcons();
   } else {
     switchAppView(view);
@@ -1568,3 +1662,208 @@ function checkAutoBackup() {
     exportData(true);
   }
 }
+
+// ==========================================================================
+// 13. VIDEO VAULT — STATE, FETCH & RENDER LOGIC
+// ==========================================================================
+
+async function fetchVideosData() {
+  try {
+    const response = await fetch('./videos.json');
+    if (!response.ok) throw new Error('Could not load videos.json file.');
+    videos = await response.json();
+  } catch (error) {
+    console.warn('Failed to load videos.json, falling back to static list:', error);
+    // Hardcoded fallback list matching the user's custom links
+    videos = [
+      {
+        "id": "1",
+        "title": "Talking About Your First Job in English | Easy English Podcast",
+        "youtubeId": "qo0JeuzwVVY",
+        "category": "Speaking",
+        "description": "Learn how to talk about your first job experiences, workplace duties, and career beginnings in simple conversational English."
+      },
+      {
+        "id": "2",
+        "title": "Talking About Coffee Culture in English | Easy English Podcast",
+        "youtubeId": "JcxEcNjTLyA",
+        "category": "Speaking",
+        "description": "Practice listening and speaking with this fun conversational episode about coffee culture, cafes, and how to order drinks in English."
+      },
+      {
+        "id": "3",
+        "title": "English at the Post Office | Easy English Podcast",
+        "youtubeId": "JoAtOOxhvX8",
+        "category": "Vocabulary",
+        "description": "Learn essential vocabulary, common phrasing, and practical dialogues used at the post office to buy stamps or send mail."
+      },
+      {
+        "id": "4",
+        "title": "Talking About Nature in English | Easy English Podcast",
+        "youtubeId": "so8e09Bc9fE",
+        "category": "Speaking",
+        "description": "Improve your vocabulary and listening comprehension as we talk about nature, national parks, and outdoor activities in English."
+      },
+      {
+        "id": "5",
+        "title": "English at the Airport | Easy English Podcast",
+        "youtubeId": "zsMBw2uukHc",
+        "category": "Vocabulary",
+        "description": "Master vocabulary and sentences for traveling, check-in, security checks, boarding gates, and navigating through an airport."
+      },
+      {
+        "id": "6",
+        "title": "Talking About Food Culture in English | Easy English Podcast",
+        "youtubeId": "qliYDiNAtgE",
+        "category": "Speaking",
+        "description": "Learn useful English expressions and idioms for talking about food, traditional dishes, eating habits, and dining customs."
+      },
+      {
+        "id": "7",
+        "title": "Talking About Loneliness in English | Easy English Podcast",
+        "youtubeId": "t0ZuWDYSbpI",
+        "category": "Speaking",
+        "description": "Practice conversation skills discussing emotions, feelings of isolation, and helpful ways to connect with others in English."
+      },
+      {
+        "id": "8",
+        "title": "Talking About City Life & Country Life in English | Easy English Podcast",
+        "youtubeId": "xDhJVuiMv7k",
+        "category": "Speaking",
+        "description": "Explore the pros and cons of living in a busy city versus a peaceful countryside, with comparison vocabulary and natural phrasings."
+      },
+      {
+        "id": "9",
+        "title": "Learn English Conversation at the Hotel | Easy English Podcast",
+        "youtubeId": "4JrQzHp5K2c",
+        "category": "Speaking",
+        "description": "Learn helpful vocabulary, checking-in phrases, and polite conversation structures for staying at a hotel."
+      },
+      {
+        "id": "10",
+        "title": "Asking for Directions in English | Easy English Podcast",
+        "youtubeId": "ciQcgxjToEQ",
+        "category": "Speaking",
+        "description": "Learn how to politely ask for and understand directional guidance, landmarks, and route descriptions in English."
+      },
+      {
+        "id": "11",
+        "title": "Talking About Self Care Routine in English | Easy English Podcast",
+        "youtubeId": "t69v-52_oCk",
+        "category": "Speaking",
+        "description": "Discuss healthy habits, daily routines, self-care, grooming, and mental wellness with practical vocabulary and phrases."
+      },
+      {
+        "id": "12",
+        "title": "English at the Pharmacy | Buying Medicine Easily | Easy English Podcast",
+        "youtubeId": "SF0aSPNRfpc",
+        "category": "Vocabulary",
+        "description": "Master medical vocabulary, describing physical pain, symptoms, over-the-counter medicine types, and conversations at a drugstore."
+      }
+    ];
+  } finally {
+    updateVideoStats();
+    filterAndRenderVideos();
+  }
+}
+
+function updateVideoStats() {
+  const counts = { all: videos.length, Grammar: 0, Speaking: 0, Vocabulary: 0 };
+  
+  videos.forEach(v => {
+    if (counts[v.category] !== undefined) {
+      counts[v.category]++;
+    }
+  });
+
+  if (videoStatTotal) videoStatTotal.textContent = counts.all;
+  if (videoStatGrammar) videoStatGrammar.textContent = counts.Grammar;
+  if (videoStatSpeaking) videoStatSpeaking.textContent = counts.Speaking;
+  if (videoStatVocabulary) videoStatVocabulary.textContent = counts.Vocabulary;
+}
+
+function filterAndRenderVideos() {
+  const query = videoSearchInput.value.trim().toLowerCase();
+  videoClearSearchBtn.style.display = query.length > 0 ? 'flex' : 'none';
+
+  let filtered = videos;
+
+  // Category filter
+  if (activeVideoFilter !== 'all') {
+    filtered = filtered.filter(v => v.category === activeVideoFilter);
+  }
+
+  // Search query filter
+  if (query.length > 0) {
+    filtered = filtered.filter(v => 
+      v.title.toLowerCase().includes(query) || 
+      v.description.toLowerCase().includes(query)
+    );
+  }
+
+  // Update headers
+  let filterLabel = activeVideoFilter === 'all' ? 'All Videos' : `${activeVideoFilter} Videos`;
+  if (videoSectionHeading) videoSectionHeading.textContent = query ? 'Search Results' : filterLabel;
+  if (videoResultsCount) videoResultsCount.textContent = `Showing ${filtered.length} video${filtered.length !== 1 ? 's' : ''}`;
+
+  if (filtered.length === 0) {
+    videoGrid.style.display = 'none';
+    videoEmptyState.style.display = 'flex';
+  } else {
+    videoEmptyState.style.display = 'none';
+    videoGrid.style.display = 'grid';
+
+    videoGrid.innerHTML = filtered.map(v => {
+      const escapedTitle = escapeHTMLElements(v.title);
+      const escapedDesc = escapeHTMLElements(v.description);
+      const thumbnailUri = `https://img.youtube.com/vi/${v.youtubeId}/mqdefault.jpg`;
+      
+      return `
+        <article class="video-card" onclick="playVideo('${v.youtubeId}', '${escapedTitle}', '${v.category}', '${escapedDesc}')">
+          <div class="video-thumbnail-container">
+            <img class="video-thumbnail" src="${thumbnailUri}" alt="${escapedTitle}" loading="lazy" />
+            <div class="play-overlay-btn">
+              <div class="play-icon-circle">
+                <i data-lucide="play"></i>
+              </div>
+            </div>
+          </div>
+          <div class="video-card-info">
+            <span class="video-card-tag">${v.category}</span>
+            <h4 class="video-card-title">${escapedTitle}</h4>
+            <p class="video-card-desc">${escapedDesc}</p>
+          </div>
+        </article>
+      `;
+    }).join('');
+
+    lucide.createIcons();
+  }
+}
+
+function playVideo(youtubeId, title, category, description) {
+  if (!activeVideoPlayer || !mainYoutubePlayer || !playerVideoCategory || !playerVideoTitle || !playerVideoDesc) return;
+
+  // Set IFrame URL with autoplay
+  mainYoutubePlayer.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1`;
+  
+  // Set metadata details
+  playerVideoCategory.textContent = category;
+  playerVideoTitle.textContent = title;
+  playerVideoDesc.textContent = description;
+
+  // Display the player
+  activeVideoPlayer.style.display = 'block';
+
+  // Smooth scroll up to the player on mobile devices only
+  if (window.innerWidth <= 768) {
+    activeVideoPlayer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    // On desktop, ensure the main content container scroll is locked at the top
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent) mainContent.scrollTop = 0;
+  }
+}
+
+// Expose playVideo globally
+window.playVideo = playVideo;
