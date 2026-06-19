@@ -197,50 +197,50 @@ const grammarData = {
     ]
   },
   ipaSymbols: [
-    { symbol: "iː", category: "vowels", name: "Close front long vowel", example: "see, machine, beat, team, green", note: "Môi kéo ngang, âm dài" },
-    { symbol: "ɪ", category: "vowels", name: "Near-close front vowel", example: "sit, ship, big, city, swim", note: "Âm ngắn, nhẹ" },
-    { symbol: "e", category: "vowels", name: "Open-mid front vowel", example: "bed, head, ten, best, left", note: "Giữa / mở vừa" },
-    { symbol: "æ", category: "vowels", name: "Near-open front vowel", example: "cat, bad, man, hat, hand", note: "Mở hơn /e/" },
-    { symbol: "ɑː", category: "vowels", name: "Open back long vowel", example: "car, father, class, plant, half", note: "Âm dài, miệng mở" },
-    { symbol: "ɒ", category: "vowels", name: "Open back rounded vowel", example: "hot, not, dog, shop, wrong", note: "Khá ngắn, môi tròn" },
-    { symbol: "ɔː", category: "vowels", name: "Open-mid back long vowel", example: "saw, law, all, call, walk", note: "Âm dài, môi tròn" },
-    { symbol: "ʊ", category: "vowels", name: "Near-close back vowel", example: "book, put, good, look, would", note: "Âm ngắn" },
-    { symbol: "uː", category: "vowels", name: "Close back long vowel", example: "blue, food, moon, pool, school", note: "Âm dài, môi tròn" },
-    { symbol: "ʌ", category: "vowels", name: "Open-mid central vowel", example: "cup, love, run, bus, summer", note: "Âm ngắn, trung tâm" },
-    { symbol: "ɜː", category: "vowels", name: "Open-mid central long vowel", example: "bird, learn, turn, work, word", note: "Âm dài, không tròn môi" },
-    { symbol: "ə", category: "vowels", name: "Schwa", example: "about, teacher, common, modern, nation", note: "Âm yếu, hay gặp trong âm không nhấn" },
-    { symbol: "eɪ", category: "diphthongs", name: "Face", example: "day, make, name, game, wait", note: "Trượt từ /e/ sang /ɪ/" },
-    { symbol: "aɪ", category: "diphthongs", name: "Price", example: "my, time, like, mind, find", note: "Trượt từ /a/ sang /ɪ/" },
-    { symbol: "ɔɪ", category: "diphthongs", name: "Choice", example: "boy, coin, join, noise, enjoy", note: "Trượt từ /ɔ/ sang /ɪ/" },
-    { symbol: "aʊ", category: "diphthongs", name: "Mouth", example: "now, house, out, loud, found", note: "Trượt từ /a/ sang /ʊ/" },
-    { symbol: "əʊ", category: "diphthongs", name: "Goat", example: "go, home, know, phone, show", note: "Phổ biến trong Anh-Anh" },
-    { symbol: "ɪə", category: "diphthongs", name: "Near", example: "here, idea, dear, near, year", note: "Có thể nghe như 2 âm" },
-    { symbol: "eə", category: "diphthongs", name: "Square", example: "air, care, fair, there, where", note: "Âm trung tâm + /ə/" },
-    { symbol: "ʊə", category: "diphthongs", name: "Cure", example: "tour, sure, pure, fewer, jury", note: "Ít gặp hơn" },
-    { symbol: "p", category: "consonants", name: "Voiceless bilabial stop", example: "pen, happy, stop, apple, cup", note: "Hơi bật mạnh" },
-    { symbol: "b", category: "consonants", name: "Voiced bilabial stop", example: "book, baby, big, rubber, job", note: "Có rung dây thanh" },
-    { symbol: "t", category: "consonants", name: "Voiceless alveolar stop", example: "ten, water, better, button, city", note: "Âm t rõ" },
-    { symbol: "d", category: "consonants", name: "Voiced alveolar stop", example: "day, ladder, red, add, needed", note: "Âm d rõ" },
-    { symbol: "k", category: "consonants", name: "Voiceless velar stop", example: "cat, school, take, back, book", note: "Âm /k/ mạnh" },
-    { symbol: "g", category: "consonants", name: "Voiced velar stop", example: "go, game, big, egg, beg", note: "Âm /g/ hữu thanh" },
-    { symbol: "f", category: "consonants", name: "Voiceless labiodental fricative", example: "fish, fine, coffee, leaf, of", note: "Răng trên chạm môi dưới" },
-    { symbol: "v", category: "consonants", name: "Voiced labiodental fricative", example: "van, love, very, give, five", note: "Có rung dây thanh" },
-    { symbol: "θ", category: "consonants", name: "Voiceless dental fricative", example: "think, bath, both, thought, thing", note: "Đầu lưỡi nhẹ giữa răng" },
-    { symbol: "ð", category: "consonants", name: "Voiced dental fricative", example: "this, mother, the, brother, weather", note: "Âm đục hơn /θ/" },
-    { symbol: "s", category: "consonants", name: "Voiceless alveolar fricative", example: "see, pass, class, bus, miss", note: "Âm xì" },
-    { symbol: "z", category: "consonants", name: "Voiced alveolar fricative", example: "zoo, is, his, please, was", note: "Âm /z/ hữu thanh" },
-    { symbol: "ʃ", category: "consonants", name: "Voiceless postalveolar fricative", example: "she, sure, shop, nation, special", note: "Âm /sh/" },
-    { symbol: "ʒ", category: "consonants", name: "Voiced postalveolar fricative", example: "vision, beige, measure, usual, pleasure", note: "Ít gặp trong tiếng Anh" },
-    { symbol: "h", category: "consonants", name: "Voiceless glottal fricative", example: "he, hello, hat, who, ahead", note: "Luồng hơi nhẹ" },
-    { symbol: "m", category: "consonants", name: "Bilabial nasal", example: "man, summer, swim, come, room", note: "Âm m" },
-    { symbol: "n", category: "consonants", name: "Alveolar nasal", example: "no, dinner, sun, ten, on", note: "Âm n" },
-    { symbol: "ŋ", category: "consonants", name: "Velar nasal", example: "sing, long, bring, ring, bank", note: "Âm ng" },
-    { symbol: "l", category: "consonants", name: "Alveolar lateral", example: "let, fall, tell, will, all", note: "Âm l sáng / tối" },
-    { symbol: "r", category: "consonants", name: "Postalveolar approximant", example: "red, carry, very, arrange, brother", note: "Âm r Anh-Mỹ" },
-    { symbol: "j", category: "consonants", name: "Palatal approximant", example: "yes, yellow, use, music, few", note: "Âm y" },
-    { symbol: "w", category: "consonants", name: "Labio-velar approximant", example: "we, water, way, one, queen", note: "Môi tròn nhẹ" },
-    { symbol: "tʃ", category: "consonants", name: "Voiceless postalveolar affricate", example: "church, choose, chin, match, each", note: "Âm ch" },
-    { symbol: "dʒ", category: "consonants", name: "Voiced postalveolar affricate", example: "judge, job, giant, age, bridge", note: "Âm j/дж" }
+    { symbol: "iː", category: "vowels", name: "Close front long vowel", example: "see, machine, beat, team, green", note: "i (dài, căng môi)" },
+    { symbol: "ɪ", category: "vowels", name: "Near-close front vowel", example: "sit, ship, big, city, swim", note: "i (ngắn, lỏng)" },
+    { symbol: "e", category: "vowels", name: "Open-mid front vowel", example: "bed, head, ten, best, left", note: "e (giống 'e' tiếng Việt)" },
+    { symbol: "æ", category: "vowels", name: "Near-open front vowel", example: "cat, bad, man, hat, hand", note: "a (lai giữa 'a' và 'e', miệng mở rộng)" },
+    { symbol: "ɑː", category: "vowels", name: "Open back long vowel", example: "car, father, class, plant, half", note: "a (dài, cổ họng mở)" },
+    { symbol: "ɒ", category: "vowels", name: "Open back rounded vowel", example: "hot, not, dog, shop, wrong", note: "o (ngắn, dẹt)" },
+    { symbol: "ɔː", category: "vowels", name: "Open-mid back long vowel", example: "saw, law, all, call, walk", note: "o (dài, tròn môi)" },
+    { symbol: "ʊ", category: "vowels", name: "Near-close back vowel", example: "book, put, good, look, would", note: "ư (ngắn, hơi tròn môi)" },
+    { symbol: "uː", category: "vowels", name: "Close back long vowel", example: "blue, food, moon, pool, school", note: "u (dài, chu môi)" },
+    { symbol: "ʌ", category: "vowels", name: "Open-mid central vowel", example: "cup, love, run, bus, summer", note: "ă (ngắn, dứt khoát)" },
+    { symbol: "ɜː", category: "vowels", name: "Open-mid central long vowel", example: "bird, learn, turn, work, word", note: "ơ (dài, cuộn lưỡi nhẹ)" },
+    { symbol: "ə", category: "vowels", name: "Schwa", example: "about, teacher, common, modern, nation", note: "ơ (âm lướt, nhẹ, không nhấn)" },
+    { symbol: "eɪ", category: "diphthongs", name: "Face", example: "day, make, name, game, wait", note: "e-i (đọc từ /e/ sang /ɪ/)" },
+    { symbol: "aɪ", category: "diphthongs", name: "Price", example: "my, time, like, mind, find", note: "a-i (đọc từ /a/ sang /ɪ/)" },
+    { symbol: "ɔɪ", category: "diphthongs", name: "Choice", example: "boy, coin, join, noise, enjoy", note: "o-i (đọc từ /ɔː/ sang /ɪ/)" },
+    { symbol: "aʊ", category: "diphthongs", name: "Mouth", example: "now, house, out, loud, found", note: "a-u (đọc từ /a/ sang /ʊ/)" },
+    { symbol: "əʊ", category: "diphthongs", name: "Goat", example: "go, home, know, phone, show", note: "ơ-u (đọc từ /ə/ sang /ʊ/)" },
+    { symbol: "ɪə", category: "diphthongs", name: "Near", example: "here, idea, dear, near, year", note: "i-ơ (đọc từ /ɪ/ sang /ə/)" },
+    { symbol: "eə", category: "diphthongs", name: "Square", example: "air, care, fair, there, where", note: "e-ơ (đọc từ /e/ sang /ə/)" },
+    { symbol: "ʊə", category: "diphthongs", name: "Cure", example: "tour, sure, pure, fewer, jury", note: "u-ơ (đọc từ /ʊ/ sang /ə/)" },
+    { symbol: "p", category: "consonants", name: "Voiceless bilabial stop", example: "pen, happy, stop, apple, cup", note: "p (vô thanh, bật hơi)" },
+    { symbol: "b", category: "consonants", name: "Voiced bilabial stop", example: "book, baby, big, rubber, job", note: "b (hữu thanh, bật hơi)" },
+    { symbol: "t", category: "consonants", name: "Voiceless alveolar stop", example: "ten, water, better, button, city", note: "t (vô thanh, đầu lưỡi chạm lợi trên)" },
+    { symbol: "d", category: "consonants", name: "Voiced alveolar stop", example: "day, ladder, red, add, needed", note: "d (hữu thanh, đầu lưỡi chạm lợi trên)" },
+    { symbol: "k", category: "consonants", name: "Voiceless velar stop", example: "cat, school, take, back, book", note: "k (vô thanh, bật hơi mạnh)" },
+    { symbol: "g", category: "consonants", name: "Voiced velar stop", example: "go, game, big, egg, beg", note: "g (hữu thanh)" },
+    { symbol: "f", category: "consonants", name: "Voiceless labiodental fricative", example: "fish, fine, coffee, leaf, of", note: "f (vô thanh, răng trên chạm môi dưới)" },
+    { symbol: "v", category: "consonants", name: "Voiced labiodental fricative", example: "van, love, very, give, five", note: "v (hữu thanh, rung)" },
+    { symbol: "θ", category: "consonants", name: "Voiceless dental fricative", example: "think, bath, both, thought, thing", note: "th (vô thanh, lưỡi kẹp răng, thổi hơi)" },
+    { symbol: "ð", category: "consonants", name: "Voiced dental fricative", example: "this, mother, the, brother, weather", note: "th (hữu thanh, lưỡi kẹp răng, rung)" },
+    { symbol: "s", category: "consonants", name: "Voiceless alveolar fricative", example: "see, pass, class, bus, miss", note: "s (vô thanh)" },
+    { symbol: "z", category: "consonants", name: "Voiced alveolar fricative", example: "zoo, is, his, please, was", note: "z (hữu thanh, rung)" },
+    { symbol: "ʃ", category: "consonants", name: "Voiceless postalveolar fricative", example: "she, sure, shop, nation, special", note: "sh (vô thanh, chu môi)" },
+    { symbol: "ʒ", category: "consonants", name: "Voiced postalveolar fricative", example: "vision, beige, measure, usual, pleasure", note: "zh (hữu thanh, chu môi, rung)" },
+    { symbol: "h", category: "consonants", name: "Voiceless glottal fricative", example: "he, hello, hat, who, ahead", note: "h (vô thanh, thở ra)" },
+    { symbol: "m", category: "consonants", name: "Bilabial nasal", example: "man, summer, swim, come, room", note: "m (môi chạm nhau)" },
+    { symbol: "n", category: "consonants", name: "Alveolar nasal", example: "no, dinner, sun, ten, on", note: "n (đầu lưỡi chạm lợi trên)" },
+    { symbol: "ŋ", category: "consonants", name: "Velar nasal", example: "sing, long, bring, ring, bank", note: "ng (cuối từ, cuống lưỡi chạm vòm miệng)" },
+    { symbol: "l", category: "consonants", name: "Alveolar lateral", example: "let, fall, tell, will, all", note: "l (đầu lưỡi chạm lợi trên)" },
+    { symbol: "r", category: "consonants", name: "Postalveolar approximant", example: "red, carry, very, arrange, brother", note: "r (cuộn lưỡi, không rung lưỡi)" },
+    { symbol: "j", category: "consonants", name: "Palatal approximant", example: "yes, yellow, use, music, few", note: "y (đầu lưỡi chạm vòm miệng, hơi /i/)" },
+    { symbol: "w", category: "consonants", name: "Labio-velar approximant", example: "we, water, way, one, queen", note: "w (chu môi, hơi /u/)" },
+    { symbol: "tʃ", category: "consonants", name: "Voiceless postalveolar affricate", example: "church, choose, chin, match, each", note: "ch (vô thanh, kết hợp /t/ và /ʃ/)" },
+    { symbol: "dʒ", category: "consonants", name: "Voiced postalveolar affricate", example: "judge, job, giant, age, bridge", note: "j (hữu thanh, kết hợp /d/ và /ʒ/)" }
   ]
 };
 
@@ -2040,10 +2040,18 @@ function filterAndRenderIpa() {
   ipaGrid.innerHTML = filtered.map(s => {
     const catClass = s.category === 'vowels' ? 'vowel-card' : s.category === 'consonants' ? 'consonant-card' : 'diphthong-card';
     const badgeClass = s.category === 'vowels' ? 'ipa-badge-vowel' : s.category === 'consonants' ? 'ipa-badge-consonant' : 'ipa-badge-diphthong';
+    const firstExample = s.example ? s.example.split(',')[0].trim() : '';
+
     return `
       <article class="ipa-card ${catClass}">
         <div class="ipa-top-row">
-          <div class="ipa-symbol">${escapeHTMLElements(s.symbol)}</div>
+          <div class="ipa-symbol-area">
+            <div class="ipa-symbol">${escapeHTMLElements(s.symbol)}</div>
+            ${firstExample ? `<span class="ipa-example-inline">${escapeHTMLElements(firstExample)}</span>` : ''}
+            <button class="ipa-speak-btn" onclick='speakIPA(${JSON.stringify(firstExample || s.symbol)})' title="Listen to pronunciation">
+              <i data-lucide="volume-2"></i>
+            </button>
+          </div>
           <span class="ipa-cat-badge ${badgeClass}">${s.category}</span>
         </div>
         <div class="ipa-details">
@@ -2057,3 +2065,27 @@ function filterAndRenderIpa() {
 
   lucide.createIcons();
 }
+
+// Speak pronunciation using Web Speech API
+window.speakIPA = function(wordToSpeak) {
+  if (!wordToSpeak) return;
+
+  // Cancel any ongoing speech
+  if (window.speechSynthesis) {
+    window.speechSynthesis.cancel();
+  }
+
+  const utterance = new SpeechSynthesisUtterance(wordToSpeak);
+  utterance.lang = 'en-US';
+  utterance.rate = 0.8;
+  utterance.pitch = 1;
+
+  // Try to find a good English voice
+  const voices = window.speechSynthesis.getVoices();
+  const englishVoice = voices.find(v => v.lang.includes('en') && v.name.includes('English'));
+  if (englishVoice) {
+    utterance.voice = englishVoice;
+  }
+
+  window.speechSynthesis.speak(utterance);
+};
