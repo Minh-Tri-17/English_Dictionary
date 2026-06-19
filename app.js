@@ -244,6 +244,7 @@ const statNoun = document.getElementById('stat-noun');
 const statVerb = document.getElementById('stat-verb');
 const statAdj = document.getElementById('stat-adj');
 const statAdv = document.getElementById('stat-adv');
+const statOther = document.getElementById('stat-other');
 const statItems = document.querySelectorAll('#panel-dictionary-stats .stat-item');
 
 // Dictionary Modals
@@ -447,6 +448,19 @@ function setupEventListeners() {
       closeSidebarMobile();
     });
   });
+
+  // Video card click delegation (replaces inline onclick to avoid XSS with special chars)
+  if (videoGrid) {
+    videoGrid.addEventListener('click', (e) => {
+      const card = e.target.closest('.video-card');
+      if (!card) return;
+      const videoId = card.getAttribute('data-video-id');
+      const video = videos.find(v => v.id === videoId);
+      if (video) {
+        playVideo(video.youtubeId, video.title, video.category, video.description);
+      }
+    });
+  }
 }
 
 // Switch between Main Dictionary View and Grammar Handbook View
@@ -511,7 +525,7 @@ async function fetchWords() {
 
 // Update stats numbers on sidebar
 function updateDictionaryStats() {
-  const counts = { all: words.length, noun: 0, verb: 0, adjective: 0, adverb: 0 };
+  const counts = { all: words.length, noun: 0, verb: 0, adjective: 0, adverb: 0, other: 0 };
   
   words.forEach(w => {
     if (counts[w.type] !== undefined) {
@@ -524,6 +538,7 @@ function updateDictionaryStats() {
   statVerb.textContent = counts.verb;
   statAdj.textContent = counts.adjective;
   statAdv.textContent = counts.adverb;
+  if (statOther) statOther.textContent = counts.other;
 }
 
 // Filter and Render dictionary feed
@@ -1819,7 +1834,7 @@ function filterAndRenderVideos() {
       const thumbnailUri = `https://img.youtube.com/vi/${v.youtubeId}/mqdefault.jpg`;
       
       return `
-        <article class="video-card" onclick="playVideo('${v.youtubeId}', '${escapedTitle}', '${v.category}', '${escapedDesc}')">
+        <article class="video-card" data-video-id="${v.id}">
           <div class="video-thumbnail-container">
             <img class="video-thumbnail" src="${thumbnailUri}" alt="${escapedTitle}" loading="lazy" />
             <div class="play-overlay-btn">
