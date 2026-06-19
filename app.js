@@ -280,6 +280,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3. Setup General Events
   setupEventListeners();
   lucide.createIcons();
+
+  // 4. Check scheduled auto-backup (runs in client-only static mode)
+  setTimeout(checkAutoBackup, 1500);
 });
 
 // Main App Event Listeners
@@ -367,6 +370,21 @@ function setupEventListeners() {
   }
   if (sidebarBackdrop) {
     sidebarBackdrop.addEventListener('click', closeSidebarMobile);
+  }
+
+  // Data Backup & Restore Events
+  const backupExportBtn = document.getElementById('backup-export-btn');
+  const backupImportBtn = document.getElementById('backup-import-btn');
+  const backupFileInput = document.getElementById('backup-file-input');
+
+  if (backupExportBtn) {
+    backupExportBtn.addEventListener('click', () => exportData(false));
+  }
+  if (backupImportBtn) {
+    backupImportBtn.addEventListener('click', () => backupFileInput.click());
+  }
+  if (backupFileInput) {
+    backupFileInput.addEventListener('change', handleBackupImport);
   }
 }
 
@@ -1427,3 +1445,126 @@ function closeSidebarMobile() {
 
 // Kick off sentence data fetch on load
 fetchSentences();
+
+// ==========================================================================
+// 12. DATA BACKUP (EXPORT) & RESTORE (IMPORT) LOGIC
+// ==========================================================================
+
+function exportData(isAuto = false) {
+  try {
+    let currentWords = [];
+    let currentSentences = [];
+
+    if (isStaticMode) {
+      let storedWords = localStorage.getItem('lexikeep_words');
+      if (storedWords) currentWords = JSON.parse(storedWords);
+      let storedSentences = localStorage.getItem('lexikeep_sentences');
+      if (storedSentences) currentSentences = JSON.parse(storedSentences);
+    } else {
+      currentWords = words;
+      currentSentences = sentences;
+    }
+
+    const backupData = {
+      version: "1.0",
+      timestamp: new Date().toISOString(),
+      words: currentWords,
+      sentences: currentSentences
+    };
+
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+    const downloadAnchor = document.createElement('a');
+    
+    const dateStr = new Date().toISOString().split('T')[0];
+    const filename = isAuto ? `lexikeep_auto_backup_${dateStr}.json` : `lexikeep_backup_${dateStr}.json`;
+    
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", filename);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+
+    if (isAuto) {
+      localStorage.setItem('lexikeep_last_backup', Date.now().toString());
+      showToastNotification('Backup file downloaded!', 'success');
+    } else {
+      showToastNotification('Backup exported successfully!', 'success');
+    }
+  } catch (error) {
+    console.error('Error exporting backup:', error);
+    showToastNotification('Failed to export backup.', 'error');
+  }
+}
+
+function handleBackupImport(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = async function(event) {
+    try {
+      const importedData = JSON.parse(event.target.result);
+      
+      if (!importedData || (!Array.isArray(importedData.words) && !Array.isArray(importedData.sentences))) {
+        throw new Error('Invalid backup file structure.');
+      }
+
+      let importedWordsCount = 0;
+      let importedSentencesCount = 0;
+
+      if (Array.isArray(importedData.words)) {
+        if (isStaticMode) {
+          localStorage.setItem('lexikeep_words', JSON.stringify(importedData.words));
+        }
+        words = importedData.words;
+        importedWordsCount = importedData.words.length;
+      }
+
+      if (Array.isArray(importedData.sentences)) {
+        if (isStaticMode) {
+          localStorage.setItem('lexikeep_sentences', JSON.stringify(importedData.sentences));
+        }
+        sentences = importedData.sentences;
+        importedSentencesCount = importedData.sentences.length;
+      }
+
+      updateDictionaryStats();
+      filterAndRenderWords();
+      
+      updateSentenceStats();
+      filterAndRenderSentences();
+
+      showToastNotification(`Imported ${importedWordsCount} words and ${importedSentencesCount} sentences!`, 'success');
+    } catch (err) {
+      console.error('Import backup error:', err);
+      showToastNotification('Failed to import backup file. Check file format.', 'error');
+    } finally {
+      e.target.value = '';
+    }
+  };
+  reader.readAsText(file);
+}
+
+function checkAutoBackup() {
+  if (!isStaticMode) return;
+
+  const lastBackupStr = localStorage.getItem('lexikeep_last_backup');
+  const now = Date.now();
+  const fourteenDaysMs = 14 * 24 * 60 * 60 * 1000;
+
+  if (!lastBackupStr) {
+    localStorage.setItem('lexikeep_last_backup', now.toString());
+    return;
+  }
+
+  const lastBackup = parseInt(lastBackupStr, 10);
+  if (isNaN(lastBackup)) {
+    localStorage.setItem('lexikeep_last_backup', now.toString());
+    return;
+  }
+
+  if (now - lastBackup >= fourteenDaysMs) {
+    console.log('Triggering scheduled 14-day auto-backup...');
+    exportData(true);
+  }
+}

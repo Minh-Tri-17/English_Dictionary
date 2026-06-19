@@ -145,6 +145,22 @@
             </div>
           </div>
         </div>
+
+        <!-- Sub-panel: DATA UTILITIES (Backup & Restore) -->
+        <div class="sub-panel mt-4" id="panel-backup-restore">
+          <h2 class="panel-title">Data Backup</h2>
+          <div class="backup-actions d-grid gap-2">
+            <button id="backup-export-btn" class="btn btn-secondary d-flex align-items-center justify-content-center gap-2 py-2" style="font-size: 0.85rem;">
+              <i data-lucide="download" class="mini-icon"></i>
+              <span>Export Backup (.json)</span>
+            </button>
+            <button id="backup-import-btn" class="btn btn-secondary d-flex align-items-center justify-content-center gap-2 py-2" style="font-size: 0.85rem;">
+              <i data-lucide="upload" class="mini-icon"></i>
+              <span>Import Backup (.json)</span>
+            </button>
+            <input type="file" id="backup-file-input" accept=".json" style="display: none" />
+          </div>
+        </div>
       </aside>
 
       <!-- Main Content Area -->
