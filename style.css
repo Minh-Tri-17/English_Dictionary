@@ -2396,6 +2396,7 @@ form {
   gap: 10px;
   box-shadow: var(--shadow-sm);
   transition: all 0.25s ease;
+  max-height: 200px;
 }
 
 .ipa-top-row {
@@ -2407,8 +2408,15 @@ form {
 
 .ipa-symbol-area {
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.ipa-example-row {
+  display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .ipa-card:hover {
@@ -2635,6 +2643,7 @@ form {
   line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -2645,6 +2654,7 @@ form {
   line-height: 1.45;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
