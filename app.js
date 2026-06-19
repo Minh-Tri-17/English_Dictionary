@@ -19,6 +19,9 @@ let deleteTargetId = null;
 let videos = [];
 let activeVideoFilter = 'all';
 
+// IPA Symbols State
+let activeIpaFilter = 'all';
+
 // ==========================================================================
 // 2. GRAMMAR EXPLORER STATIC DATA
 // ==========================================================================
@@ -192,7 +195,53 @@ const grammarData = {
       "now → then",
       "this / these → that / those"
     ]
-  }
+  },
+  ipaSymbols: [
+    { symbol: "iː", category: "vowels", name: "Close front long vowel", example: "see, machine, beat, team, green", note: "Môi kéo ngang, âm dài" },
+    { symbol: "ɪ", category: "vowels", name: "Near-close front vowel", example: "sit, ship, big, city, swim", note: "Âm ngắn, nhẹ" },
+    { symbol: "e", category: "vowels", name: "Open-mid front vowel", example: "bed, head, ten, best, left", note: "Giữa / mở vừa" },
+    { symbol: "æ", category: "vowels", name: "Near-open front vowel", example: "cat, bad, man, hat, hand", note: "Mở hơn /e/" },
+    { symbol: "ɑː", category: "vowels", name: "Open back long vowel", example: "car, father, class, plant, half", note: "Âm dài, miệng mở" },
+    { symbol: "ɒ", category: "vowels", name: "Open back rounded vowel", example: "hot, not, dog, shop, wrong", note: "Khá ngắn, môi tròn" },
+    { symbol: "ɔː", category: "vowels", name: "Open-mid back long vowel", example: "saw, law, all, call, walk", note: "Âm dài, môi tròn" },
+    { symbol: "ʊ", category: "vowels", name: "Near-close back vowel", example: "book, put, good, look, would", note: "Âm ngắn" },
+    { symbol: "uː", category: "vowels", name: "Close back long vowel", example: "blue, food, moon, pool, school", note: "Âm dài, môi tròn" },
+    { symbol: "ʌ", category: "vowels", name: "Open-mid central vowel", example: "cup, love, run, bus, summer", note: "Âm ngắn, trung tâm" },
+    { symbol: "ɜː", category: "vowels", name: "Open-mid central long vowel", example: "bird, learn, turn, work, word", note: "Âm dài, không tròn môi" },
+    { symbol: "ə", category: "vowels", name: "Schwa", example: "about, teacher, common, modern, nation", note: "Âm yếu, hay gặp trong âm không nhấn" },
+    { symbol: "eɪ", category: "diphthongs", name: "Face", example: "day, make, name, game, wait", note: "Trượt từ /e/ sang /ɪ/" },
+    { symbol: "aɪ", category: "diphthongs", name: "Price", example: "my, time, like, mind, find", note: "Trượt từ /a/ sang /ɪ/" },
+    { symbol: "ɔɪ", category: "diphthongs", name: "Choice", example: "boy, coin, join, noise, enjoy", note: "Trượt từ /ɔ/ sang /ɪ/" },
+    { symbol: "aʊ", category: "diphthongs", name: "Mouth", example: "now, house, out, loud, found", note: "Trượt từ /a/ sang /ʊ/" },
+    { symbol: "əʊ", category: "diphthongs", name: "Goat", example: "go, home, know, phone, show", note: "Phổ biến trong Anh-Anh" },
+    { symbol: "ɪə", category: "diphthongs", name: "Near", example: "here, idea, dear, near, year", note: "Có thể nghe như 2 âm" },
+    { symbol: "eə", category: "diphthongs", name: "Square", example: "air, care, fair, there, where", note: "Âm trung tâm + /ə/" },
+    { symbol: "ʊə", category: "diphthongs", name: "Cure", example: "tour, sure, pure, fewer, jury", note: "Ít gặp hơn" },
+    { symbol: "p", category: "consonants", name: "Voiceless bilabial stop", example: "pen, happy, stop, apple, cup", note: "Hơi bật mạnh" },
+    { symbol: "b", category: "consonants", name: "Voiced bilabial stop", example: "book, baby, big, rubber, job", note: "Có rung dây thanh" },
+    { symbol: "t", category: "consonants", name: "Voiceless alveolar stop", example: "ten, water, better, button, city", note: "Âm t rõ" },
+    { symbol: "d", category: "consonants", name: "Voiced alveolar stop", example: "day, ladder, red, add, needed", note: "Âm d rõ" },
+    { symbol: "k", category: "consonants", name: "Voiceless velar stop", example: "cat, school, take, back, book", note: "Âm /k/ mạnh" },
+    { symbol: "g", category: "consonants", name: "Voiced velar stop", example: "go, game, big, egg, beg", note: "Âm /g/ hữu thanh" },
+    { symbol: "f", category: "consonants", name: "Voiceless labiodental fricative", example: "fish, fine, coffee, leaf, of", note: "Răng trên chạm môi dưới" },
+    { symbol: "v", category: "consonants", name: "Voiced labiodental fricative", example: "van, love, very, give, five", note: "Có rung dây thanh" },
+    { symbol: "θ", category: "consonants", name: "Voiceless dental fricative", example: "think, bath, both, thought, thing", note: "Đầu lưỡi nhẹ giữa răng" },
+    { symbol: "ð", category: "consonants", name: "Voiced dental fricative", example: "this, mother, the, brother, weather", note: "Âm đục hơn /θ/" },
+    { symbol: "s", category: "consonants", name: "Voiceless alveolar fricative", example: "see, pass, class, bus, miss", note: "Âm xì" },
+    { symbol: "z", category: "consonants", name: "Voiced alveolar fricative", example: "zoo, is, his, please, was", note: "Âm /z/ hữu thanh" },
+    { symbol: "ʃ", category: "consonants", name: "Voiceless postalveolar fricative", example: "she, sure, shop, nation, special", note: "Âm /sh/" },
+    { symbol: "ʒ", category: "consonants", name: "Voiced postalveolar fricative", example: "vision, beige, measure, usual, pleasure", note: "Ít gặp trong tiếng Anh" },
+    { symbol: "h", category: "consonants", name: "Voiceless glottal fricative", example: "he, hello, hat, who, ahead", note: "Luồng hơi nhẹ" },
+    { symbol: "m", category: "consonants", name: "Bilabial nasal", example: "man, summer, swim, come, room", note: "Âm m" },
+    { symbol: "n", category: "consonants", name: "Alveolar nasal", example: "no, dinner, sun, ten, on", note: "Âm n" },
+    { symbol: "ŋ", category: "consonants", name: "Velar nasal", example: "sing, long, bring, ring, bank", note: "Âm ng" },
+    { symbol: "l", category: "consonants", name: "Alveolar lateral", example: "let, fall, tell, will, all", note: "Âm l sáng / tối" },
+    { symbol: "r", category: "consonants", name: "Postalveolar approximant", example: "red, carry, very, arrange, brother", note: "Âm r Anh-Mỹ" },
+    { symbol: "j", category: "consonants", name: "Palatal approximant", example: "yes, yellow, use, music, few", note: "Âm y" },
+    { symbol: "w", category: "consonants", name: "Labio-velar approximant", example: "we, water, way, one, queen", note: "Môi tròn nhẹ" },
+    { symbol: "tʃ", category: "consonants", name: "Voiceless postalveolar affricate", example: "church, choose, chin, match, each", note: "Âm ch" },
+    { symbol: "dʒ", category: "consonants", name: "Voiced postalveolar affricate", example: "judge, job, giant, age, bridge", note: "Âm j/дж" }
+  ]
 };
 
 // ==========================================================================
@@ -221,6 +270,20 @@ const videoStatGrammar = document.getElementById('video-stat-grammar');
 const videoStatSpeaking = document.getElementById('video-stat-speaking');
 const videoStatVocabulary = document.getElementById('video-stat-vocabulary');
 const videoStatItems = document.querySelectorAll('#panel-video-categories .stat-item');
+
+const navIpaBtn = document.getElementById('nav-ipa-btn');
+const ipaView = document.getElementById('ipa-view-container');
+const panelIpaCategories = document.getElementById('panel-ipa-categories');
+const ipaSearchInput = document.getElementById('ipa-search-input');
+const ipaClearSearchBtn = document.getElementById('ipa-clear-search');
+const ipaGrid = document.getElementById('ipa-grid');
+const ipaSectionHeading = document.getElementById('ipa-section-heading');
+const ipaResultsCount = document.getElementById('ipa-results-count');
+const ipaStatTotal = document.getElementById('ipa-stat-total');
+const ipaStatVowels = document.getElementById('ipa-stat-vowels');
+const ipaStatConsonants = document.getElementById('ipa-stat-consonants');
+const ipaStatDiphthongs = document.getElementById('ipa-stat-diphthongs');
+const ipaStatItems = document.querySelectorAll('#panel-ipa-categories .stat-item');
 
 const activeVideoPlayer = document.getElementById('active-video-player');
 const mainYoutubePlayer = document.getElementById('main-youtube-player');
@@ -438,13 +501,36 @@ function setupEventListeners() {
     });
   }
 
-  // Video category sidebar clicks
-  videoStatItems.forEach(item => {
+  // IPA navigation switcher
+  if (navIpaBtn) {
+    navIpaBtn.addEventListener('click', () => switchAppViewExtended('ipa'));
+  }
+
+  if (ipaSearchInput) {
+    ipaSearchInput.addEventListener('input', () => {
+      clearTimeout(ipaSearchInput._debounce);
+      ipaSearchInput._debounce = setTimeout(filterAndRenderIpa, 150);
+    });
+  }
+
+  if (ipaClearSearchBtn) {
+    ipaClearSearchBtn.addEventListener('click', () => {
+      ipaSearchInput.value = '';
+      ipaClearSearchBtn.style.display = 'none';
+      activeIpaFilter = 'all';
+      ipaStatItems.forEach(i => i.classList.remove('active'));
+      const allItem = document.querySelector('#panel-ipa-categories .stat-item[data-ipa-filter="all"]');
+      if (allItem) allItem.classList.add('active');
+      filterAndRenderIpa();
+    });
+  }
+
+  ipaStatItems.forEach(item => {
     item.addEventListener('click', () => {
-      videoStatItems.forEach(i => i.classList.remove('active'));
+      ipaStatItems.forEach(i => i.classList.remove('active'));
       item.classList.add('active');
-      activeVideoFilter = item.getAttribute('data-video-filter');
-      filterAndRenderVideos();
+      activeIpaFilter = item.getAttribute('data-ipa-filter');
+      filterAndRenderIpa();
       closeSidebarMobile();
     });
   });
@@ -1155,7 +1241,7 @@ const sentDeleteCancelBtn    = document.getElementById('sent-delete-cancel-btn')
 // 9. SENTENCE VAULT — NAVIGATION INTEGRATION
 // ==========================================================================
 
-// Extended app switcher — supports 'dictionary', 'grammar', 'sentences', and 'videos'
+// Extended app switcher — supports 'dictionary', 'grammar', 'sentences', 'videos', and 'ipa'
 function switchAppViewExtended(view) {
   // Close mobile sidebar drawer if open
   closeSidebarMobile();
@@ -1175,6 +1261,11 @@ function switchAppViewExtended(view) {
   if (videosView) videosView.style.display = 'none';
   if (panelVideoCategories) panelVideoCategories.style.display = 'none';
   if (navVideosBtn) navVideosBtn.classList.remove('active');
+
+  // Always reset IPA view & button
+  if (ipaView) ipaView.style.display = 'none';
+  if (panelIpaCategories) panelIpaCategories.style.display = 'none';
+  if (navIpaBtn) navIpaBtn.classList.remove('active');
 
   // Stop video playback when leaving section
   if (mainYoutubePlayer) {
@@ -1211,6 +1302,22 @@ function switchAppViewExtended(view) {
     if (videosView) videosView.style.display = 'flex';
     if (panelVideoCategories) panelVideoCategories.style.display = 'flex';
     if (navVideosBtn) navVideosBtn.classList.add('active');
+    lucide.createIcons();
+  } else if (view === 'ipa') {
+    // Hide other views
+    dictionaryView.style.display       = 'none';
+    grammarView.style.display          = 'none';
+    panelDictionaryStats.style.display = 'none';
+    panelGrammarNav.style.display      = 'none';
+    navDictionaryBtn.classList.remove('active');
+    navGrammarBtn.classList.remove('active');
+
+    // Show IPA
+    if (ipaView) ipaView.style.display = 'flex';
+    if (panelIpaCategories) panelIpaCategories.style.display = 'flex';
+    if (navIpaBtn) navIpaBtn.classList.add('active');
+    // Render IPA symbols on first load
+    setTimeout(filterAndRenderIpa, 50);
     lucide.createIcons();
   } else {
     switchAppView(view);
@@ -1882,3 +1989,71 @@ function playVideo(youtubeId, title, category, description) {
 
 // Expose playVideo globally
 window.playVideo = playVideo;
+
+// ==========================================================================
+// 14. IPA SYMBOLS — DATA, STATS & RENDER LOGIC
+// ==========================================================================
+
+function updateIpaStats() {
+  if (!ipaStatTotal) return;
+  const counts = { all: grammarData.ipaSymbols.length, vowels: 0, consonants: 0, diphthongs: 0 };
+  grammarData.ipaSymbols.forEach(s => {
+    if (counts[s.category] !== undefined) counts[s.category]++;
+  });
+  ipaStatTotal.textContent = counts.all;
+  if (ipaStatVowels) ipaStatVowels.textContent = counts.vowels;
+  if (ipaStatConsonants) ipaStatConsonants.textContent = counts.consonants;
+  if (ipaStatDiphthongs) ipaStatDiphthongs.textContent = counts.diphthongs;
+}
+
+function filterAndRenderIpa() {
+  const query = ipaSearchInput.value.trim().toLowerCase();
+  ipaClearSearchBtn.style.display = query.length > 0 ? 'flex' : 'none';
+
+  let filtered = grammarData.ipaSymbols;
+
+  // Category filter
+  if (activeIpaFilter !== 'all') {
+    filtered = filtered.filter(s => s.category === activeIpaFilter);
+  }
+
+  // Search query filter
+  if (query.length > 0) {
+    filtered = filtered.filter(s =>
+      s.symbol.toLowerCase().includes(query) ||
+      s.name.toLowerCase().includes(query) ||
+      (s.example && s.example.toLowerCase().includes(query)) ||
+      (s.note && s.note.toLowerCase().includes(query))
+    );
+  }
+
+  // Update stats on first load
+  updateIpaStats();
+
+  // Update headers
+  let filterLabel = activeIpaFilter === 'all' ? 'All IPA Symbols' : activeIpaFilter.charAt(0).toUpperCase() + activeIpaFilter.slice(1);
+  if (ipaSectionHeading) ipaSectionHeading.textContent = query ? 'Search Results' : filterLabel;
+  if (ipaResultsCount) ipaResultsCount.textContent = `Showing ${filtered.length} symbol${filtered.length !== 1 ? 's' : ''}`;
+
+  if (!ipaGrid) return;
+
+  ipaGrid.innerHTML = filtered.map(s => {
+    const catClass = s.category === 'vowels' ? 'vowel-card' : s.category === 'consonants' ? 'consonant-card' : 'diphthong-card';
+    const badgeClass = s.category === 'vowels' ? 'ipa-badge-vowel' : s.category === 'consonants' ? 'ipa-badge-consonant' : 'ipa-badge-diphthong';
+    return `
+      <article class="ipa-card ${catClass}">
+        <div class="ipa-top-row">
+          <div class="ipa-symbol">${escapeHTMLElements(s.symbol)}</div>
+          <span class="ipa-cat-badge ${badgeClass}">${s.category}</span>
+        </div>
+        <div class="ipa-details">
+          <h4 class="ipa-name">${escapeHTMLElements(s.name)}</h4>
+          ${s.example ? `<p class="ipa-example"><em>Ex:</em> ${escapeHTMLElements(s.example)}</p>` : ''}
+          ${s.note ? `<p class="ipa-note">${escapeHTMLElements(s.note)}</p>` : ''}
+        </div>
+      </article>
+    `;
+  }).join('');
+
+  lucide.createIcons();
+}

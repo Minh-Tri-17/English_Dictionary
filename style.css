@@ -349,7 +349,8 @@ button {
 
 #search-input,
 #sent-search-input,
-#video-search-input {
+#video-search-input,
+#ipa-search-input {
   width: 100%;
   padding: 14px 44px 14px 48px;
   background-color: var(--bg-card);
@@ -363,7 +364,8 @@ button {
 
 #search-input:focus,
 #sent-search-input:focus,
-#video-search-input:focus {
+#video-search-input:focus,
+#ipa-search-input:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 4px var(--focus-ring);
   transform: translateY(-1px);
@@ -1187,7 +1189,8 @@ form {
 
   #dictionary-view-container,
   #sentences-view-container,
-  #videos-view-container {
+  #videos-view-container,
+  #ipa-view-container {
     height: calc(100vh - 80px);
     display: flex;
     flex-direction: column;
@@ -1197,7 +1200,8 @@ form {
 
   #dictionary-view-container .word-section,
   #sentences-view-container .word-section,
-  #videos-view-container .word-section {
+  #videos-view-container .word-section,
+  #ipa-view-container .word-section {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -1208,7 +1212,8 @@ form {
 
   #dictionary-view-container .word-grid,
   #sentences-view-container .word-grid,
-  #videos-view-container .video-grid {
+  #videos-view-container .video-grid,
+  #ipa-view-container .ipa-grid {
     flex-grow: 1;
     overflow-y: auto;
     min-height: 0;
@@ -1219,23 +1224,27 @@ form {
 
   #dictionary-view-container .word-grid::-webkit-scrollbar,
   #sentences-view-container .word-grid::-webkit-scrollbar,
-  #videos-view-container .video-grid::-webkit-scrollbar {
+  #videos-view-container .video-grid::-webkit-scrollbar,
+  #ipa-view-container .ipa-grid::-webkit-scrollbar {
     width: 6px;
   }
   #dictionary-view-container .word-grid::-webkit-scrollbar-track,
   #sentences-view-container .word-grid::-webkit-scrollbar-track,
-  #videos-view-container .video-grid::-webkit-scrollbar-track {
+  #videos-view-container .video-grid::-webkit-scrollbar-track,
+  #ipa-view-container .ipa-grid::-webkit-scrollbar-track {
     background: transparent;
   }
   #dictionary-view-container .word-grid::-webkit-scrollbar-thumb,
   #sentences-view-container .word-grid::-webkit-scrollbar-thumb,
-  #videos-view-container .video-grid::-webkit-scrollbar-thumb {
+  #videos-view-container .video-grid::-webkit-scrollbar-thumb,
+  #ipa-view-container .ipa-grid::-webkit-scrollbar-thumb {
     background: var(--border-color);
     border-radius: var(--radius-pill);
   }
   #dictionary-view-container .word-grid::-webkit-scrollbar-thumb:hover,
   #sentences-view-container .word-grid::-webkit-scrollbar-thumb:hover,
-  #videos-view-container .video-grid::-webkit-scrollbar-thumb:hover {
+  #videos-view-container .video-grid::-webkit-scrollbar-thumb:hover,
+  #ipa-view-container .ipa-grid::-webkit-scrollbar-thumb:hover {
     background: var(--text-light);
   }
 
@@ -2370,10 +2379,104 @@ form {
   margin-top: -4px;
 }
 
-/* ==========================================================================
-   VIDEO VAULT CLASSES
-   ========================================================================== */
+/* IPA SYMBOLS VIEW */
+.ipa-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
 
+.ipa-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.25s ease;
+}
+
+.ipa-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ipa-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.ipa-card.vowel-card {
+  border-left: 4px solid #8b5cf6;
+}
+
+.ipa-card.consonant-card {
+  border-left: 4px solid #06b6d4;
+}
+
+.ipa-card.diphthong-card {
+  border-left: 4px solid #f59e0b;
+}
+
+.ipa-symbol {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--primary);
+}
+
+.ipa-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ipa-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.ipa-example,
+.ipa-note {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.ipa-cat-badge {
+  align-self: flex-start;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Badge colors by category */
+.ipa-cat-badge.ipa-badge-vowel {
+  background-color: #f3e8ff;
+  color: #7e22ce;
+}
+
+.ipa-cat-badge.ipa-badge-consonant {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.ipa-cat-badge.ipa-badge-diphthong {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+/* ==========================================================================
+   VIDEO GALLERY GRID & CARD STYLING
+   ========================================================================== */
 .video-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

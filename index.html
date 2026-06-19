@@ -75,6 +75,10 @@
             <i data-lucide="graduation-cap"></i>
             <span>Grammar Handbook</span>
           </button>
+          <button id="nav-ipa-btn" class="nav-main-item">
+            <i data-lucide="volume-2"></i>
+            <span>IPA Symbols</span>
+          </button>
         </nav>
 
         <!-- Sub-panel: DICTIONARY STATS (Visible when Dictionary view is active) -->
@@ -173,6 +177,29 @@
             <div class="stat-item" data-video-filter="Vocabulary">
               <span class="stat-label"><span class="pos-dot" style="background: #f59e0b"></span> Vocabulary</span>
               <span class="stat-count" id="video-stat-vocabulary">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub-panel: IPA CATEGORIES (Visible when IPA view is active) -->
+        <div class="sub-panel" id="panel-ipa-categories" style="display: none">
+          <h2 class="panel-title">IPA Categories</h2>
+          <div class="stat-items">
+            <div class="stat-item active" data-ipa-filter="all">
+              <span class="stat-label"><i data-lucide="layers" class="mini-icon"></i> All Symbols</span>
+              <span class="stat-count" id="ipa-stat-total">0</span>
+            </div>
+            <div class="stat-item" data-ipa-filter="vowels">
+              <span class="stat-label"><span class="pos-dot" style="background: #8b5cf6"></span> Vowels</span>
+              <span class="stat-count" id="ipa-stat-vowels">0</span>
+            </div>
+            <div class="stat-item" data-ipa-filter="consonants">
+              <span class="stat-label"><span class="pos-dot" style="background: #06b6d4"></span> Consonants</span>
+              <span class="stat-count" id="ipa-stat-consonants">0</span>
+            </div>
+            <div class="stat-item" data-ipa-filter="diphthongs">
+              <span class="stat-label"><span class="pos-dot" style="background: #f59e0b"></span> Diphthongs</span>
+              <span class="stat-count" id="ipa-stat-diphthongs">0</span>
             </div>
           </div>
         </div>
@@ -636,6 +663,33 @@
               </div>
             </div>
           </div>
+        </div>
+
+        <!-- ==================== VIEW 5: IPA SYMBOLS VIEW ==================== -->
+        <div id="ipa-view-container" class="app-view" style="display: none">
+          <!-- Header / Search and Filter Bar -->
+          <header class="header">
+            <div class="search-wrapper">
+              <i data-lucide="search" class="search-icon"></i>
+              <input type="text" id="ipa-search-input" placeholder="Search IPA symbols..." autocomplete="off" />
+              <button id="ipa-clear-search" class="clear-btn" style="display: none">
+                <i data-lucide="x"></i>
+              </button>
+            </div>
+          </header>
+
+          <!-- IPA Display Section -->
+          <section class="word-section">
+            <div class="section-header">
+              <h2 id="ipa-section-heading">IPA Symbols</h2>
+              <span class="results-indicator" id="ipa-results-count">Showing all symbols</span>
+            </div>
+
+            <!-- IPA Table Grid -->
+            <div class="ipa-grid" id="ipa-grid">
+              <!-- Dynamically filled with JS -->
+            </div>
+          </section>
         </div>
       </main>
 
