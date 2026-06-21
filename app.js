@@ -673,6 +673,9 @@ function filterAndRenderWords() {
               <div class="word-name-row">
                 <h3 class="card-word">${escapedWord}</h3>
                 ${w.pronunciation ? `<span class="card-pron">${escapeHTMLElements(w.pronunciation)}</span>` : ''}
+                <button class="ipa-speak-btn" onclick='speakIPA(${JSON.stringify(w.word)})' title="Listen to pronunciation">
+                  <i data-lucide="volume-2"></i>
+                </button>
               </div>
             </div>
             <span class="pos-badge">${typeLabel}</span>
@@ -1479,7 +1482,12 @@ function filterAndRenderSentences() {
             <span class="cat-badge">${escapeHTMLElements(catLabel)}</span>
           </div>
           <div class="card-body-content">
-            <p class="card-sentence">${escapeHTMLElements(s.sentence)}</p>
+            <div class="sentence-speak-row" style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <p class="card-sentence" style="margin-bottom: 0;">${escapeHTMLElements(s.sentence)}</p>
+              <button class="ipa-speak-btn" onclick='speakIPA(${JSON.stringify(s.sentence)})' title="Listen to sentence" style="flex-shrink: 0; width: 30px; height: 30px;">
+                <i data-lucide="volume-2" style="width: 14px; height: 14px;"></i>
+              </button>
+            </div>
             ${s.pronunciation ? `<span class="card-pron card-pron-block">${escapeHTMLElements(s.pronunciation)}</span>` : ''}
             <p class="card-translation">${escapeHTMLElements(s.translation)}</p>
             ${s.note ? `<p class="card-note">\u{1F4DD} ${escapeHTMLElements(s.note)}</p>` : ''}
@@ -2078,14 +2086,55 @@ window.speakIPA = function(wordToSpeak) {
 
   const utterance = new SpeechSynthesisUtterance(wordToSpeak);
   utterance.lang = 'en-US';
-  utterance.rate = 0.8;
+  utterance.rate = 0.9;
   utterance.pitch = 1;
 
-  // Try to find a good English voice
-  const voices = window.speechSynthesis.getVoices();
-  const englishVoice = voices.find(v => v.lang.includes('en') && v.name.includes('English'));
-  if (englishVoice) {
-    utterance.voice = englishVoice;
+  // Try to find the most standard and natural female English voice
+  if (window.speechSynthesis) {
+    const voices = window.speechSynthesis.getVoices();
+    
+    // Ranked list of preferred high-quality female English voices
+    const preferredFemaleVoices = [
+      'google us english',
+      'microsoft jenny online',
+      'microsoft aria online',
+      'samantha',
+      'microsoft zira',
+      'hazel',
+      'susan',
+      'victoria',
+      'female'
+    ];
+
+    let selectedVoice = null;
+    
+    // 1. Search for preferred high-quality female English voices
+    for (const name of preferredFemaleVoices) {
+      selectedVoice = voices.find(v => 
+        v.lang.toLowerCase().includes('en') && 
+        v.name.toLowerCase().includes(name)
+      );
+      if (selectedVoice) break;
+    }
+
+    // 2. If not found, look for any English voice with 'female' in the name
+    if (!selectedVoice) {
+      selectedVoice = voices.find(v => 
+        v.lang.toLowerCase().includes('en') && 
+        v.name.toLowerCase().includes('female')
+      );
+    }
+
+    // 3. Fallback to other female-like voice names or standard en-US voices
+    if (!selectedVoice) {
+      selectedVoice = voices.find(v => v.lang.toLowerCase() === 'en-us') ||
+                      voices.find(v => v.lang.startsWith('en')) ||
+                      voices.find(v => v.lang.includes('en'));
+    }
+
+    if (selectedVoice) {
+      utterance.voice = selectedVoice;
+    }
   }
 
   window.speechSynthesis.speak(utterance);
