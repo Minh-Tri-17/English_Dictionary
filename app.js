@@ -14,6 +14,7 @@ const isStaticMode = forceStaticMode ||
                       !window.location.hostname.startsWith('192.168.'));
 let activeFilter = 'all';
 let deleteTargetId = null;
+let selectedVoiceName = localStorage.getItem('lexikeep_voice') || 'male';
 
 // Video Vault State
 let videos = [];
@@ -357,6 +358,15 @@ const symbolGrid = document.getElementById('symbol-grid');
 // Chart Store
 let complexityChartInstance = null;
 
+// Populate voices list toggle button state
+function populateVoiceList() {
+  const maleBtn = document.getElementById('voice-toggle-male');
+  const femaleBtn = document.getElementById('voice-toggle-female');
+  if (!maleBtn || !femaleBtn) return;
+  maleBtn.classList.toggle('active', selectedVoiceName === 'male');
+  femaleBtn.classList.toggle('active', selectedVoiceName === 'female');
+}
+
 // ==========================================================================
 // 4. APP INITIALIZATION & NAVIGATION
 // ==========================================================================
@@ -376,6 +386,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 5. Setup Video Vault
   fetchVideosData();
+
+  // 6. Setup Voice Selection Toggle
+  populateVoiceList();
+  document.querySelectorAll('.voice-toggle-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedVoiceName = btn.dataset.voice;
+      localStorage.setItem('lexikeep_voice', selectedVoiceName);
+      document.querySelectorAll('.voice-toggle-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
 });
 
 // Main App Event Listeners
@@ -2089,47 +2110,24 @@ window.speakIPA = function(wordToSpeak) {
   utterance.rate = 0.9;
   utterance.pitch = 1;
 
-  // Try to find the most standard and natural female English voice
   if (window.speechSynthesis) {
     const voices = window.speechSynthesis.getVoices();
-    
-    // Ranked list of preferred high-quality female English voices
-    const preferredFemaleVoices = [
-      'google us english',
-      'microsoft jenny online',
-      'microsoft aria online',
-      'samantha',
-      'microsoft zira',
-      'hazel',
-      'susan',
-      'victoria',
-      'female'
-    ];
-
+    const enVoices = voices.filter(v => v.lang.toLowerCase().includes('en'));
     let selectedVoice = null;
-    
-    // 1. Search for preferred high-quality female English voices
-    for (const name of preferredFemaleVoices) {
-      selectedVoice = voices.find(v => 
-        v.lang.toLowerCase().includes('en') && 
-        v.name.toLowerCase().includes(name)
-      );
-      if (selectedVoice) break;
+
+    if (selectedVoiceName === 'female') {
+      // Female voice: Microsoft Zira (offline) -> any English female
+      selectedVoice = enVoices.find(v => v.name.toLowerCase().includes('microsoft zira')) ||
+                      enVoices.find(v => v.name.toLowerCase().includes('female'));
+    } else {
+      // Male voice (default): Microsoft David (offline) -> any English male
+      selectedVoice = enVoices.find(v => v.name.toLowerCase().includes('microsoft david')) ||
+                      enVoices.find(v => v.name.toLowerCase().includes('male'));
     }
 
-    // 2. If not found, look for any English voice with 'female' in the name
+    // Fallback: first available English voice
     if (!selectedVoice) {
-      selectedVoice = voices.find(v => 
-        v.lang.toLowerCase().includes('en') && 
-        v.name.toLowerCase().includes('female')
-      );
-    }
-
-    // 3. Fallback to other female-like voice names or standard en-US voices
-    if (!selectedVoice) {
-      selectedVoice = voices.find(v => v.lang.toLowerCase() === 'en-us') ||
-                      voices.find(v => v.lang.startsWith('en')) ||
-                      voices.find(v => v.lang.includes('en'));
+      selectedVoice = enVoices[0] || voices.find(v => v.lang.startsWith('en'));
     }
 
     if (selectedVoice) {

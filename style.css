@@ -211,6 +211,56 @@ button {
   gap: 16px;
 }
 
+/* Voice Toggle Buttons */
+.voice-toggle-container {
+  display: flex;
+  gap: 0;
+  background: var(--bg-main);
+  border-radius: 10px;
+  padding: 3px;
+  border: 1px solid var(--border-color);
+}
+
+.voice-toggle-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-light);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.voice-toggle-btn:hover {
+  color: var(--text-main);
+  background: var(--bg-card);
+}
+
+.voice-toggle-btn:focus,
+.voice-toggle-btn:focus-visible {
+  outline: none;
+  color: var(--text-main);
+}
+
+.voice-toggle-btn.active {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(95, 91, 246, 0.35);
+}
+
+.voice-toggle-btn.active:hover,
+.voice-toggle-btn.active:focus,
+.voice-toggle-btn.active:focus-visible {
+  color: #fff;
+}
+
 .panel-title {
   font-size: 0.75rem;
   font-weight: 700;
