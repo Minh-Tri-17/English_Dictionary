@@ -2107,14 +2107,20 @@ function filterAndRenderIpa() {
 window.speakIPA = function(wordToSpeak) {
   if (!wordToSpeak) return;
 
-  // Cancel any ongoing speech
   if (window.speechSynthesis) {
     window.speechSynthesis.cancel();
   }
 
-  const utterance = new SpeechSynthesisUtterance(wordToSpeak);
+  // 1. CHUYỂN ĐỔI ĐỂ ĐỌC: Biến ký tự ngắt '|' hoặc dấu phẩy thừa thành dấu '...' giúp TTS nghỉ tự nhiên
+  // Đồng thời xóa các khoảng trắng thừa để tránh làm bộ đọc bị stuck
+  let cleanTextToSpeak = wordToSpeak
+    .replace(/\|/g, '...')
+    .replace(/,\s*,/g, ',')
+    .trim();
+
+  const utterance = new SpeechSynthesisUtterance(cleanTextToSpeak);
   utterance.lang = 'en-US';
-  utterance.rate = 0.9;
+  utterance.rate = 0.85; // Giảm nhẹ một chút để nghe rõ khoảng ngắt nghỉ
   utterance.pitch = 1;
 
   if (window.speechSynthesis) {
@@ -2122,17 +2128,15 @@ window.speakIPA = function(wordToSpeak) {
     const enVoices = voices.filter(v => v.lang.toLowerCase().includes('en'));
     let selectedVoice = null;
 
-    if (selectedVoiceName === 'female') {
-      // Female voice: Microsoft Zira (offline) -> any English female
+    // Giữ nguyên logic chọn Voice của bạn
+    if (typeof selectedVoiceName !== 'undefined' && selectedVoiceName === 'female') {
       selectedVoice = enVoices.find(v => v.name.toLowerCase().includes('microsoft zira')) ||
                       enVoices.find(v => v.name.toLowerCase().includes('female'));
     } else {
-      // Male voice (default): Microsoft David (offline) -> any English male
       selectedVoice = enVoices.find(v => v.name.toLowerCase().includes('microsoft david')) ||
                       enVoices.find(v => v.name.toLowerCase().includes('male'));
     }
 
-    // Fallback: first available English voice
     if (!selectedVoice) {
       selectedVoice = enVoices[0] || voices.find(v => v.lang.startsWith('en'));
     }
@@ -2142,5 +2146,8 @@ window.speakIPA = function(wordToSpeak) {
     }
   }
 
-  window.speechSynthesis.speak(utterance);
+  // Khắc phục lỗi SpeechSynthesis đôi khi bị treo trên Chrome/Edge 
+  setTimeout(() => {
+    window.speechSynthesis.speak(utterance);
+  }, 50);
 };
