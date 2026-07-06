@@ -703,7 +703,14 @@ function filterAndRenderWords() {
           </div>
           <div class="card-body-content">
             <p class="card-definition">${escapeHTMLElements(w.definition)}</p>
-            ${w.example ? `<p class="card-example">"${escapeHTMLElements(w.example)}"</p>` : ''}
+            ${w.example ? `
+              <div class="card-example-row">
+                <p class="card-example">"${escapeHTMLElements(w.example)}"</p>
+                <button class="ipa-speak-btn example-speak-btn" onclick='speakIPA(${JSON.stringify(w.example)})' title="Listen to example sentence">
+                  <i data-lucide="volume-2"></i>
+                </button>
+              </div>
+            ` : ''}
           </div>
           <div class="card-actions">
             <button class="action-btn edit-btn" data-id="${w.id}" title="Edit word">

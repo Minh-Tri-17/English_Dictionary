@@ -687,6 +687,14 @@ button {
   margin-bottom: 10px;
 }
 
+.card-example-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 10px;
+}
+
 .card-example {
   font-size: 0.875rem;
   font-style: italic;
@@ -695,6 +703,18 @@ button {
   padding-left: 12px;
   margin-bottom: 0;
   line-height: 1.4;
+  flex-grow: 1;
+}
+
+.example-speak-btn {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+}
+
+.example-speak-btn i {
+  width: 14px;
+  height: 14px;
 }
 
 .card-actions {
