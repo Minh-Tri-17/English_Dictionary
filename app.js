@@ -694,7 +694,7 @@ function filterAndRenderWords() {
               <div class="word-name-row">
                 <h3 class="card-word">${escapedWord}</h3>
                 ${w.pronunciation ? `<span class="card-pron">${escapeHTMLElements(w.pronunciation)}</span>` : ''}
-                <button class="ipa-speak-btn" onclick='speakIPA(${JSON.stringify(w.word)})' title="Listen to pronunciation">
+                <button class="ipa-speak-btn" onclick='speakIPA(${escapeHTMLElements(JSON.stringify(w.word))})' title="Listen to pronunciation">
                   <i data-lucide="volume-2"></i>
                 </button>
               </div>
@@ -706,7 +706,7 @@ function filterAndRenderWords() {
             ${w.example ? `
               <div class="card-example-row">
                 <p class="card-example">"${escapeHTMLElements(w.example)}"</p>
-                <button class="ipa-speak-btn example-speak-btn" onclick='speakIPA(${JSON.stringify(w.example)})' title="Listen to example sentence">
+                <button class="ipa-speak-btn example-speak-btn" onclick='speakIPA(${escapeHTMLElements(JSON.stringify(w.example))})' title="Listen to example sentence">
                   <i data-lucide="volume-2"></i>
                 </button>
               </div>
@@ -1512,7 +1512,7 @@ function filterAndRenderSentences() {
           <div class="card-body-content">
             <div class="sentence-speak-row" style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
               <p class="card-sentence" style="margin-bottom: 0;">${escapeHTMLElements(s.sentence)}</p>
-              <button class="ipa-speak-btn" onclick='speakIPA(${JSON.stringify(s.sentence)})' title="Listen to sentence" style="flex-shrink: 0; width: 30px; height: 30px;">
+              <button class="ipa-speak-btn" onclick='speakIPA(${escapeHTMLElements(JSON.stringify(s.sentence))})' title="Listen to sentence" style="flex-shrink: 0; width: 30px; height: 30px;">
                 <i data-lucide="volume-2" style="width: 14px; height: 14px;"></i>
               </button>
             </div>
@@ -2085,7 +2085,7 @@ function filterAndRenderIpa() {
             <div class="ipa-symbol">${escapeHTMLElements(s.symbol)}</div>
             <div class="ipa-example-row">
               ${firstExample ? `<span class="ipa-example-inline">${escapeHTMLElements(firstExample)}</span>` : ''}
-              <button class="ipa-speak-btn" onclick='speakIPA(${JSON.stringify(firstExample || s.symbol)})' title="Listen to pronunciation">
+              <button class="ipa-speak-btn" onclick='speakIPA(${escapeHTMLElements(JSON.stringify(firstExample || s.symbol))})' title="Listen to pronunciation">
                 <i data-lucide="volume-2"></i>
               </button>
             </div>
