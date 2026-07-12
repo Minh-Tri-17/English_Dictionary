@@ -26,15 +26,35 @@
 
   --font-main: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
 
-  /* Part of Speech Colors */
+  /* Part of Speech Colors — 10 distinct hues spread across the color wheel */
+  /* Noun     → Sky Blue   (hue ~205°) */
   --noun-bg: #e0f2fe;
   --noun-text: #0369a1;
+  /* Verb     → Emerald    (hue ~150°) */
   --verb-bg: #dcfce7;
   --verb-text: #15803d;
+  /* Adjective → Violet    (hue ~270°) */
   --adj-bg: #f3e8ff;
   --adj-text: #7e22ce;
+  /* Adverb   → Amber      (hue ~35°) */
   --adv-bg: #fef3c7;
   --adv-text: #b45309;
+  /* Pronoun  → Rose       (hue ~330°) */
+  --pronoun-bg: #fce7f3;
+  --pronoun-text: #be185d;
+  /* Determiner → Teal     (hue ~175°) — clearly different from both blue & green */
+  --determiner-bg: #ccfbf1;
+  --determiner-text: #0f766e;
+  /* Preposition → Orange  (hue ~20°) — clearly different from amber */
+  --preposition-bg: #ffedd5;
+  --preposition-text: #ea580c;
+  /* Conjunction → Red     (hue ~0°) — clearly different from orange */
+  --conjunction-bg: #fee2e2;
+  --conjunction-text: #dc2626;
+  /* Interjection → Lime   (hue ~85°) — clearly different from emerald green */
+  --interjection-bg: #ecfccb;
+  --interjection-text: #4d7c0f;
+  /* Other    → Slate Gray */
   --other-bg: #f1f5f9;
   --other-text: #475569;
 
@@ -337,6 +357,21 @@ button {
 .adv-dot {
   background-color: var(--adv-text);
 }
+.pronoun-dot {
+  background-color: var(--pronoun-text);
+}
+.determiner-dot {
+  background-color: var(--determiner-text);
+}
+.preposition-dot {
+  background-color: var(--preposition-text);
+}
+.conjunction-dot {
+  background-color: var(--conjunction-text);
+}
+.interjection-dot {
+  background-color: var(--interjection-text);
+}
 
 .stat-count {
   font-size: 0.85rem;
@@ -610,6 +645,21 @@ button {
 .word-card.adverb::before {
   background-color: var(--adv-text);
 }
+.word-card.pronoun::before {
+  background-color: var(--pronoun-text);
+}
+.word-card.determiner::before {
+  background-color: var(--determiner-text);
+}
+.word-card.preposition::before {
+  background-color: var(--preposition-text);
+}
+.word-card.conjunction::before {
+  background-color: var(--conjunction-text);
+}
+.word-card.interjection::before {
+  background-color: var(--interjection-text);
+}
 .word-card.other::before {
   background-color: var(--other-text);
 }
@@ -674,6 +724,26 @@ button {
 .adverb .pos-badge {
   background-color: var(--adv-bg);
   color: var(--adv-text);
+}
+.pronoun .pos-badge {
+  background-color: var(--pronoun-bg);
+  color: var(--pronoun-text);
+}
+.determiner .pos-badge {
+  background-color: var(--determiner-bg);
+  color: var(--determiner-text);
+}
+.preposition .pos-badge {
+  background-color: var(--preposition-bg);
+  color: var(--preposition-text);
+}
+.conjunction .pos-badge {
+  background-color: var(--conjunction-bg);
+  color: var(--conjunction-text);
+}
+.interjection .pos-badge {
+  background-color: var(--interjection-bg);
+  color: var(--interjection-text);
 }
 .other .pos-badge {
   background-color: var(--other-bg);

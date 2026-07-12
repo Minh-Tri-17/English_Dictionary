@@ -308,6 +308,11 @@ const statNoun = document.getElementById('stat-noun');
 const statVerb = document.getElementById('stat-verb');
 const statAdj = document.getElementById('stat-adj');
 const statAdv = document.getElementById('stat-adv');
+const statPronoun = document.getElementById('stat-pronoun');
+const statDeterminer = document.getElementById('stat-determiner');
+const statPreposition = document.getElementById('stat-preposition');
+const statConjunction = document.getElementById('stat-conjunction');
+const statInterjection = document.getElementById('stat-interjection');
 const statOther = document.getElementById('stat-other');
 const statItems = document.querySelectorAll('#panel-dictionary-stats .stat-item');
 
@@ -632,11 +637,13 @@ async function fetchWords() {
 
 // Update stats numbers on sidebar
 function updateDictionaryStats() {
-  const counts = { all: words.length, noun: 0, verb: 0, adjective: 0, adverb: 0, other: 0 };
+  const counts = { all: words.length, noun: 0, verb: 0, adjective: 0, adverb: 0, pronoun: 0, determiner: 0, preposition: 0, conjunction: 0, interjection: 0, other: 0 };
   
   words.forEach(w => {
     if (counts[w.type] !== undefined) {
       counts[w.type]++;
+    } else {
+      counts.other++;
     }
   });
 
@@ -645,6 +652,11 @@ function updateDictionaryStats() {
   statVerb.textContent = counts.verb;
   statAdj.textContent = counts.adjective;
   statAdv.textContent = counts.adverb;
+  if (statPronoun) statPronoun.textContent = counts.pronoun;
+  if (statDeterminer) statDeterminer.textContent = counts.determiner;
+  if (statPreposition) statPreposition.textContent = counts.preposition;
+  if (statConjunction) statConjunction.textContent = counts.conjunction;
+  if (statInterjection) statInterjection.textContent = counts.interjection;
   if (statOther) statOther.textContent = counts.other;
 }
 
