@@ -573,7 +573,7 @@ button {
 
 .word-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 20px;
 }
 
@@ -589,7 +589,7 @@ button {
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
-  height: 300px; /* Set fixed height to prevent action buttons from pushing out */
+  height: 220px; /* Reduced after removing example section */
 }
 
 /* Card inner content scroll container */
@@ -666,21 +666,21 @@ button {
 
 .card-top {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
-
-.word-info {
-  display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
+  margin-bottom: 10px;
 }
 
 .word-name-row {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.card-pron-row {
+  display: flex;
+  align-items: center;
   gap: 8px;
 }
 

@@ -325,7 +325,6 @@ const wordInput = document.getElementById('input-word');
 const pronInput = document.getElementById('input-pronunciation');
 const typeSelect = document.getElementById('input-type');
 const defInput = document.getElementById('input-definition');
-const exampleInput = document.getElementById('input-example');
 const modalCloseBtn = document.getElementById('modal-close-btn');
 const modalCancelBtn = document.getElementById('modal-cancel-btn');
 
@@ -702,27 +701,25 @@ function filterAndRenderWords() {
       return `
         <article class="word-card ${w.type}" data-id="${w.id}">
           <div class="card-top">
-            <div class="word-info">
-              <div class="word-name-row">
-                <h3 class="card-word">${escapedWord}</h3>
-                ${w.pronunciation ? `<span class="card-pron">${escapeHTMLElements(w.pronunciation)}</span>` : ''}
-                <button class="ipa-speak-btn" onclick='speakIPA(${escapeHTMLElements(JSON.stringify(w.word))})' title="Listen to pronunciation">
-                  <i data-lucide="volume-2"></i>
-                </button>
-              </div>
+            <div class="word-name-row">
+              <h3 class="card-word">${escapedWord}</h3>
+              <span class="pos-badge">${typeLabel}</span>
             </div>
-            <span class="pos-badge">${typeLabel}</span>
+            ${w.pronunciation ? `
+            <div class="card-pron-row">
+              <span class="card-pron">${escapeHTMLElements(w.pronunciation)}</span>
+              <button class="ipa-speak-btn" onclick='speakIPA(${escapeHTMLElements(JSON.stringify(w.word))})' title="Listen to pronunciation">
+                <i data-lucide="volume-2"></i>
+              </button>
+            </div>` : `
+            <div class="card-pron-row">
+              <button class="ipa-speak-btn" onclick='speakIPA(${escapeHTMLElements(JSON.stringify(w.word))})' title="Listen to pronunciation">
+                <i data-lucide="volume-2"></i>
+              </button>
+            </div>`}
           </div>
           <div class="card-body-content">
             <p class="card-definition">${escapeHTMLElements(w.definition)}</p>
-            ${w.example ? `
-              <div class="card-example-row">
-                <p class="card-example">"${escapeHTMLElements(w.example)}"</p>
-                <button class="ipa-speak-btn example-speak-btn" onclick='speakIPA(${escapeHTMLElements(JSON.stringify(w.example))})' title="Listen to example sentence">
-                  <i data-lucide="volume-2"></i>
-                </button>
-              </div>
-            ` : ''}
           </div>
           <div class="card-actions">
             <button class="action-btn edit-btn" data-id="${w.id}" title="Edit word">
@@ -758,7 +755,6 @@ function openWordModal(wordObj = null) {
     pronInput.value = wordObj.pronunciation || '';
     typeSelect.value = wordObj.type;
     defInput.value = wordObj.definition;
-    exampleInput.value = wordObj.example || '';
   } else {
     modalTitle.textContent = 'Add New Word';
     wordForm.reset();
@@ -782,8 +778,7 @@ async function handleWordFormSubmit(e) {
     word: wordInput.value.trim(),
     pronunciation: pronInput.value.trim(),
     type: typeSelect.value,
-    definition: defInput.value.trim(),
-    example: exampleInput.value.trim()
+    definition: defInput.value.trim()
   };
 
   const isEditMode = id !== '';
@@ -803,7 +798,6 @@ async function handleWordFormSubmit(e) {
           pronunciation: payload.pronunciation,
           type: payload.type,
           definition: payload.definition,
-          example: payload.example,
           updatedAt: new Date().toISOString()
         };
       } else {
@@ -813,7 +807,6 @@ async function handleWordFormSubmit(e) {
           pronunciation: payload.pronunciation,
           type: payload.type,
           definition: payload.definition,
-          example: payload.example,
           createdAt: new Date().toISOString()
         };
         words.unshift(newWord);
