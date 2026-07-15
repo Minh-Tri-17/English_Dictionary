@@ -27,34 +27,34 @@
   --font-main: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
 
   /* Part of Speech Colors — 10 distinct hues spread across the color wheel */
-  /* Noun     → Sky Blue   (hue ~205°) */
+  /* Noun        → Sky Blue   (hue ~205°) */
   --noun-bg: #e0f2fe;
   --noun-text: #0369a1;
-  /* Verb     → Emerald    (hue ~150°) */
+  /* Verb        → Emerald    (hue ~150°) */
   --verb-bg: #dcfce7;
   --verb-text: #15803d;
-  /* Adjective → Violet    (hue ~270°) */
+  /* Adjective   → Violet     (hue ~270°) */
   --adj-bg: #f3e8ff;
   --adj-text: #7e22ce;
-  /* Adverb   → Amber      (hue ~35°) */
-  --adv-bg: #fef3c7;
-  --adv-text: #b45309;
-  /* Pronoun  → Rose       (hue ~330°) */
-  --pronoun-bg: #fce7f3;
-  --pronoun-text: #be185d;
-  /* Determiner → Teal     (hue ~175°) — clearly different from both blue & green */
-  --determiner-bg: #ccfbf1;
-  --determiner-text: #0f766e;
-  /* Preposition → Orange  (hue ~20°) — clearly different from amber */
+  /* Adverb      → Brown      (hue ~25°) */
+  --adv-bg: #fdf4e7;
+  --adv-text: #78350f;
+  /* Pronoun     → Fuchsia    (hue ~295°) — vivid magenta, clearly different from red */
+  --pronoun-bg: #fdf4ff;
+  --pronoun-text: #c026d3;
+  /* Determiner  → Yellow     (hue ~48°)  — vivid bright yellow, distinct from amber */
+  --determiner-bg: #fde047;
+  --determiner-text: #ca8a04;
+  /* Preposition → Orange     (hue ~20°) */
   --preposition-bg: #ffedd5;
   --preposition-text: #ea580c;
-  /* Conjunction → Red     (hue ~0°) — clearly different from orange */
+  /* Conjunction → Red        (hue ~0°) */
   --conjunction-bg: #fee2e2;
   --conjunction-text: #dc2626;
-  /* Interjection → Lime   (hue ~85°) — clearly different from emerald green */
-  --interjection-bg: #ecfccb;
-  --interjection-text: #4d7c0f;
-  /* Other    → Slate Gray */
+  /* Interjection → Indigo    (hue ~240°) — clearly different from violet & blue */
+  --interjection-bg: #e0e7ff;
+  --interjection-text: #4338ca;
+  /* Other       → Slate Gray */
   --other-bg: #f1f5f9;
   --other-text: #475569;
 
@@ -648,8 +648,11 @@ button {
 .word-card.pronoun::before {
   background-color: var(--pronoun-text);
 }
+.word-card.determiner {
+  border-color: #eab308;
+}
 .word-card.determiner::before {
-  background-color: var(--determiner-text);
+  background-color: #eab308;
 }
 .word-card.preposition::before {
   background-color: var(--preposition-text);
