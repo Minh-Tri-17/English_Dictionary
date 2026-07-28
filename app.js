@@ -218,30 +218,35 @@ const grammarData = {
     { symbol: "ɪə", category: "diphthongs", example: "here, idea, dear, near, year", note: "i-ơ (đọc từ /ɪ/ sang /ə/)" },
     { symbol: "eə", category: "diphthongs", example: "air, care, fair, there, where", note: "e-ơ (đọc từ /e/ sang /ə/)" },
     { symbol: "ʊə", category: "diphthongs", example: "tour, sure, pure, fewer, jury", note: "u-ơ (đọc từ /ʊ/ sang /ə/)" },
-    { symbol: "p", category: "consonants", example: "pen, happy, stop, apple, cup", note: "p (vô thanh, bật hơi)" },
-    { symbol: "b", category: "consonants", example: "book, baby, big, rubber, job", note: "b (hữu thanh, bật hơi)" },
-    { symbol: "t", category: "consonants", example: "ten, water, better, button, city", note: "t (vô thanh, đầu lưỡi chạm lợi trên)" },
-    { symbol: "d", category: "consonants", example: "day, ladder, red, add, needed", note: "d (hữu thanh, đầu lưỡi chạm lợi trên)" },
-    { symbol: "k", category: "consonants", example: "cat, school, take, back, book", note: "k (vô thanh, bật hơi mạnh)" },
-    { symbol: "g", category: "consonants", example: "go, game, big, egg, beg", note: "g (hữu thanh)" },
-    { symbol: "f", category: "consonants", example: "fish, fine, coffee, leaf, of", note: "f (vô thanh, răng trên chạm môi dưới)" },
-    { symbol: "v", category: "consonants", example: "van, love, very, give, five", note: "v (hữu thanh, rung)" },
-    { symbol: "θ", category: "consonants", example: "think, bath, both, thought, thing", note: "th (vô thanh, lưỡi kẹp răng, thổi hơi)" },
-    { symbol: "ð", category: "consonants", example: "this, mother, the, brother, weather", note: "th (hữu thanh, lưỡi kẹp răng, rung)" },
-    { symbol: "s", category: "consonants", example: "see, pass, class, bus, miss", note: "s (vô thanh)" },
-    { symbol: "z", category: "consonants", example: "zoo, is, his, please, was", note: "z (hữu thanh, rung)" },
-    { symbol: "ʃ", category: "consonants", example: "she, sure, shop, nation, special", note: "sh (vô thanh, chu môi)" },
-    { symbol: "ʒ", category: "consonants", example: "vision, beige, measure, usual, pleasure", note: "zh (hữu thanh, chu môi, rung)" },
-    { symbol: "h", category: "consonants", example: "he, hello, hat, who, ahead", note: "h (vô thanh, thở ra)" },
-    { symbol: "m", category: "consonants", example: "man, summer, swim, come, room", note: "m (môi chạm nhau)" },
-    { symbol: "n", category: "consonants", example: "no, dinner, sun, ten, on", note: "n (đầu lưỡi chạm lợi trên)" },
-    { symbol: "ŋ", category: "consonants", example: "sing, long, bring, ring, bank", note: "ng (cuối từ, cuống lưỡi chạm vòm miệng)" },
-    { symbol: "l", category: "consonants", example: "let, fall, tell, will, all", note: "l (đầu lưỡi chạm lợi trên)" },
-    { symbol: "r", category: "consonants", example: "red, carry, very, arrange, brother", note: "r (cuộn lưỡi, không rung lưỡi)" },
-    { symbol: "j", category: "consonants", example: "yes, yellow, use, music, few", note: "y (đầu lưỡi chạm vòm miệng, hơi /i/)" },
-    { symbol: "w", category: "consonants", example: "we, water, way, one, queen", note: "w (chu môi, hơi /u/)" },
-    { symbol: "tʃ", category: "consonants", example: "church, choose, chin, match, each", note: "ch (vô thanh, kết hợp /t/ và /ʃ/)" },
-    { symbol: "dʒ", category: "consonants", example: "judge, job, giant, age, bridge", note: "j (hữu thanh, kết hợp /d/ và /ʒ/)" }
+    // --- Plosives (âm tắc) ---
+    { symbol: "p",  category: "consonants", voiced: false, example: "pen, happy, stop, apple, cup",             note: "p (vô thanh, bật hơi)" },
+    { symbol: "b",  category: "consonants", voiced: true,  example: "book, baby, big, rubber, job",              note: "b (hữu thanh, bật hơi)" },
+    { symbol: "t",  category: "consonants", voiced: false, example: "ten, water, better, button, city",          note: "t (vô thanh, đầu lưỡi chạm lợi trên)" },
+    { symbol: "d",  category: "consonants", voiced: true,  example: "day, ladder, red, add, needed",             note: "d (hữu thanh, đầu lưỡi chạm lợi trên)" },
+    { symbol: "k",  category: "consonants", voiced: false, example: "cat, school, take, back, book",             note: "k (vô thanh, bật hơi mạnh)" },
+    { symbol: "g",  category: "consonants", voiced: true,  example: "go, game, big, egg, beg",                   note: "g (hữu thanh)" },
+    // --- Fricatives (âm xát) ---
+    { symbol: "f",  category: "consonants", voiced: false, example: "fish, fine, coffee, leaf, of",              note: "f (vô thanh, răng trên chạm môi dưới)" },
+    { symbol: "v",  category: "consonants", voiced: true,  example: "van, love, very, give, five",               note: "v (hữu thanh, rung)" },
+    { symbol: "θ",  category: "consonants", voiced: false, example: "think, bath, both, thought, thing",         note: "th (vô thanh, lưỡi kẹp răng, thổi hơi)" },
+    { symbol: "ð",  category: "consonants", voiced: true,  example: "this, mother, the, brother, weather",       note: "th (hữu thanh, lưỡi kẹp răng, rung)" },
+    { symbol: "s",  category: "consonants", voiced: false, example: "see, pass, class, bus, miss",               note: "s (vô thanh)" },
+    { symbol: "z",  category: "consonants", voiced: true,  example: "zoo, is, his, please, was",                 note: "z (hữu thanh, rung)" },
+    { symbol: "ʃ",  category: "consonants", voiced: false, example: "she, sure, shop, nation, special",          note: "sh (vô thanh, chu môi)" },
+    { symbol: "ʒ",  category: "consonants", voiced: true,  example: "vision, beige, measure, usual, pleasure",   note: "zh (hữu thanh, chu môi, rung)" },
+    { symbol: "h",  category: "consonants", voiced: false, example: "he, hello, hat, who, ahead",                note: "h (vô thanh, thở ra)" },
+    // --- Affricates (âm tắc-xát) ---
+    { symbol: "tʃ", category: "consonants", voiced: false, example: "church, choose, chin, match, each",         note: "ch (vô thanh, kết hợp /t/ và /ʃ/)" },
+    { symbol: "dʒ", category: "consonants", voiced: true,  example: "judge, job, giant, age, bridge",            note: "j (hữu thanh, kết hợp /d/ và /ʒ/)" },
+    // --- Nasals (âm mũi) ---
+    { symbol: "m",  category: "consonants", voiced: true,  example: "man, summer, swim, come, room",             note: "m (môi chạm nhau)" },
+    { symbol: "n",  category: "consonants", voiced: true,  example: "no, dinner, sun, ten, on",                  note: "n (đầu lưỡi chạm lợi trên)" },
+    { symbol: "ŋ",  category: "consonants", voiced: true,  example: "sing, long, bring, ring, bank",             note: "ng (cuối từ, cuống lưỡi chạm vòm miệng)" },
+    // --- Approximants (âm tiếp cận) ---
+    { symbol: "l",  category: "consonants", voiced: true,  example: "let, fall, tell, will, all",                note: "l (đầu lưỡi chạm lợi trên)" },
+    { symbol: "r",  category: "consonants", voiced: true,  example: "red, carry, very, arrange, brother",        note: "r (cuộn lưỡi, không rung lưỡi)" },
+    { symbol: "j",  category: "consonants", voiced: true,  example: "yes, yellow, use, music, few",              note: "y (đầu lưỡi chạm vòm miệng, hơi /i/)" },
+    { symbol: "w",  category: "consonants", voiced: true,  example: "we, water, way, one, queen",                note: "w (chu môi, hơi /u/)" }
   ]
 };
 
@@ -2082,9 +2087,11 @@ function filterAndRenderIpa() {
     const catClass = s.category === 'vowels' ? 'vowel-card' : s.category === 'consonants' ? 'consonant-card' : 'diphthong-card';
     const badgeClass = s.category === 'vowels' ? 'ipa-badge-vowel' : s.category === 'consonants' ? 'ipa-badge-consonant' : 'ipa-badge-diphthong';
     const firstExample = s.example ? s.example.split(',')[0].trim() : '';
+    // Âm vô thanh (voiced: false) → thêm class để làm mờ
+    const voicingClass = s.category === 'consonants' && s.voiced === false ? 'voiceless-card' : '';
 
     return `
-      <article class="ipa-card ${catClass}">
+      <article class="ipa-card ${catClass} ${voicingClass}">
         <div class="ipa-top-row">
           <div class="ipa-symbol-area">
             <div class="ipa-symbol">${escapeHTMLElements(s.symbol)}</div>

@@ -573,7 +573,7 @@ button {
 
 .word-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   gap: 20px;
 }
 
@@ -589,7 +589,7 @@ button {
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
-  height: 220px; /* Reduced after removing example section */
+  height: 220px;
 }
 
 /* Card inner content scroll container */
@@ -598,7 +598,7 @@ button {
   overflow-y: auto;
   margin-bottom: 12px;
   padding-right: 4px;
-  min-height: 0; /* Allow flex child to shrink below contents */
+  min-height: 0;
 }
 
 .card-body-content::-webkit-scrollbar {
@@ -632,7 +632,6 @@ button {
   border-color: #d1c8b8;
 }
 
-/* Pos Pill indicator at top of card */
 .word-card.noun::before {
   background-color: var(--noun-text);
 }
@@ -2575,6 +2574,25 @@ form {
   border-left: 4px solid #06b6d4;
 }
 
+/* Âm vô thanh (voiceless) – hiển thị mờ hơn âm hữu thanh, theo chuẩn bảng IPA */
+.ipa-card.voiceless-card {
+  opacity: 0.62;
+  border-left-color: #94a3b8;
+}
+
+.ipa-card.voiceless-card .ipa-symbol {
+  color: var(--text-muted);
+}
+
+.ipa-card.voiceless-card:hover {
+  opacity: 0.88;
+  border-left-color: #06b6d4;
+}
+
+.ipa-card.voiceless-card:hover .ipa-symbol {
+  color: var(--primary);
+}
+
 .ipa-card.diphthong-card {
   border-left: 4px solid #f59e0b;
 }
@@ -2880,12 +2898,14 @@ form {
     border-radius: var(--radius-pill);
   }
 
-  .video-split-layout:has(.video-right-col:not([style*="display: none"])) .video-grid {
+  .video-split-layout:has(.video-right-col:not([style*="display: none"]))
+    .video-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
 
-  .video-split-layout:has(.video-right-col:not([style*="display: none"])) .video-card {
+  .video-split-layout:has(.video-right-col:not([style*="display: none"]))
+    .video-card {
     flex-direction: row;
     align-items: flex-start;
     gap: 16px;
@@ -2893,40 +2913,48 @@ form {
     height: auto;
   }
 
-  .video-split-layout:has(.video-right-col:not([style*="display: none"])) .video-thumbnail-container {
+  .video-split-layout:has(.video-right-col:not([style*="display: none"]))
+    .video-thumbnail-container {
     width: 130px;
     flex: 0 0 130px;
     padding-bottom: 73.125px;
     border-radius: var(--radius-sm);
   }
 
-  .video-split-layout:has(.video-right-col:not([style*="display: none"])) .video-card-info {
+  .video-split-layout:has(.video-right-col:not([style*="display: none"]))
+    .video-card-info {
     flex: 1;
     min-width: 0;
     gap: 4px;
   }
 
-  .video-split-layout:has(.video-right-col:not([style*="display: none"])) .video-card-title {
+  .video-split-layout:has(.video-right-col:not([style*="display: none"]))
+    .video-card-title {
     font-size: 0.875rem;
     line-height: 1.35;
   }
 
-  .video-split-layout:has(.video-right-col:not([style*="display: none"])) .video-card-desc {
+  .video-split-layout:has(.video-right-col:not([style*="display: none"]))
+    .video-card-desc {
     display: none;
   }
 
-  .video-split-layout:has(.video-right-col:not([style*="display: none"])) .play-icon-circle {
+  .video-split-layout:has(.video-right-col:not([style*="display: none"]))
+    .play-icon-circle {
     width: 36px;
     height: 36px;
     box-shadow: 0 2px 6px rgba(95, 91, 246, 0.3);
   }
-  .video-split-layout:has(.video-right-col:not([style*="display: none"])) .play-icon-circle i {
+  .video-split-layout:has(.video-right-col:not([style*="display: none"]))
+    .play-icon-circle
+    i {
     width: 14px;
     height: 14px;
     margin-left: 1px;
     stroke-width: 3px;
   }
-  .video-split-layout:has(.video-right-col:not([style*="display: none"])) .video-card-tag {
+  .video-split-layout:has(.video-right-col:not([style*="display: none"]))
+    .video-card-tag {
     font-size: 0.65rem;
     padding: 1px 6px;
   }
