@@ -2435,6 +2435,12 @@ form {
   --collocations-text: #db2777;
 }
 
+/* Sentence card custom height (increased from 220px to 280px for sentence content) */
+#sentences-view-container .word-card {
+  height: 280px;
+  min-height: 280px;
+}
+
 /* Sentence card: category top stripe colours */
 .word-card.general::before {
   background-color: var(--general-text);
