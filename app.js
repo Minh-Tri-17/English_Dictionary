@@ -15,6 +15,7 @@ const isStaticMode = forceStaticMode ||
 let activeFilter = 'all';
 let deleteTargetId = null;
 let selectedVoiceName = localStorage.getItem('lexikeep_voice') || 'male';
+let selectedVoiceRate = parseFloat(localStorage.getItem('lexikeep_voice_rate')) || 0.4;
 
 // Video Vault State
 let videos = [];
@@ -367,13 +368,25 @@ const symbolGrid = document.getElementById('symbol-grid');
 // Chart Store
 let complexityChartInstance = null;
 
-// Populate voices list toggle button state
+// Populate voices & speed toggle button states
 function populateVoiceList() {
   const maleBtn = document.getElementById('voice-toggle-male');
   const femaleBtn = document.getElementById('voice-toggle-female');
-  if (!maleBtn || !femaleBtn) return;
-  maleBtn.classList.toggle('active', selectedVoiceName === 'male');
-  femaleBtn.classList.toggle('active', selectedVoiceName === 'female');
+  if (maleBtn && femaleBtn) {
+    maleBtn.classList.toggle('active', selectedVoiceName === 'male');
+    femaleBtn.classList.toggle('active', selectedVoiceName === 'female');
+  }
+
+  const rateLabel = document.getElementById('voice-rate-label');
+
+  document.querySelectorAll('.voice-rate-btn').forEach(btn => {
+    const rate = parseFloat(btn.dataset.rate);
+    const isActive = Math.abs(rate - selectedVoiceRate) < 0.05;
+    btn.classList.toggle('active', isActive);
+    if (isActive && rateLabel && btn.dataset.label) {
+      rateLabel.textContent = btn.dataset.label;
+    }
+  });
 }
 
 // ==========================================================================
@@ -396,14 +409,38 @@ document.addEventListener('DOMContentLoaded', () => {
   // 5. Setup Video Vault
   fetchVideosData();
 
-  // 6. Setup Voice Selection Toggle
+  // 6. Setup Voice & Speed Selection Toggles
   populateVoiceList();
-  document.querySelectorAll('.voice-toggle-btn').forEach(btn => {
+
+  const maleBtn = document.getElementById('voice-toggle-male');
+  const femaleBtn = document.getElementById('voice-toggle-female');
+  if (maleBtn) {
+    maleBtn.addEventListener('click', () => {
+      selectedVoiceName = 'male';
+      localStorage.setItem('lexikeep_voice', 'male');
+      maleBtn.classList.add('active');
+      if (femaleBtn) femaleBtn.classList.remove('active');
+    });
+  }
+  if (femaleBtn) {
+    femaleBtn.addEventListener('click', () => {
+      selectedVoiceName = 'female';
+      localStorage.setItem('lexikeep_voice', 'female');
+      femaleBtn.classList.add('active');
+      if (maleBtn) maleBtn.classList.remove('active');
+    });
+  }
+
+  const rateLabel = document.getElementById('voice-rate-label');
+  document.querySelectorAll('.voice-rate-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      selectedVoiceName = btn.dataset.voice;
-      localStorage.setItem('lexikeep_voice', selectedVoiceName);
-      document.querySelectorAll('.voice-toggle-btn').forEach(b => b.classList.remove('active'));
+      selectedVoiceRate = parseFloat(btn.dataset.rate);
+      localStorage.setItem('lexikeep_voice_rate', selectedVoiceRate);
+      document.querySelectorAll('.voice-rate-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+      if (rateLabel && btn.dataset.label) {
+        rateLabel.textContent = btn.dataset.label;
+      }
     });
   });
 });
@@ -2132,15 +2169,12 @@ window.speakIPA = function(wordToSpeak) {
 
   const utterance = new SpeechSynthesisUtterance(cleanTextToSpeak);
   utterance.lang = 'en-US';
-  utterance.rate = 0.85; // Giảm nhẹ một chút để nghe rõ khoảng ngắt nghỉ
-  utterance.pitch = 1;
 
   if (window.speechSynthesis) {
     const voices = window.speechSynthesis.getVoices();
     const enVoices = voices.filter(v => v.lang.toLowerCase().includes('en'));
     let selectedVoice = null;
 
-    // Giữ nguyên logic chọn Voice của bạn
     if (typeof selectedVoiceName !== 'undefined' && selectedVoiceName === 'female') {
       selectedVoice = enVoices.find(v => v.name.toLowerCase().includes('microsoft zira')) ||
                       enVoices.find(v => v.name.toLowerCase().includes('female'));
@@ -2157,6 +2191,12 @@ window.speakIPA = function(wordToSpeak) {
       utterance.voice = selectedVoice;
     }
   }
+
+  // QUAN TRỌNG: Gán utterance.rate VÀ pitch SAU KHI đã chọn utterance.voice
+  // Trong Chrome/Edge, nếu gán utterance.voice sau khi gán rate, trình duyệt sẽ tự reset rate về 1.0!
+  const targetRate = (typeof selectedVoiceRate !== 'undefined' ? selectedVoiceRate : 0.4);
+  utterance.rate = targetRate;
+  utterance.pitch = 1;
 
   // Khắc phục lỗi SpeechSynthesis đôi khi bị treo trên Chrome/Edge 
   setTimeout(() => {

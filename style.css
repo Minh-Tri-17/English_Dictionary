@@ -241,6 +241,12 @@ button {
   border: 1px solid var(--border-color);
 }
 
+.voice-speed-container .voice-toggle-btn {
+  padding: 6px 2px;
+  font-size: 0.72rem;
+  min-width: 0;
+}
+
 .voice-toggle-btn {
   flex: 1;
   display: flex;
