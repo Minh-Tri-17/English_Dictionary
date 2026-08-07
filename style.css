@@ -231,61 +231,7 @@ button {
   gap: 16px;
 }
 
-/* Voice Toggle Buttons */
-.voice-toggle-container {
-  display: flex;
-  gap: 0;
-  background: var(--bg-main);
-  border-radius: 10px;
-  padding: 3px;
-  border: 1px solid var(--border-color);
-}
 
-.voice-speed-container .voice-toggle-btn {
-  padding: 6px 2px;
-  font-size: 0.72rem;
-  min-width: 0;
-}
-
-.voice-toggle-btn {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 8px;
-  background: transparent;
-  color: var(--text-light);
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-.voice-toggle-btn:hover {
-  color: var(--text-main);
-  background: var(--bg-card);
-}
-
-.voice-toggle-btn:focus,
-.voice-toggle-btn:focus-visible {
-  outline: none;
-  color: var(--text-main);
-}
-
-.voice-toggle-btn.active {
-  background: var(--primary);
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(95, 91, 246, 0.35);
-}
-
-.voice-toggle-btn.active:hover,
-.voice-toggle-btn.active:focus,
-.voice-toggle-btn.active:focus-visible {
-  color: #fff;
-}
 
 .panel-title {
   font-size: 0.75rem;
@@ -784,16 +730,7 @@ button {
   flex-grow: 1;
 }
 
-.example-speak-btn {
-  flex-shrink: 0;
-  width: 30px;
-  height: 30px;
-}
 
-.example-speak-btn i {
-  width: 14px;
-  height: 14px;
-}
 
 .card-actions {
   display: flex;
@@ -2625,31 +2562,7 @@ form {
   border-radius: var(--radius-sm);
 }
 
-.ipa-speak-btn {
-  width: 34px;
-  height: 34px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-card);
-  color: var(--primary);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: var(--shadow-sm);
-  transition: all 0.2s ease;
-}
 
-.ipa-speak-btn:hover {
-  background: var(--primary-light);
-  border-color: var(--primary);
-  transform: translateY(-1px);
-}
-
-.ipa-speak-btn i {
-  width: 16px;
-  height: 16px;
-}
 
 .ipa-details {
   display: flex;

@@ -14,8 +14,6 @@ const isStaticMode = forceStaticMode ||
                       !window.location.hostname.startsWith('192.168.'));
 let activeFilter = 'all';
 let deleteTargetId = null;
-let selectedVoiceName = localStorage.getItem('lexikeep_voice') || 'male';
-let selectedVoiceRate = parseFloat(localStorage.getItem('lexikeep_voice_rate')) || 0.4;
 
 // Video Vault State
 let videos = [];
@@ -367,28 +365,6 @@ const symbolGrid = document.getElementById('symbol-grid');
 
 // Chart Store
 let complexityChartInstance = null;
-
-// Populate voices & speed toggle button states
-function populateVoiceList() {
-  const maleBtn = document.getElementById('voice-toggle-male');
-  const femaleBtn = document.getElementById('voice-toggle-female');
-  if (maleBtn && femaleBtn) {
-    maleBtn.classList.toggle('active', selectedVoiceName === 'male');
-    femaleBtn.classList.toggle('active', selectedVoiceName === 'female');
-  }
-
-  const rateLabel = document.getElementById('voice-rate-label');
-
-  document.querySelectorAll('.voice-rate-btn').forEach(btn => {
-    const rate = parseFloat(btn.dataset.rate);
-    const isActive = Math.abs(rate - selectedVoiceRate) < 0.05;
-    btn.classList.toggle('active', isActive);
-    if (isActive && rateLabel && btn.dataset.label) {
-      rateLabel.textContent = btn.dataset.label;
-    }
-  });
-}
-
 // ==========================================================================
 // 4. APP INITIALIZATION & NAVIGATION
 // ==========================================================================
@@ -408,41 +384,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 5. Setup Video Vault
   fetchVideosData();
-
-  // 6. Setup Voice & Speed Selection Toggles
-  populateVoiceList();
-
-  const maleBtn = document.getElementById('voice-toggle-male');
-  const femaleBtn = document.getElementById('voice-toggle-female');
-  if (maleBtn) {
-    maleBtn.addEventListener('click', () => {
-      selectedVoiceName = 'male';
-      localStorage.setItem('lexikeep_voice', 'male');
-      maleBtn.classList.add('active');
-      if (femaleBtn) femaleBtn.classList.remove('active');
-    });
-  }
-  if (femaleBtn) {
-    femaleBtn.addEventListener('click', () => {
-      selectedVoiceName = 'female';
-      localStorage.setItem('lexikeep_voice', 'female');
-      femaleBtn.classList.add('active');
-      if (maleBtn) maleBtn.classList.remove('active');
-    });
-  }
-
-  const rateLabel = document.getElementById('voice-rate-label');
-  document.querySelectorAll('.voice-rate-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      selectedVoiceRate = parseFloat(btn.dataset.rate);
-      localStorage.setItem('lexikeep_voice_rate', selectedVoiceRate);
-      document.querySelectorAll('.voice-rate-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      if (rateLabel && btn.dataset.label) {
-        rateLabel.textContent = btn.dataset.label;
-      }
-    });
-  });
 });
 
 // Main App Event Listeners
@@ -750,15 +691,7 @@ function filterAndRenderWords() {
             ${w.pronunciation ? `
             <div class="card-pron-row">
               <span class="card-pron">${escapeHTMLElements(w.pronunciation)}</span>
-              <button class="ipa-speak-btn" onclick='speakIPA(${escapeHTMLElements(JSON.stringify(w.word))})' title="Listen to pronunciation">
-                <i data-lucide="volume-2"></i>
-              </button>
-            </div>` : `
-            <div class="card-pron-row">
-              <button class="ipa-speak-btn" onclick='speakIPA(${escapeHTMLElements(JSON.stringify(w.word))})' title="Listen to pronunciation">
-                <i data-lucide="volume-2"></i>
-              </button>
-            </div>`}
+            </div>` : ''}
           </div>
           <div class="card-body-content">
             <p class="card-definition">${escapeHTMLElements(w.definition)}</p>
@@ -1557,12 +1490,7 @@ function filterAndRenderSentences() {
             <span class="cat-badge">${escapeHTMLElements(catLabel)}</span>
           </div>
           <div class="card-body-content">
-            <div class="sentence-speak-row" style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-              <p class="card-sentence" style="margin-bottom: 0;">${escapeHTMLElements(s.sentence)}</p>
-              <button class="ipa-speak-btn" onclick='speakIPA(${escapeHTMLElements(JSON.stringify(s.sentence))})' title="Listen to sentence" style="flex-shrink: 0; width: 30px; height: 30px;">
-                <i data-lucide="volume-2" style="width: 14px; height: 14px;"></i>
-              </button>
-            </div>
+            <p class="card-sentence" style="margin-bottom: 8px;">${escapeHTMLElements(s.sentence)}</p>
             ${s.pronunciation ? `<span class="card-pron card-pron-block">${escapeHTMLElements(s.pronunciation)}</span>` : ''}
             <p class="card-translation">${escapeHTMLElements(s.translation)}</p>
             ${s.note ? `<p class="card-note">\u{1F4DD} ${escapeHTMLElements(s.note)}</p>` : ''}
@@ -2132,12 +2060,7 @@ function filterAndRenderIpa() {
         <div class="ipa-top-row">
           <div class="ipa-symbol-area">
             <div class="ipa-symbol">${escapeHTMLElements(s.symbol)}</div>
-            <div class="ipa-example-row">
-              ${firstExample ? `<span class="ipa-example-inline">${escapeHTMLElements(firstExample)}</span>` : ''}
-              <button class="ipa-speak-btn" onclick='speakIPA(${escapeHTMLElements(JSON.stringify(firstExample || s.symbol))})' title="Listen to pronunciation">
-                <i data-lucide="volume-2"></i>
-              </button>
-            </div>
+            ${firstExample ? `<div class="ipa-example-row"><span class="ipa-example-inline">${escapeHTMLElements(firstExample)}</span></div>` : ''}
           </div>
           <span class="ipa-cat-badge ${badgeClass}">${s.category}</span>
         </div>
@@ -2152,54 +2075,4 @@ function filterAndRenderIpa() {
   lucide.createIcons();
 }
 
-// Speak pronunciation using Web Speech API
-window.speakIPA = function(wordToSpeak) {
-  if (!wordToSpeak) return;
 
-  if (window.speechSynthesis) {
-    window.speechSynthesis.cancel();
-  }
-
-  // 1. CHUYỂN ĐỔI ĐỂ ĐỌC: Biến ký tự ngắt '|' hoặc dấu phẩy thừa thành dấu '...' giúp TTS nghỉ tự nhiên
-  // Đồng thời xóa các khoảng trắng thừa để tránh làm bộ đọc bị stuck
-  let cleanTextToSpeak = wordToSpeak
-    .replace(/\|/g, '...')
-    .replace(/,\s*,/g, ',')
-    .trim();
-
-  const utterance = new SpeechSynthesisUtterance(cleanTextToSpeak);
-  utterance.lang = 'en-US';
-
-  if (window.speechSynthesis) {
-    const voices = window.speechSynthesis.getVoices();
-    const enVoices = voices.filter(v => v.lang.toLowerCase().includes('en'));
-    let selectedVoice = null;
-
-    if (typeof selectedVoiceName !== 'undefined' && selectedVoiceName === 'female') {
-      selectedVoice = enVoices.find(v => v.name.toLowerCase().includes('microsoft zira')) ||
-                      enVoices.find(v => v.name.toLowerCase().includes('female'));
-    } else {
-      selectedVoice = enVoices.find(v => v.name.toLowerCase().includes('microsoft david')) ||
-                      enVoices.find(v => v.name.toLowerCase().includes('male'));
-    }
-
-    if (!selectedVoice) {
-      selectedVoice = enVoices[0] || voices.find(v => v.lang.startsWith('en'));
-    }
-
-    if (selectedVoice) {
-      utterance.voice = selectedVoice;
-    }
-  }
-
-  // QUAN TRỌNG: Gán utterance.rate VÀ pitch SAU KHI đã chọn utterance.voice
-  // Trong Chrome/Edge, nếu gán utterance.voice sau khi gán rate, trình duyệt sẽ tự reset rate về 1.0!
-  const targetRate = (typeof selectedVoiceRate !== 'undefined' ? selectedVoiceRate : 0.4);
-  utterance.rate = targetRate;
-  utterance.pitch = 1;
-
-  // Khắc phục lỗi SpeechSynthesis đôi khi bị treo trên Chrome/Edge 
-  setTimeout(() => {
-    window.speechSynthesis.speak(utterance);
-  }, 50);
-};
