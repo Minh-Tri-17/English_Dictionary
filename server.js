@@ -237,7 +237,9 @@ const server = http.createServer(async (req, res) => {
           translation: body.translation.trim(),
           pronunciation: (body.pronunciation || '').trim(),
           category: (body.category || 'general').trim(),
-          note: (body.note || '').trim(),
+          usageNote: (body.usageNote || body.note || '').trim(),
+          linkingNote: (body.linkingNote || body.linking || '').trim(),
+          note: (body.note || body.usageNote || '').trim(),
           createdAt: new Date().toISOString()
         };
 
@@ -279,7 +281,9 @@ const server = http.createServer(async (req, res) => {
           translation: body.translation.trim(),
           pronunciation: (body.pronunciation || '').trim(),
           category: (body.category || 'general').trim(),
-          note: (body.note || '').trim(),
+          usageNote: (body.usageNote || body.note || '').trim(),
+          linkingNote: (body.linkingNote || body.linking || '').trim(),
+          note: (body.note || body.usageNote || '').trim(),
           updatedAt: new Date().toISOString()
         };
 
@@ -364,6 +368,17 @@ const server = http.createServer(async (req, res) => {
     });
     stream.pipe(res);
   });
+});
+
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.log(`Port ${PORT} is in use. Trying port ${Number(PORT) + 1}...`);
+    server.listen(Number(PORT) + 1, () => {
+      console.log(`Server is running at http://localhost:${Number(PORT) + 1}`);
+    });
+  } else {
+    console.error('Server error:', err);
+  }
 });
 
 server.listen(PORT, () => {

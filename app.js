@@ -595,8 +595,9 @@ async function fetchWords() {
   try {
     if (isStaticMode) {
       let storedWords = localStorage.getItem('lexikeep_words');
-      if (storedWords) {
-        words = JSON.parse(storedWords);
+      let parsed = storedWords ? JSON.parse(storedWords) : [];
+      if (parsed && parsed.length > 0) {
+        words = parsed;
       } else {
         // Fetch default JSON from root folder
         const response = await fetch('./dictionary.json');
@@ -1240,6 +1241,8 @@ const translationInput       = document.getElementById('input-translation');
 const sentPronInput          = document.getElementById('input-sent-pronunciation');
 const sentCategorySelect     = document.getElementById('input-sent-category');
 const sentNoteInput          = document.getElementById('input-sent-note');
+const sentUsageInput         = document.getElementById('input-sent-usage');
+const sentLinkingInput       = document.getElementById('input-sent-linking');
 const sentModalCloseBtn      = document.getElementById('sent-modal-close-btn');
 const sentModalCancelBtn     = document.getElementById('sent-modal-cancel-btn');
 
@@ -1403,8 +1406,9 @@ async function fetchSentences() {
   try {
     if (isStaticMode) {
       let storedSentences = localStorage.getItem('lexikeep_sentences');
-      if (storedSentences) {
-        sentences = JSON.parse(storedSentences);
+      let parsed = storedSentences ? JSON.parse(storedSentences) : [];
+      if (parsed && parsed.length > 0) {
+        sentences = parsed;
       } else {
         // Fetch default JSON from root folder
         const response = await fetch('./sentences.json');
@@ -1451,7 +1455,11 @@ function filterAndRenderSentences() {
   if (query.length > 0) {
     filtered = filtered.filter(s =>
       s.sentence.toLowerCase().includes(query) ||
-      s.translation.toLowerCase().includes(query)
+      s.translation.toLowerCase().includes(query) ||
+      (s.pronunciation && s.pronunciation.toLowerCase().includes(query)) ||
+      (s.usageNote && s.usageNote.toLowerCase().includes(query)) ||
+      (s.linkingNote && s.linkingNote.toLowerCase().includes(query)) ||
+      (s.note && s.note.toLowerCase().includes(query))
     );
   }
 
@@ -1480,20 +1488,24 @@ function filterAndRenderSentences() {
     };
 
     sentenceGrid.innerHTML = filtered.map(s => {
-      const cat      = s.category || 'general';
-      const catLabel = catLabelMap[cat] || cat;
+      const cat        = s.category || 'general';
+      const catLabel   = catLabelMap[cat] || cat;
+      const usageVal   = s.usageNote || s.note || '';
+      const linkingVal = s.linkingNote || s.linking || '';
 
       return `
         <article class="word-card ${cat}" data-id="${s.id}">
           <div class="card-top">
-            <div class="word-info"></div>
-            <span class="cat-badge">${escapeHTMLElements(catLabel)}</span>
+            <div class="word-name-row">
+              <span class="cat-badge">${escapeHTMLElements(catLabel)}</span>
+            </div>
           </div>
           <div class="card-body-content">
-            <p class="card-sentence" style="margin-bottom: 8px;">${escapeHTMLElements(s.sentence)}</p>
+            <p class="card-sentence">${escapeHTMLElements(s.sentence)}</p>
             ${s.pronunciation ? `<span class="card-pron card-pron-block">${escapeHTMLElements(s.pronunciation)}</span>` : ''}
             <p class="card-translation">${escapeHTMLElements(s.translation)}</p>
-            ${s.note ? `<p class="card-note">\u{1F4DD} ${escapeHTMLElements(s.note)}</p>` : ''}
+            ${usageVal ? `<div class="card-usage-note">💡 <strong>Cách dùng:</strong> ${escapeHTMLElements(usageVal)}</div>` : ''}
+            ${linkingVal ? `<div class="card-linking-note">🗣️ <strong>Cách nối âm:</strong> ${escapeHTMLElements(linkingVal)}</div>` : ''}
           </div>
           <div class="card-actions">
             <button class="action-btn edit-btn" data-id="${s.id}" title="Edit sentence">
@@ -1519,12 +1531,19 @@ function openSentenceModal(sentObj = null) {
     translationInput.value       = sentObj.translation;
     sentPronInput.value          = sentObj.pronunciation || '';
     sentCategorySelect.value     = sentObj.category || 'general';
-    sentNoteInput.value          = sentObj.note || '';
+    const usageVal               = sentObj.usageNote || sentObj.note || '';
+    const linkingVal             = sentObj.linkingNote || sentObj.linking || '';
+    if (sentUsageInput) sentUsageInput.value     = usageVal;
+    if (sentLinkingInput) sentLinkingInput.value = linkingVal;
+    if (sentNoteInput) sentNoteInput.value       = usageVal;
   } else {
     sentModalTitle.textContent   = 'Add New Sentence';
     sentenceForm.reset();
     sentIdInput.value            = '';
     sentCategorySelect.value     = 'general';
+    if (sentUsageInput) sentUsageInput.value     = '';
+    if (sentLinkingInput) sentLinkingInput.value = '';
+    if (sentNoteInput) sentNoteInput.value       = '';
   }
   sentenceModal.style.display = 'flex';
   sentenceInput.focus();
@@ -1538,12 +1557,16 @@ async function handleSentenceFormSubmit(e) {
   e.preventDefault();
 
   const id = sentIdInput.value;
+  const usageVal = sentUsageInput ? sentUsageInput.value.trim() : (sentNoteInput ? sentNoteInput.value.trim() : '');
+  const linkingVal = sentLinkingInput ? sentLinkingInput.value.trim() : '';
   const payload = {
     sentence:      sentenceInput.value.trim(),
     translation:   translationInput.value.trim(),
     pronunciation: sentPronInput.value.trim(),
     category:      sentCategorySelect.value,
-    note:          sentNoteInput.value.trim()
+    usageNote:     usageVal,
+    linkingNote:   linkingVal,
+    note:          usageVal
   };
 
   const isEdit = id !== '';
@@ -1563,6 +1586,8 @@ async function handleSentenceFormSubmit(e) {
           translation: payload.translation,
           pronunciation: payload.pronunciation,
           category: payload.category,
+          usageNote: payload.usageNote,
+          linkingNote: payload.linkingNote,
           note: payload.note,
           updatedAt: new Date().toISOString()
         };
