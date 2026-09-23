@@ -681,13 +681,17 @@ function filterAndRenderWords() {
     wordGrid.innerHTML = filtered.map(w => {
       const escapedWord = escapeHTMLElements(w.word);
       const typeLabel = w.type === 'adj' ? 'Adjective' : w.type === 'adv' ? 'Adverb' : w.type.charAt(0).toUpperCase() + w.type.slice(1);
+      const idVal = w.id ? escapeHTMLElements(String(w.id)) : '';
       
       return `
         <article class="word-card ${w.type}" data-id="${w.id}">
           <div class="card-top">
             <div class="word-name-row">
               <h3 class="card-word">${escapedWord}</h3>
-              <span class="pos-badge">${typeLabel}</span>
+              <div class="card-header-tags">
+                ${idVal ? `<span class="card-id" title="Word ID: ${idVal}">${idVal}</span>` : ''}
+                <span class="pos-badge">${typeLabel}</span>
+              </div>
             </div>
             ${w.pronunciation ? `
             <div class="card-pron-row">
@@ -1484,20 +1488,23 @@ function filterAndRenderSentences() {
       general: 'General',
       idiom: 'Idiom',
       proverb: 'Proverb',
-      collocations: 'Collocations'
+      collocations: 'Collocations',
+      professional: 'Professional'
     };
 
     sentenceGrid.innerHTML = filtered.map(s => {
       const cat        = s.category || 'general';
-      const catLabel   = catLabelMap[cat] || cat;
+      const catLabel   = catLabelMap[cat] || (cat.charAt(0).toUpperCase() + cat.slice(1));
       const usageVal   = s.usageNote || s.note || '';
       const linkingVal = s.linkingNote || s.linking || '';
+      const idVal      = s.id ? escapeHTMLElements(String(s.id)) : '';
 
       return `
         <article class="word-card ${cat}" data-id="${s.id}">
           <div class="card-top">
             <div class="word-name-row">
               <span class="cat-badge">${escapeHTMLElements(catLabel)}</span>
+              ${idVal ? `<span class="card-id" title="Sentence ID: ${idVal}">${idVal}</span>` : ''}
             </div>
           </div>
           <div class="card-body-content">

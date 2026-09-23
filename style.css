@@ -652,6 +652,36 @@ button {
   font-weight: 500;
 }
 
+/* Card Header Metadata & ID Badge */
+.card-header-tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.card-id {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  color: var(--text-light);
+  background-color: var(--bg-app);
+  border: 1px solid var(--border-color);
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  user-select: all;
+  transition: all 0.2s ease;
+}
+
+.card-id:hover {
+  color: var(--text-main);
+  border-color: var(--primary);
+  background-color: var(--primary-light);
+}
+
 /* Part of Speech Badge */
 .pos-badge {
   display: inline-block;
@@ -2481,6 +2511,8 @@ button {
     --proverb-text: #059669;
     --collocations-bg: #fce7f3;
     --collocations-text: #db2777;
+    --professional-bg: #e0f2fe;
+    --professional-text: #0284c7;
   }
 
   /* Sentence card custom height (increased to 400px for full visibility of both notes) */
@@ -2502,6 +2534,9 @@ button {
   .word-card.collocations::before {
     background-color: var(--collocations-text);
   }
+  .word-card.professional::before {
+    background-color: var(--professional-text);
+  }
 
   /* Category badge (mirrors .pos-badge) */
   .cat-badge {
@@ -2513,6 +2548,8 @@ button {
     letter-spacing: 0.5px;
     border-radius: var(--radius-pill);
     white-space: nowrap;
+    background-color: var(--primary-light);
+    color: var(--primary);
   }
 
   .general .cat-badge {
@@ -2530,6 +2567,10 @@ button {
   .collocations .cat-badge {
     background-color: var(--collocations-bg);
     color: var(--collocations-text);
+  }
+  .professional .cat-badge {
+    background-color: var(--professional-bg);
+    color: var(--professional-text);
   }
 
   /* Sentence text on card — larger, bolder than word definition */
