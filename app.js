@@ -1,4 +1,12 @@
 // ==========================================================================
+// 0. TOPIC HUB STATE & DATA
+// ==========================================================================
+let topics = [];
+let activeTopicId = null;
+let activeTopicTab = 'sentences'; // 'sentences' | 'words'
+let topicDeleteTargetId = null;
+
+// ==========================================================================
 // 1. DICTIONARY STATE & DATA
 // ==========================================================================
 let words = [];
@@ -12,12 +20,9 @@ const isStaticMode = forceStaticMode ||
                       window.location.hostname !== '::1' && 
                       window.location.hostname !== '[::1]' && 
                       !window.location.hostname.startsWith('192.168.'));
-let activeFilter = 'all';
-let deleteTargetId = null;
 
 // Video Vault State
 let videos = [];
-let activeVideoFilter = 'all';
 
 // IPA Symbols State
 let activeIpaFilter = 'all';
@@ -252,29 +257,93 @@ const grammarData = {
 // ==========================================================================
 // 3. DOM ELEMENTS
 // ==========================================================================
+// Topic Hub DOM Elements
+const navTopicsBtn = document.getElementById('nav-topics-btn');
+const topicsView = document.getElementById('topics-view-container');
+const panelTopicStats = document.getElementById('panel-topic-stats');
+const statTotalTopics = document.getElementById('stat-total-topics');
+const statTopicsSentencesCount = document.getElementById('stat-topics-sentences-count');
+const statTopicsWordsCount = document.getElementById('stat-topics-words-count');
+const sidebarTopicMiniList = document.getElementById('sidebar-topic-mini-list');
+const sidebarAddTopicBtn = document.getElementById('sidebar-add-topic-btn');
+
+// Topics List Subview
+const topicsListSubview = document.getElementById('topics-list-subview');
+const topicsSearchInput = document.getElementById('topics-search-input');
+const topicsClearSearch = document.getElementById('topics-clear-search');
+const addTopicBtn = document.getElementById('add-topic-btn');
+const emptyAddTopicBtn = document.getElementById('empty-add-topic-btn');
+const topicsGrid = document.getElementById('topics-grid');
+const topicsEmptyState = document.getElementById('topics-empty-state');
+const topicsSectionHeading = document.getElementById('topics-section-heading');
+const topicsResultsCount = document.getElementById('topics-results-count');
+
+// Topic Detail Subview
+const topicDetailSubview = document.getElementById('topic-detail-subview');
+const topicBackBtn = document.getElementById('topic-back-btn');
+const detailTopicIconBox = document.getElementById('detail-topic-icon-box');
+const detailTopicIcon = document.getElementById('detail-topic-icon');
+const detailTopicTitle = document.getElementById('detail-topic-title');
+const detailTopicDesc = document.getElementById('detail-topic-desc');
+const topicActionAddItemBtn = document.getElementById('topic-action-add-item-btn');
+const topicActionAddLabel = document.getElementById('topic-action-add-label');
+const topicEditMetaBtn = document.getElementById('topic-edit-meta-btn');
+const topicDeleteCurrentBtn = document.getElementById('topic-delete-current-btn');
+const topicInnerSearchInput = document.getElementById('topic-inner-search-input');
+const topicInnerClearSearch = document.getElementById('topic-inner-clear-search');
+
+// Tabs in Topic Detail
+const tabBtnSentences = document.getElementById('tab-btn-sentences');
+const tabBtnWords = document.getElementById('tab-btn-words');
+const tabSentencesCount = document.getElementById('tab-sentences-count');
+const tabWordsCount = document.getElementById('tab-words-count');
+const topicTabSentences = document.getElementById('topic-tab-sentences');
+const topicTabWords = document.getElementById('topic-tab-words');
+const topicSentencesGrid = document.getElementById('topic-sentences-grid');
+const topicWordsGrid = document.getElementById('topic-words-grid');
+const topicSentencesEmpty = document.getElementById('topic-sentences-empty');
+const topicWordsEmpty = document.getElementById('topic-words-empty');
+const btnAddSentenceTab = document.getElementById('btn-add-sentence-tab');
+const btnAddWordTab = document.getElementById('btn-add-word-tab');
+const emptyAddSentenceTabBtn = document.getElementById('empty-add-sentence-tab-btn');
+const emptyAddWordTabBtn = document.getElementById('empty-add-word-tab-btn');
+
+// Topic Modal
+const topicModal = document.getElementById('topic-modal');
+const topicModalTitle = document.getElementById('topic-modal-title');
+const topicForm = document.getElementById('topic-form');
+const topicIdInput = document.getElementById('topic-id');
+const inputTopicName = document.getElementById('input-topic-name');
+const inputTopicDesc = document.getElementById('input-topic-desc');
+const inputTopicIcon = document.getElementById('input-topic-icon');
+const inputTopicColor = document.getElementById('input-topic-color');
+const topicModalCloseBtn = document.getElementById('topic-modal-close-btn');
+const topicModalCancelBtn = document.getElementById('topic-modal-cancel-btn');
+
+// Topic Delete Dialog
+const topicDeleteDialog = document.getElementById('topic-delete-dialog');
+const deleteTopicName = document.getElementById('delete-topic-name');
+const topicDeleteConfirmBtn = document.getElementById('topic-delete-confirm-btn');
+const topicDeleteCancelBtn = document.getElementById('topic-delete-cancel-btn');
+
+// Modals Topic Selectors & Word Note
+const inputSentTopic = document.getElementById('input-sent-topic');
+const inputWordTopic = document.getElementById('input-word-topic');
+const inputWordNote = document.getElementById('input-word-note');
+
 // Main Switchers
-const navDictionaryBtn = document.getElementById('nav-dictionary-btn');
 const navGrammarBtn = document.getElementById('nav-grammar-btn');
-const dictionaryView = document.getElementById('dictionary-view-container');
 const grammarView = document.getElementById('grammar-view-container');
-const panelDictionaryStats = document.getElementById('panel-dictionary-stats');
 const panelGrammarNav = document.getElementById('panel-grammar-nav');
 
 // Video Vault DOM elements
 const navVideosBtn = document.getElementById('nav-videos-btn');
 const videosView = document.getElementById('videos-view-container');
-const panelVideoCategories = document.getElementById('panel-video-categories');
 const videoSearchInput = document.getElementById('video-search-input');
 const videoClearSearchBtn = document.getElementById('video-clear-search');
 const videoGrid = document.getElementById('video-grid');
 const videoEmptyState = document.getElementById('video-empty-state');
-const videoSectionHeading = document.getElementById('video-section-heading');
 const videoResultsCount = document.getElementById('video-results-count');
-const videoStatTotal = document.getElementById('video-stat-total');
-const videoStatGrammar = document.getElementById('video-stat-grammar');
-const videoStatSpeaking = document.getElementById('video-stat-speaking');
-const videoStatVocabulary = document.getElementById('video-stat-vocabulary');
-const videoStatItems = document.querySelectorAll('#panel-video-categories .stat-item');
 
 const navIpaBtn = document.getElementById('nav-ipa-btn');
 const ipaView = document.getElementById('ipa-view-container');
@@ -292,35 +361,10 @@ const ipaStatItems = document.querySelectorAll('#panel-ipa-categories .stat-item
 
 const activeVideoPlayer = document.getElementById('active-video-player');
 const mainYoutubePlayer = document.getElementById('main-youtube-player');
-const playerVideoCategory = document.getElementById('player-video-category');
 const playerVideoTitle = document.getElementById('player-video-title');
 const playerVideoDesc = document.getElementById('player-video-desc');
 
-// Dictionary View Elements
-const searchInput = document.getElementById('search-input');
-const clearSearchBtn = document.getElementById('clear-search');
-const addWordBtn = document.getElementById('add-word-btn');
-const wordGrid = document.getElementById('word-grid');
-const emptyState = document.getElementById('empty-state');
-const emptyAddBtn = document.getElementById('empty-add-btn');
-const sectionHeading = document.getElementById('section-heading');
-const resultsCount = document.getElementById('results-count');
-
-// Dictionary Stats
-const statTotal = document.getElementById('stat-total');
-const statNoun = document.getElementById('stat-noun');
-const statVerb = document.getElementById('stat-verb');
-const statAdj = document.getElementById('stat-adj');
-const statAdv = document.getElementById('stat-adv');
-const statPronoun = document.getElementById('stat-pronoun');
-const statDeterminer = document.getElementById('stat-determiner');
-const statPreposition = document.getElementById('stat-preposition');
-const statConjunction = document.getElementById('stat-conjunction');
-const statInterjection = document.getElementById('stat-interjection');
-const statOther = document.getElementById('stat-other');
-const statItems = document.querySelectorAll('#panel-dictionary-stats .stat-item');
-
-// Dictionary Modals
+// Word Modals (Used by Topic Hub & Detail)
 const wordModal = document.getElementById('word-modal');
 const modalTitle = document.getElementById('modal-title');
 const wordForm = document.getElementById('word-form');
@@ -331,12 +375,6 @@ const typeSelect = document.getElementById('input-type');
 const defInput = document.getElementById('input-definition');
 const modalCloseBtn = document.getElementById('modal-close-btn');
 const modalCancelBtn = document.getElementById('modal-cancel-btn');
-
-// Delete Dialog
-const deleteDialog = document.getElementById('delete-dialog');
-const deleteWordName = document.getElementById('delete-word-name');
-const deleteConfirmBtn = document.getElementById('delete-confirm-btn');
-const deleteCancelBtn = document.getElementById('delete-cancel-btn');
 
 // Toast Notification
 const toast = document.getElementById('toast');
@@ -368,84 +406,40 @@ let complexityChartInstance = null;
 // ==========================================================================
 // 4. APP INITIALIZATION & NAVIGATION
 // ==========================================================================
-document.addEventListener('DOMContentLoaded', () => {
-  // 1. Setup Dictionary
-  fetchWords();
-  
-  // 2. Setup Grammar Explorer
-  setupGrammarExplorer();
-  
-  // 3. Setup General Events
+document.addEventListener('DOMContentLoaded', async () => {
+  // 1. Setup General Events
   setupEventListeners();
+  setupTopicEventListeners();
+
+  // 2. Setup Grammar Explorer & Video Vault
+  setupGrammarExplorer();
+  fetchVideosData();
+
+  // 3. Setup Topic Hub (Primary) — await topics to ensure data is loaded
+  await fetchTopics();
+
+  // 4. Default view: Topic Hub
+  switchAppViewExtended('topics');
   lucide.createIcons();
 
-  // 4. Check scheduled auto-backup (runs in client-only static mode)
+  // 5. Check scheduled auto-backup (runs in client-only static mode)
   setTimeout(checkAutoBackup, 1500);
-
-  // 5. Setup Video Vault
-  fetchVideosData();
 });
 
 // Main App Event Listeners
 function setupEventListeners() {
-  // App switcher buttons — routed through extended switcher so Sentence Vault is also supported
-  navDictionaryBtn.addEventListener('click', () => switchAppViewExtended('dictionary'));
-  navGrammarBtn.addEventListener('click', () => switchAppViewExtended('grammar'));
+  // App switcher buttons — routed through extended switcher
+  if (navGrammarBtn) navGrammarBtn.addEventListener('click', () => switchAppViewExtended('grammar'));
 
-  // Dictionary Specifics
-  addWordBtn.addEventListener('click', () => openWordModal());
-  emptyAddBtn.addEventListener('click', () => openWordModal());
-  modalCloseBtn.addEventListener('click', closeWordModal);
-  modalCancelBtn.addEventListener('click', closeWordModal);
-  wordModal.addEventListener('click', (e) => {
-    if (e.target === wordModal) closeWordModal();
-  });
-  wordForm.addEventListener('submit', handleWordFormSubmit);
-  
-  searchInput.addEventListener('input', handleSearchInput);
-  clearSearchBtn.addEventListener('click', () => {
-    searchInput.value = '';
-    clearSearchBtn.style.display = 'none';
-    filterAndRenderWords();
-  });
-
-  // Handle edit and delete actions using event delegation on wordGrid
-  wordGrid.addEventListener('click', (e) => {
-    const editBtn = e.target.closest('.edit-btn');
-    const deleteBtn = e.target.closest('.delete-btn');
-    
-    if (editBtn) {
-      const id = editBtn.getAttribute('data-id');
-      const target = words.find(w => w.id === id);
-      if (target) openWordModal(target);
-    } else if (deleteBtn) {
-      const id = deleteBtn.getAttribute('data-id');
-      const target = words.find(w => w.id === id);
-      if (target) {
-        deleteTargetId = id;
-        deleteWordName.textContent = target.word;
-        deleteDialog.style.display = 'flex';
-      }
-    }
-  });
-
-  // Dictionary filter sidebar clicks
-  statItems.forEach(item => {
-    item.addEventListener('click', () => {
-      statItems.forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-      activeFilter = item.getAttribute('data-filter');
-      filterAndRenderWords();
-      closeSidebarMobile();
+  // Word Modal Events (Used by Topic Hub & Detail)
+  if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeWordModal);
+  if (modalCancelBtn) modalCancelBtn.addEventListener('click', closeWordModal);
+  if (wordModal) {
+    wordModal.addEventListener('click', (e) => {
+      if (e.target === wordModal) closeWordModal();
     });
-  });
-
-  // Delete dialog events
-  deleteCancelBtn.addEventListener('click', closeDeleteDialog);
-  deleteDialog.addEventListener('click', (e) => {
-    if (e.target === deleteDialog) closeDeleteDialog();
-  });
-  deleteConfirmBtn.addEventListener('click', confirmDeleteWord);
+  }
+  if (wordForm) wordForm.addEventListener('submit', handleWordFormSubmit);
 
   // Grammar subviews navigation clicks
   grammarNavItems.forEach(item => {
@@ -514,35 +508,6 @@ function setupEventListeners() {
     navIpaBtn.addEventListener('click', () => switchAppViewExtended('ipa'));
   }
 
-  if (ipaSearchInput) {
-    ipaSearchInput.addEventListener('input', () => {
-      clearTimeout(ipaSearchInput._debounce);
-      ipaSearchInput._debounce = setTimeout(filterAndRenderIpa, 150);
-    });
-  }
-
-  if (ipaClearSearchBtn) {
-    ipaClearSearchBtn.addEventListener('click', () => {
-      ipaSearchInput.value = '';
-      ipaClearSearchBtn.style.display = 'none';
-      activeIpaFilter = 'all';
-      ipaStatItems.forEach(i => i.classList.remove('active'));
-      const allItem = document.querySelector('#panel-ipa-categories .stat-item[data-ipa-filter="all"]');
-      if (allItem) allItem.classList.add('active');
-      filterAndRenderIpa();
-    });
-  }
-
-  ipaStatItems.forEach(item => {
-    item.addEventListener('click', () => {
-      ipaStatItems.forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-      activeIpaFilter = item.getAttribute('data-ipa-filter');
-      filterAndRenderIpa();
-      closeSidebarMobile();
-    });
-  });
-
   // Video card click delegation (replaces inline onclick to avoid XSS with special chars)
   if (videoGrid) {
     videoGrid.addEventListener('click', (e) => {
@@ -551,202 +516,876 @@ function setupEventListeners() {
       const videoId = card.getAttribute('data-video-id');
       const video = videos.find(v => v.id === videoId);
       if (video) {
-        playVideo(video.youtubeId, video.title, video.category, video.description);
+        playVideo(video.youtubeId, video.title, video.description);
       }
     });
   }
 }
 
-// Switch between Main Dictionary View and Grammar Handbook View
-function switchAppView(view) {
-  if (view === 'dictionary') {
-    navGrammarBtn.classList.remove('active');
-    navDictionaryBtn.classList.add('active');
-    
-    grammarView.style.display = 'none';
-    dictionaryView.style.display = 'flex';
-    
-    panelGrammarNav.style.display = 'none';
-    panelDictionaryStats.style.display = 'flex';
-  } else {
-    navDictionaryBtn.classList.remove('active');
-    navGrammarBtn.classList.add('active');
-    
-    dictionaryView.style.display = 'none';
-    grammarView.style.display = 'flex';
-    
-    panelDictionaryStats.style.display = 'none';
-    panelGrammarNav.style.display = 'flex';
+// ==========================================================================
+// TOPIC HUB — CONTROLLER & FUNCTIONS
+// ==========================================================================
 
-    // Auto load or redraw Chart.js on click to prevent canvas width/height resizing issues
-    setTimeout(() => {
-      initGrammarChart();
-    }, 100);
+function speakEnglish(text) {
+  if (!text || !('speechSynthesis' in window)) return;
+  try {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    utterance.rate = 0.9;
+    window.speechSynthesis.speak(utterance);
+  } catch (err) {
+    console.error('Speech synthesis error:', err);
   }
-  lucide.createIcons();
 }
 
-// ==========================================================================
-// 5. VOCABULARY DICTIONARY CRUD LOGIC
-// ==========================================================================
-
-// Fetch word list
-async function fetchWords() {
+async function fetchTopics() {
   try {
     if (isStaticMode) {
-      let storedWords = localStorage.getItem('lexikeep_words');
-      let parsed = storedWords ? JSON.parse(storedWords) : [];
-      if (parsed && parsed.length > 0) {
-        words = parsed;
+      const stored = localStorage.getItem('lexikeep_topics');
+      if (stored) {
+        topics = JSON.parse(stored);
       } else {
-        // Fetch default JSON from root folder
-        const response = await fetch('./dictionary.json');
-        if (!response.ok) throw new Error('Could not load default dictionary file.');
-        words = await response.json();
-        localStorage.setItem('lexikeep_words', JSON.stringify(words));
+        const res = await fetch('./topics.json');
+        if (res.ok) {
+          topics = await res.json();
+          localStorage.setItem('lexikeep_topics', JSON.stringify(topics));
+        }
       }
     } else {
-      const response = await fetch('/api/words');
-      if (!response.ok) throw new Error('Could not download dictionary files.');
-      words = await response.json();
+      const res = await fetch('/api/topics');
+      if (res.ok) {
+        topics = await res.json();
+      } else {
+        const fallbackRes = await fetch('./topics.json');
+        if (fallbackRes.ok) topics = await fallbackRes.json();
+      }
     }
-    updateDictionaryStats();
-    filterAndRenderWords();
-  } catch (error) {
-    console.error('Error fetching words:', error);
-    showToastNotification('Failed to connect to word storage.', 'error');
+  } catch (err) {
+    console.error('Error fetching topics:', err);
+  }
+
+  syncGlobalWordsAndSentences();
+  populateTopicSelectors();
+  updateTopicStats();
+  renderTopics();
+  if (activeTopicId) {
+    renderTopicDetail();
   }
 }
 
-// Update stats numbers on sidebar
-function updateDictionaryStats() {
-  const counts = { all: words.length, noun: 0, verb: 0, adjective: 0, adverb: 0, pronoun: 0, determiner: 0, preposition: 0, conjunction: 0, interjection: 0, other: 0 };
-  
-  words.forEach(w => {
-    if (counts[w.type] !== undefined) {
-      counts[w.type]++;
-    } else {
-      counts.other++;
+function syncGlobalWordsAndSentences() {
+  let allSentences = [];
+  let allWords = [];
+  topics.forEach(t => {
+    if (Array.isArray(t.sentences)) {
+      t.sentences.forEach(s => {
+        allSentences.push({
+          ...s,
+          topicId: t.id,
+          topicName: t.name
+        });
+      });
+    }
+    if (Array.isArray(t.words)) {
+      t.words.forEach(w => {
+        allWords.push({
+          ...w,
+          topicId: t.id,
+          topicName: t.name
+        });
+      });
     }
   });
 
-  statTotal.textContent = counts.all;
-  statNoun.textContent = counts.noun;
-  statVerb.textContent = counts.verb;
-  statAdj.textContent = counts.adjective;
-  statAdv.textContent = counts.adverb;
-  if (statPronoun) statPronoun.textContent = counts.pronoun;
-  if (statDeterminer) statDeterminer.textContent = counts.determiner;
-  if (statPreposition) statPreposition.textContent = counts.preposition;
-  if (statConjunction) statConjunction.textContent = counts.conjunction;
-  if (statInterjection) statInterjection.textContent = counts.interjection;
-  if (statOther) statOther.textContent = counts.other;
+  sentences = allSentences;
+  words = allWords;
 }
 
-// Filter and Render dictionary feed
-function filterAndRenderWords() {
-  const query = searchInput.value.trim().toLowerCase();
-  
-  clearSearchBtn.style.display = query.length > 0 ? 'flex' : 'none';
+function populateTopicSelectors() {
+  const optionsHtml = topics.map(t => `<option value="${t.id}">${escapeHTMLElements(t.name)}</option>`).join('');
+  if (inputSentTopic) {
+    inputSentTopic.innerHTML = optionsHtml;
+    if (activeTopicId) inputSentTopic.value = activeTopicId;
+  }
+  if (inputWordTopic) {
+    inputWordTopic.innerHTML = optionsHtml;
+    if (activeTopicId) inputWordTopic.value = activeTopicId;
+  }
+}
 
-  let filtered = words;
+function updateTopicStats() {
+  let totalSentences = 0;
+  let totalWords = 0;
+  topics.forEach(t => {
+    totalSentences += (t.sentences || []).length;
+    totalWords += (t.words || []).length;
+  });
 
-  // Type filter
-  if (activeFilter !== 'all') {
-    filtered = filtered.filter(w => w.type === activeFilter);
+  if (statTotalTopics) statTotalTopics.textContent = topics.length;
+  if (statTopicsSentencesCount) statTopicsSentencesCount.textContent = totalSentences;
+  if (statTopicsWordsCount) statTopicsWordsCount.textContent = totalWords;
+
+  if (sidebarTopicMiniList) {
+    if (topics.length === 0) {
+      sidebarTopicMiniList.innerHTML = '<span class="text-muted" style="font-size: 0.8rem; padding: 4px 8px;">Chưa có chủ đề</span>';
+    } else {
+      sidebarTopicMiniList.innerHTML = topics.map(t => {
+        const isActive = activeTopicId === t.id;
+        const count = (t.sentences || []).length + (t.words || []).length;
+        return `
+          <div class="topic-mini-item ${isActive ? 'active' : ''}" data-topic-id="${t.id}">
+            <div class="d-flex align-items-center gap-2 text-truncate">
+              <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:${t.color || '#6366f1'}; flex-shrink:0;"></span>
+              <span class="text-truncate">${escapeHTMLElements(t.name)}</span>
+            </div>
+            <span class="topic-mini-badge">${count}</span>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+}
+
+function renderTopics() {
+  const query = topicsSearchInput ? topicsSearchInput.value.trim().toLowerCase() : '';
+  if (topicsClearSearch) {
+    topicsClearSearch.style.display = query.length > 0 ? 'flex' : 'none';
   }
 
-  // Search query filter
+  let filtered = topics;
   if (query.length > 0) {
-    filtered = filtered.filter(w => w.word.toLowerCase().includes(query));
+    filtered = filtered.filter(t => {
+      const matchName = t.name.toLowerCase().includes(query);
+      const matchDesc = (t.description || '').toLowerCase().includes(query);
+      const matchSent = (t.sentences || []).some(s => 
+        s.sentence.toLowerCase().includes(query) || 
+        s.translation.toLowerCase().includes(query)
+      );
+      const matchWord = (t.words || []).some(w => 
+        w.word.toLowerCase().includes(query) || 
+        w.definition.toLowerCase().includes(query)
+      );
+      return matchName || matchDesc || matchSent || matchWord;
+    });
   }
 
-  // Header texts
-  let filterLabel = activeFilter.charAt(0).toUpperCase() + activeFilter.slice(1);
-  if (activeFilter === 'all') filterLabel = 'All Words';
-  else if (activeFilter === 'adj') filterLabel = 'Adjectives';
-  else if (activeFilter === 'adv') filterLabel = 'Adverbs';
-  else filterLabel += 's';
-
-  sectionHeading.textContent = query ? `Search Results` : filterLabel;
-  resultsCount.textContent = `Showing ${filtered.length} word${filtered.length !== 1 ? 's' : ''}`;
+  if (topicsResultsCount) {
+    topicsResultsCount.textContent = `Hiển thị ${filtered.length} chủ đề`;
+  }
+  if (topicsSectionHeading) {
+    topicsSectionHeading.textContent = query ? 'Kết Quả Tìm Kiếm Chủ Đề' : 'Tất Cả Chủ Đề Học Tập';
+  }
 
   if (filtered.length === 0) {
-    wordGrid.style.display = 'none';
-    emptyState.style.display = 'flex';
+    if (topicsGrid) topicsGrid.style.display = 'none';
+    if (topicsEmptyState) topicsEmptyState.style.display = 'flex';
   } else {
-    emptyState.style.display = 'none';
-    wordGrid.style.display = 'grid';
-    
-    wordGrid.innerHTML = filtered.map(w => {
-      const escapedWord = escapeHTMLElements(w.word);
-      const typeLabel = w.type === 'adj' ? 'Adjective' : w.type === 'adv' ? 'Adverb' : w.type.charAt(0).toUpperCase() + w.type.slice(1);
-      const idVal = w.id ? escapeHTMLElements(String(w.id)) : '';
-      
-      return `
-        <article class="word-card ${w.type}" data-id="${w.id}">
-          <div class="card-top">
-            <div class="word-name-row">
-              <h3 class="card-word">${escapedWord}</h3>
-              <div class="card-header-tags">
-                ${idVal ? `<span class="card-id" title="Word ID: ${idVal}">${idVal}</span>` : ''}
-                <span class="pos-badge">${typeLabel}</span>
+    if (topicsEmptyState) topicsEmptyState.style.display = 'none';
+    if (topicsGrid) {
+      topicsGrid.style.display = 'grid';
+      topicsGrid.innerHTML = filtered.map(t => {
+        const sentCount = (t.sentences || []).length;
+        const wordCount = (t.words || []).length;
+        const color = t.color || '#6366f1';
+        const icon = t.icon || 'folder';
+
+        return `
+          <article class="topic-card" data-topic-id="${t.id}">
+            <div class="topic-card-top">
+              <div class="topic-icon-chip" style="background: ${color}">
+                <i data-lucide="${icon}"></i>
+              </div>
+              <div class="topic-card-actions">
+                <button class="action-btn edit-topic-btn" data-id="${t.id}" title="Sửa chủ đề">
+                  <i data-lucide="edit-2"></i>
+                </button>
+                <button class="action-btn delete-topic-btn text-danger" data-id="${t.id}" title="Xóa chủ đề">
+                  <i data-lucide="trash-2"></i>
+                </button>
               </div>
             </div>
-            ${w.pronunciation ? `
-            <div class="card-pron-row">
-              <span class="card-pron">${escapeHTMLElements(w.pronunciation)}</span>
-            </div>` : ''}
-          </div>
-          <div class="card-body-content">
-            <p class="card-definition">${escapeHTMLElements(w.definition)}</p>
-          </div>
-          <div class="card-actions">
-            <button class="action-btn edit-btn" data-id="${w.id}" title="Edit word">
-              <i data-lucide="edit-2"></i>
-            </button>
-            <button class="action-btn delete-btn" data-id="${w.id}" title="Delete word">
-              <i data-lucide="trash-2"></i>
-            </button>
-          </div>
-        </article>
-      `;
-    }).join('');
+            <h3 class="topic-card-title">${escapeHTMLElements(t.name)}</h3>
+            <p class="topic-card-desc">${escapeHTMLElements(t.description || 'Chủ đề giao tiếp và từ vựng thông dụng.')}</p>
+            <div class="topic-card-footer">
+              <div class="topic-stats-pills">
+                <span class="topic-pill"><i data-lucide="message-square-text" style="width: 12px; height: 12px"></i> ${sentCount} câu</span>
+                <span class="topic-pill words-pill"><i data-lucide="book" style="width: 12px; height: 12px"></i> ${wordCount} từ</span>
+              </div>
+              <span class="topic-arrow-link">Khám phá <i data-lucide="arrow-right" style="width: 13px; height: 13px"></i></span>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+  }
 
-    lucide.createIcons();
+  lucide.createIcons();
+}
+
+function openTopicDetail(topicId) {
+  const topic = topics.find(t => t.id === topicId);
+  if (!topic) return;
+
+  activeTopicId = topicId;
+
+  if (topicsListSubview) topicsListSubview.style.display = 'none';
+  if (topicDetailSubview) topicDetailSubview.style.display = 'flex';
+
+  if (detailTopicTitle) detailTopicTitle.textContent = topic.name;
+  const breadcrumbEl = document.getElementById('breadcrumb-topic-name');
+  if (breadcrumbEl) breadcrumbEl.textContent = topic.name;
+
+  if (detailTopicDesc) detailTopicDesc.textContent = topic.description || 'Chủ đề học tập';
+  if (detailTopicIconBox) {
+    detailTopicIconBox.style.background = topic.color || '#6366f1';
+  }
+  if (detailTopicIcon) {
+    detailTopicIcon.setAttribute('data-lucide', topic.icon || 'folder');
+  }
+
+  if (topicInnerSearchInput) {
+    topicInnerSearchInput.value = '';
+    if (topicInnerClearSearch) topicInnerClearSearch.style.display = 'none';
+  }
+
+  updateTopicStats();
+  populateTopicSelectors();
+  switchTopicTab(activeTopicTab || 'sentences');
+  lucide.createIcons();
+}
+
+function closeTopicDetail() {
+  activeTopicId = null;
+  if (topicDetailSubview) topicDetailSubview.style.display = 'none';
+  if (topicsListSubview) topicsListSubview.style.display = 'flex';
+  updateTopicStats();
+  renderTopics();
+}
+
+function isTopicDetailActive() {
+  if (!activeTopicId) return false;
+  if (topicDetailSubview && topicDetailSubview.style.display === 'none') {
+    return false;
+  }
+  if (topicsView && topicsView.style.display === 'none') {
+    return false;
+  }
+  return true;
+}
+
+function switchTopicTab(tab) {
+  activeTopicTab = tab;
+
+  if (tabBtnSentences && tabBtnWords) {
+    if (tab === 'sentences') {
+      tabBtnSentences.classList.add('active');
+      tabBtnWords.classList.remove('active');
+      if (topicTabSentences) topicTabSentences.style.display = 'flex';
+      if (topicTabWords) topicTabWords.style.display = 'none';
+      if (topicActionAddLabel) topicActionAddLabel.textContent = 'Thêm Câu Mới';
+    } else {
+      tabBtnWords.classList.add('active');
+      tabBtnSentences.classList.remove('active');
+      if (topicTabWords) topicTabWords.style.display = 'flex';
+      if (topicTabSentences) topicTabSentences.style.display = 'none';
+      if (topicActionAddLabel) topicActionAddLabel.textContent = 'Thêm Từ Vựng Mới';
+    }
+  }
+
+  renderTopicDetail();
+}
+
+function renderTopicDetail() {
+  if (!activeTopicId) return;
+  const topic = topics.find(t => t.id === activeTopicId);
+  if (!topic) return;
+
+  const sCount = (topic.sentences || []).length;
+  const wCount = (topic.words || []).length;
+  if (tabSentencesCount) tabSentencesCount.textContent = sCount;
+  if (tabWordsCount) tabWordsCount.textContent = wCount;
+
+  filterAndRenderTopicSentences();
+  filterAndRenderTopicWords();
+  lucide.createIcons();
+}
+
+function filterAndRenderTopicSentences() {
+  if (!activeTopicId) return;
+  const topic = topics.find(t => t.id === activeTopicId);
+  if (!topic) return;
+
+  const query = topicInnerSearchInput ? topicInnerSearchInput.value.trim().toLowerCase() : '';
+  if (topicInnerClearSearch) {
+    topicInnerClearSearch.style.display = query.length > 0 ? 'flex' : 'none';
+  }
+
+  let filtered = topic.sentences || [];
+  if (query.length > 0) {
+    filtered = filtered.filter(s =>
+      s.sentence.toLowerCase().includes(query) ||
+      s.translation.toLowerCase().includes(query) ||
+      (s.pronunciation && s.pronunciation.toLowerCase().includes(query)) ||
+      (s.usageNote && s.usageNote.toLowerCase().includes(query)) ||
+      (s.linkingNote && s.linkingNote.toLowerCase().includes(query))
+    );
+  }
+
+  if (filtered.length === 0) {
+    if (topicSentencesGrid) topicSentencesGrid.style.display = 'none';
+    if (topicSentencesEmpty) topicSentencesEmpty.style.display = 'flex';
+  } else {
+    if (topicSentencesEmpty) topicSentencesEmpty.style.display = 'none';
+    if (topicSentencesGrid) {
+      topicSentencesGrid.style.display = 'grid';
+      topicSentencesGrid.innerHTML = filtered.map(s => {
+        const usageVal = s.usageNote || s.note || '';
+        const linkingVal = s.linkingNote || s.linking || '';
+
+        return `
+          <article class="sentence-detail-card" data-sentence-id="${s.id}">
+            <div class="sentence-card-header">
+              <div class="sentence-main-text-row">
+                <button class="btn-tts-speaker" data-tts="${escapeHTMLElements(s.sentence)}" title="Phát âm câu này">
+                  <i data-lucide="volume-2"></i>
+                </button>
+                <h4 class="sentence-text-en">${escapeHTMLElements(s.sentence)}</h4>
+              </div>
+            </div>
+
+            ${s.pronunciation ? `<div class="sentence-ipa-badge">${escapeHTMLElements(s.pronunciation)}</div>` : ''}
+
+            <div class="sentence-meaning-box">
+              ${escapeHTMLElements(s.translation)}
+            </div>
+
+            ${usageVal ? `
+            <div class="sentence-note-box usage">
+              <strong>💡 Cách dùng:</strong> ${escapeHTMLElements(usageVal)}
+            </div>` : ''}
+
+            ${linkingVal ? `
+            <div class="sentence-note-box linking">
+              <strong>🗣️ Nối âm:</strong> ${escapeHTMLElements(linkingVal)}
+            </div>` : ''}
+
+            <div class="sentence-card-actions">
+              <button class="action-btn edit-topic-sent-btn" data-id="${s.id}" title="Sửa câu">
+                <i data-lucide="edit-2"></i>
+              </button>
+              <button class="action-btn delete-topic-sent-btn text-danger" data-id="${s.id}" title="Xóa câu">
+                <i data-lucide="trash-2"></i>
+              </button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+  }
+
+  lucide.createIcons();
+}
+
+function filterAndRenderTopicWords() {
+  if (!activeTopicId) return;
+  const topic = topics.find(t => t.id === activeTopicId);
+  if (!topic) return;
+
+  const query = topicInnerSearchInput ? topicInnerSearchInput.value.trim().toLowerCase() : '';
+  let filtered = topic.words || [];
+
+  if (query.length > 0) {
+    filtered = filtered.filter(w =>
+      w.word.toLowerCase().includes(query) ||
+      w.definition.toLowerCase().includes(query) ||
+      (w.pronunciation && w.pronunciation.toLowerCase().includes(query)) ||
+      (w.note && w.note.toLowerCase().includes(query))
+    );
+  }
+
+  if (filtered.length === 0) {
+    if (topicWordsGrid) topicWordsGrid.style.display = 'none';
+    if (topicWordsEmpty) topicWordsEmpty.style.display = 'flex';
+  } else {
+    if (topicWordsEmpty) topicWordsEmpty.style.display = 'none';
+    if (topicWordsGrid) {
+      topicWordsGrid.style.display = 'grid';
+      topicWordsGrid.innerHTML = filtered.map(w => {
+        const typeRaw = (w.type || 'noun').toLowerCase();
+        const typeNormalized = (typeRaw === 'adj' ? 'adjective' : typeRaw === 'adv' ? 'adverb' : typeRaw);
+        const typeLabel = typeNormalized.charAt(0).toUpperCase() + typeNormalized.slice(1);
+
+        return `
+          <article class="word-detail-card ${typeNormalized}" data-word-id="${w.id}">
+            <div class="word-card-top-row">
+              <div class="word-title-group">
+                <button class="btn-tts-speaker" data-tts="${escapeHTMLElements(w.word)}" title="Phát âm từ này">
+                  <i data-lucide="volume-2"></i>
+                </button>
+                <h4 class="word-text-en">${escapeHTMLElements(w.word)}</h4>
+                ${w.pronunciation ? `<span class="word-ipa-badge">${escapeHTMLElements(w.pronunciation)}</span>` : ''}
+              </div>
+              <span class="pos-badge ${typeNormalized}" data-type="${typeNormalized}">${typeLabel}</span>
+            </div>
+
+            <div class="word-def-box">
+              ${escapeHTMLElements(w.definition)}
+            </div>
+
+            ${w.note ? `
+            <div class="word-note-box">
+              <strong>📌 Ghi chú:</strong> ${escapeHTMLElements(w.note)}
+            </div>` : ''}
+
+            <div class="sentence-card-actions">
+              <button class="action-btn edit-topic-word-btn" data-id="${w.id}" title="Sửa từ">
+                <i data-lucide="edit-2"></i>
+              </button>
+              <button class="action-btn delete-topic-word-btn text-danger" data-id="${w.id}" title="Xóa từ">
+                <i data-lucide="trash-2"></i>
+              </button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+  }
+
+  lucide.createIcons();
+}
+
+function openTopicModal(topicObj = null) {
+  if (topicObj) {
+    if (topicModalTitle) topicModalTitle.textContent = 'Chỉnh Sửa Chủ Đề';
+    if (topicIdInput) topicIdInput.value = topicObj.id;
+    if (inputTopicName) inputTopicName.value = topicObj.name;
+    if (inputTopicDesc) inputTopicDesc.value = topicObj.description || '';
+    if (inputTopicIcon) inputTopicIcon.value = topicObj.icon || 'folder';
+    if (inputTopicColor) inputTopicColor.value = topicObj.color || '#3b82f6';
+  } else {
+    if (topicModalTitle) topicModalTitle.textContent = 'Thêm Chủ Đề Mới';
+    if (topicForm) topicForm.reset();
+    if (topicIdInput) topicIdInput.value = '';
+    if (inputTopicIcon) inputTopicIcon.value = 'message-circle';
+    if (inputTopicColor) inputTopicColor.value = '#3b82f6';
+  }
+  if (topicModal) topicModal.style.display = 'flex';
+  if (inputTopicName) inputTopicName.focus();
+}
+
+function closeTopicModal() {
+  if (topicModal) topicModal.style.display = 'none';
+}
+
+async function handleTopicFormSubmit(e) {
+  e.preventDefault();
+  const id = topicIdInput ? topicIdInput.value : '';
+  const payload = {
+    name: inputTopicName.value.trim(),
+    description: inputTopicDesc ? inputTopicDesc.value.trim() : '',
+    icon: inputTopicIcon ? inputTopicIcon.value : 'folder',
+    color: inputTopicColor ? inputTopicColor.value : '#3b82f6'
+  };
+
+  if (!payload.name) {
+    showToastNotification('Vui lòng nhập tên chủ đề', 'error');
+    return;
+  }
+
+  const isEdit = id !== '';
+
+  if (isStaticMode) {
+    if (isEdit) {
+      const idx = topics.findIndex(t => t.id === id);
+      if (idx !== -1) {
+        topics[idx] = { ...topics[idx], ...payload, updatedAt: new Date().toISOString() };
+      }
+    } else {
+      const newTopic = {
+        id: 'topic_' + Date.now(),
+        ...payload,
+        sentences: [],
+        words: [],
+        createdAt: new Date().toISOString()
+      };
+      topics.unshift(newTopic);
+    }
+    localStorage.setItem('lexikeep_topics', JSON.stringify(topics));
+    closeTopicModal();
+    showToastNotification(isEdit ? 'Cập nhật chủ đề thành công!' : 'Thêm chủ đề mới thành công!', 'success');
+    populateTopicSelectors();
+    updateTopicStats();
+    renderTopics();
+    if (activeTopicId && isEdit) openTopicDetail(activeTopicId);
+  } else {
+    const url = isEdit ? `/api/topics/${id}` : '/api/topics';
+    const method = isEdit ? 'PUT' : 'POST';
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error('Could not save topic');
+      closeTopicModal();
+      showToastNotification(isEdit ? 'Cập nhật chủ đề thành công!' : 'Thêm chủ đề mới thành công!', 'success');
+      await fetchTopics();
+    } catch (err) {
+      console.error('Topic save error:', err);
+      showToastNotification('Không thể lưu chủ đề.', 'error');
+    }
   }
 }
 
-// Search box input handler with debounce
-let searchInputTimeout;
-function handleSearchInput() {
-  clearTimeout(searchInputTimeout);
-  searchInputTimeout = setTimeout(() => {
-    filterAndRenderWords();
-  }, 150);
+function openTopicDeleteDialog(topicId) {
+  const topic = topics.find(t => t.id === topicId);
+  if (!topic) return;
+  topicDeleteTargetId = topicId;
+  if (deleteTopicName) deleteTopicName.textContent = topic.name;
+  if (topicDeleteDialog) topicDeleteDialog.style.display = 'flex';
 }
 
+function closeTopicDeleteDialog() {
+  topicDeleteTargetId = null;
+  if (topicDeleteDialog) topicDeleteDialog.style.display = 'none';
+}
+
+async function confirmDeleteTopic() {
+  if (!topicDeleteTargetId) return;
+
+  const id = topicDeleteTargetId;
+  if (isStaticMode) {
+    topics = topics.filter(t => t.id !== id);
+    localStorage.setItem('lexikeep_topics', JSON.stringify(topics));
+    closeTopicDeleteDialog();
+    if (activeTopicId === id) closeTopicDetail();
+    showToastNotification('Đã xóa chủ đề thành công!', 'success');
+    populateTopicSelectors();
+    updateTopicStats();
+    renderTopics();
+  } else {
+    try {
+      const res = await fetch(`/api/topics/${id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Could not delete topic');
+      closeTopicDeleteDialog();
+      if (activeTopicId === id) closeTopicDetail();
+      showToastNotification('Đã xóa chủ đề thành công!', 'success');
+      await fetchTopics();
+    } catch (err) {
+      console.error('Topic delete error:', err);
+      showToastNotification('Không thể xóa chủ đề.', 'error');
+    }
+  }
+}
+
+async function deleteSentenceFromTopic(topicId, sentenceId) {
+  const topic = topics.find(t => t.id === topicId);
+  if (!topic || !Array.isArray(topic.sentences)) return;
+
+  topic.sentences = topic.sentences.filter(s => s.id !== sentenceId);
+
+  if (isStaticMode) {
+    localStorage.setItem('lexikeep_topics', JSON.stringify(topics));
+    syncGlobalWordsAndSentences();
+    updateTopicStats();
+    renderTopicDetail();
+    showToastNotification('Đã xóa câu thành công!', 'success');
+  } else {
+    try {
+      const res = await fetch(`/api/topics/${topicId}/sentences/${sentenceId}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Could not delete sentence');
+      syncGlobalWordsAndSentences();
+      updateTopicStats();
+      renderTopicDetail();
+      showToastNotification('Đã xóa câu thành công!', 'success');
+    } catch (err) {
+      console.error('Delete sentence error:', err);
+      showToastNotification('Không thể xóa câu.', 'error');
+    }
+  }
+}
+
+async function deleteWordFromTopic(topicId, wordId) {
+  const topic = topics.find(t => t.id === topicId);
+  if (!topic || !Array.isArray(topic.words)) return;
+
+  topic.words = topic.words.filter(w => w.id !== wordId);
+
+  if (isStaticMode) {
+    localStorage.setItem('lexikeep_topics', JSON.stringify(topics));
+    syncGlobalWordsAndSentences();
+    updateTopicStats();
+    renderTopicDetail();
+    showToastNotification('Đã xóa từ thành công!', 'success');
+  } else {
+    try {
+      const res = await fetch(`/api/topics/${topicId}/words/${wordId}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Could not delete word');
+      syncGlobalWordsAndSentences();
+      updateTopicStats();
+      renderTopicDetail();
+      showToastNotification('Đã xóa từ thành công!', 'success');
+    } catch (err) {
+      console.error('Delete word error:', err);
+      showToastNotification('Không thể xóa từ.', 'error');
+    }
+  }
+}
+
+function setupTopicEventListeners() {
+  if (navTopicsBtn) {
+    navTopicsBtn.addEventListener('click', () => {
+      closeTopicDetail();
+      switchAppViewExtended('topics');
+    });
+  }
+  if (addTopicBtn) {
+    addTopicBtn.addEventListener('click', () => openTopicModal());
+  }
+  if (emptyAddTopicBtn) {
+    emptyAddTopicBtn.addEventListener('click', () => openTopicModal());
+  }
+  if (sidebarAddTopicBtn) {
+    sidebarAddTopicBtn.addEventListener('click', () => openTopicModal());
+  }
+  if (topicBackBtn) {
+    topicBackBtn.addEventListener('click', closeTopicDetail);
+  }
+  if (tabBtnSentences) {
+    tabBtnSentences.addEventListener('click', () => switchTopicTab('sentences'));
+  }
+  if (tabBtnWords) {
+    tabBtnWords.addEventListener('click', () => switchTopicTab('words'));
+  }
+  if (topicActionAddItemBtn) {
+    topicActionAddItemBtn.addEventListener('click', () => {
+      if (activeTopicTab === 'sentences') openSentenceModal(null, activeTopicId);
+      else openWordModal(null, activeTopicId);
+    });
+  }
+  if (btnAddSentenceTab) {
+    btnAddSentenceTab.addEventListener('click', () => openSentenceModal(null, activeTopicId));
+  }
+  if (emptyAddSentenceTabBtn) {
+    emptyAddSentenceTabBtn.addEventListener('click', () => openSentenceModal(null, activeTopicId));
+  }
+  if (btnAddWordTab) {
+    btnAddWordTab.addEventListener('click', () => openWordModal(null, activeTopicId));
+  }
+  if (emptyAddWordTabBtn) {
+    emptyAddWordTabBtn.addEventListener('click', () => openWordModal(null, activeTopicId));
+  }
+  if (topicEditMetaBtn) {
+    topicEditMetaBtn.addEventListener('click', () => {
+      const t = topics.find(item => item.id === activeTopicId);
+      if (t) openTopicModal(t);
+    });
+  }
+  if (topicDeleteCurrentBtn) {
+    topicDeleteCurrentBtn.addEventListener('click', () => {
+      if (activeTopicId) openTopicDeleteDialog(activeTopicId);
+    });
+  }
+
+  // Topic search
+  if (topicsSearchInput) {
+    topicsSearchInput.addEventListener('input', () => {
+      clearTimeout(topicsSearchInput._timer);
+      topicsSearchInput._timer = setTimeout(renderTopics, 150);
+    });
+  }
+  if (topicsClearSearch) {
+    topicsClearSearch.addEventListener('click', () => {
+      topicsSearchInput.value = '';
+      topicsClearSearch.style.display = 'none';
+      renderTopics();
+    });
+  }
+
+  // Inner topic search
+  if (topicInnerSearchInput) {
+    topicInnerSearchInput.addEventListener('input', () => {
+      clearTimeout(topicInnerSearchInput._timer);
+      topicInnerSearchInput._timer = setTimeout(() => {
+        filterAndRenderTopicSentences();
+        filterAndRenderTopicWords();
+      }, 150);
+    });
+  }
+  if (topicInnerClearSearch) {
+    topicInnerClearSearch.addEventListener('click', () => {
+      topicInnerSearchInput.value = '';
+      topicInnerClearSearch.style.display = 'none';
+      filterAndRenderTopicSentences();
+      filterAndRenderTopicWords();
+    });
+  }
+
+  // Delegated clicks on topicsGrid
+  if (topicsGrid) {
+    topicsGrid.addEventListener('click', (e) => {
+      const editBtn = e.target.closest('.edit-topic-btn');
+      const deleteBtn = e.target.closest('.delete-topic-btn');
+      const actionsContainer = e.target.closest('.topic-card-actions');
+      const card = e.target.closest('.topic-card');
+
+      if (editBtn) {
+        e.stopPropagation();
+        const id = editBtn.getAttribute('data-id');
+        const t = topics.find(item => item.id === id);
+        if (t) openTopicModal(t);
+      } else if (deleteBtn) {
+        e.stopPropagation();
+        const id = deleteBtn.getAttribute('data-id');
+        if (id) openTopicDeleteDialog(id);
+      } else if (actionsContainer) {
+        e.stopPropagation();
+        return;
+      } else if (card) {
+        const id = card.getAttribute('data-topic-id');
+        if (id) openTopicDetail(id);
+      }
+    });
+  }
+
+  // Delegated clicks on sidebarTopicMiniList
+  if (sidebarTopicMiniList) {
+    sidebarTopicMiniList.addEventListener('click', (e) => {
+      const item = e.target.closest('.topic-mini-item');
+      if (item) {
+        const id = item.getAttribute('data-topic-id');
+        if (id) {
+          switchAppViewExtended('topics');
+          openTopicDetail(id);
+          closeSidebarMobile();
+        }
+      }
+    });
+  }
+
+  // Delegated clicks on topicSentencesGrid (edit, delete, TTS)
+  if (topicSentencesGrid) {
+    topicSentencesGrid.addEventListener('click', (e) => {
+      const ttsBtn = e.target.closest('.btn-tts-speaker');
+      const editBtn = e.target.closest('.edit-topic-sent-btn');
+      const deleteBtn = e.target.closest('.delete-topic-sent-btn');
+
+      if (ttsBtn) {
+        e.stopPropagation();
+        const text = ttsBtn.getAttribute('data-tts');
+        speakEnglish(text);
+      } else if (editBtn) {
+        e.stopPropagation();
+        const sid = editBtn.getAttribute('data-id');
+        const topic = topics.find(t => t.id === activeTopicId);
+        if (topic) {
+          const sent = (topic.sentences || []).find(s => String(s.id) === String(sid));
+          if (sent) openSentenceModal(sent, activeTopicId);
+        }
+      } else if (deleteBtn) {
+        e.stopPropagation();
+        const sid = deleteBtn.getAttribute('data-id');
+        if (confirm('Bạn có chắc chắn muốn xóa câu này khỏi chủ đề?')) {
+          deleteSentenceFromTopic(activeTopicId, sid);
+        }
+      }
+    });
+  }
+
+  // Delegated clicks on topicWordsGrid (edit, delete, TTS)
+  if (topicWordsGrid) {
+    topicWordsGrid.addEventListener('click', (e) => {
+      const ttsBtn = e.target.closest('.btn-tts-speaker');
+      const editBtn = e.target.closest('.edit-topic-word-btn');
+      const deleteBtn = e.target.closest('.delete-topic-word-btn');
+
+      if (ttsBtn) {
+        e.stopPropagation();
+        const text = ttsBtn.getAttribute('data-tts');
+        speakEnglish(text);
+      } else if (editBtn) {
+        e.stopPropagation();
+        const wid = editBtn.getAttribute('data-id');
+        const topic = topics.find(t => t.id === activeTopicId);
+        if (topic) {
+          const word = (topic.words || []).find(w => String(w.id) === String(wid));
+          if (word) openWordModal(word, activeTopicId);
+        }
+      } else if (deleteBtn) {
+        e.stopPropagation();
+        const wid = deleteBtn.getAttribute('data-id');
+        if (confirm('Bạn có chắc chắn muốn xóa từ vựng này khỏi chủ đề?')) {
+          deleteWordFromTopic(activeTopicId, wid);
+        }
+      }
+    });
+  }
+
+  // Topic Modal events
+  if (topicModalCloseBtn) topicModalCloseBtn.addEventListener('click', closeTopicModal);
+  if (topicModalCancelBtn) topicModalCancelBtn.addEventListener('click', closeTopicModal);
+  if (topicModal) {
+    topicModal.addEventListener('click', (e) => {
+      if (e.target === topicModal) closeTopicModal();
+    });
+  }
+  if (topicForm) topicForm.addEventListener('submit', handleTopicFormSubmit);
+
+  // Topic Delete events
+  if (topicDeleteCancelBtn) topicDeleteCancelBtn.addEventListener('click', closeTopicDeleteDialog);
+  if (topicDeleteConfirmBtn) topicDeleteConfirmBtn.addEventListener('click', confirmDeleteTopic);
+}
+
+// ==========================================================================
+// 5. WORD MODAL & CRUD
+// ==========================================================================
+
 // Modals Trigger
-function openWordModal(wordObj = null) {
+function openWordModal(wordObj = null, topicId = null) {
+  populateTopicSelectors();
+  const inTopicDetail = isTopicDetailActive();
+  const chosenTopicId = inTopicDetail
+    ? activeTopicId
+    : ((wordObj && wordObj.topicId) || topicId || (inputWordTopic ? inputWordTopic.value : '') || (topics[0] ? topics[0].id : ''));
+
   if (wordObj) {
     modalTitle.textContent = 'Edit Word Details';
     wordIdInput.value = wordObj.id;
     wordInput.value = wordObj.word;
     pronInput.value = wordObj.pronunciation || '';
-    typeSelect.value = wordObj.type;
+    typeSelect.value = wordObj.type || 'noun';
     defInput.value = wordObj.definition;
+    if (inputWordNote) inputWordNote.value = wordObj.note || '';
   } else {
     modalTitle.textContent = 'Add New Word';
     wordForm.reset();
     wordIdInput.value = '';
     typeSelect.value = 'noun';
+    if (inputWordNote) inputWordNote.value = '';
   }
+
+  if (inputWordTopic) {
+    if (chosenTopicId) {
+      inputWordTopic.value = chosenTopicId;
+    }
+    inputWordTopic.disabled = inTopicDetail;
+  }
+  const wordLockHint = document.getElementById('word-topic-lock-hint');
+  if (wordLockHint) {
+    wordLockHint.style.display = inTopicDetail ? 'inline-flex' : 'none';
+  }
+
   wordModal.style.display = 'flex';
+  lucide.createIcons();
   wordInput.focus();
 }
 
 function closeWordModal() {
   wordModal.style.display = 'none';
+  if (inputWordTopic) inputWordTopic.disabled = false;
+  const wordLockHint = document.getElementById('word-topic-lock-hint');
+  if (wordLockHint) wordLockHint.style.display = 'none';
 }
 
 // CRUD Submit Form
@@ -754,138 +1393,102 @@ async function handleWordFormSubmit(e) {
   e.preventDefault();
 
   const id = wordIdInput.value;
+  const inTopicDetail = isTopicDetailActive();
+  const targetTopicId = (inTopicDetail && activeTopicId)
+    ? activeTopicId
+    : (inputWordTopic ? inputWordTopic.value : activeTopicId);
+  const noteVal = inputWordNote ? inputWordNote.value.trim() : '';
   const payload = {
     word: wordInput.value.trim(),
     pronunciation: pronInput.value.trim(),
     type: typeSelect.value,
-    definition: defInput.value.trim()
+    definition: defInput.value.trim(),
+    note: noteVal,
+    topicId: targetTopicId
   };
 
   const isEditMode = id !== '';
 
-  if (isStaticMode) {
-    try {
-      if (!payload.word || !payload.definition) {
-        throw new Error('Word and definition are required');
-      }
+  if (!payload.word || !payload.definition) {
+    showToastNotification('Word and definition are required', 'error');
+    return;
+  }
 
+  // If editing outside topic detail and topic was changed, remove from old topic
+  if (isEditMode) {
+    const oldWord = words.find(w => w.id === id);
+    if (oldWord && oldWord.topicId && oldWord.topicId !== targetTopicId) {
+      const oldTopic = topics.find(t => t.id === oldWord.topicId);
+      if (oldTopic && Array.isArray(oldTopic.words)) {
+        oldTopic.words = oldTopic.words.filter(w => w.id !== id);
+        if (!isStaticMode) {
+          fetch(`/api/topics/${oldTopic.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ words: oldTopic.words })
+          }).catch(console.error);
+        }
+      }
+    }
+  }
+
+  // 1. Update/Add in target topic if selected
+  if (targetTopicId) {
+    const topic = topics.find(t => t.id === targetTopicId);
+    if (topic) {
+      if (!Array.isArray(topic.words)) topic.words = [];
       if (isEditMode) {
-        const idx = words.findIndex(w => w.id === id);
-        if (idx === -1) throw new Error('Word not found');
-        words[idx] = {
-          ...words[idx],
-          word: payload.word,
-          pronunciation: payload.pronunciation,
-          type: payload.type,
-          definition: payload.definition,
-          updatedAt: new Date().toISOString()
-        };
+        const wIdx = topic.words.findIndex(w => w.id === id);
+        if (wIdx !== -1) {
+          topic.words[wIdx] = { ...topic.words[wIdx], ...payload, updatedAt: new Date().toISOString() };
+        } else {
+          topic.words.unshift({ id, ...payload, createdAt: new Date().toISOString() });
+        }
       } else {
-        const newWord = {
-          id: Date.now().toString(),
-          word: payload.word,
-          pronunciation: payload.pronunciation,
-          type: payload.type,
-          definition: payload.definition,
-          createdAt: new Date().toISOString()
-        };
-        words.unshift(newWord);
+        const newWordId = 'w_' + Date.now();
+        topic.words.unshift({ id: newWordId, ...payload, createdAt: new Date().toISOString() });
+        payload.id = newWordId;
       }
 
-      localStorage.setItem('lexikeep_words', JSON.stringify(words));
-      closeWordModal();
-      showToastNotification(
-        isEditMode ? `Updated "${payload.word}" successfully!` : `Added "${payload.word}" successfully!`,
-        'success'
-      );
-      updateDictionaryStats();
-      filterAndRenderWords();
-    } catch (error) {
-      console.error('Error submitting form (static):', error);
-      showToastNotification(error.message || 'Operation failed.', 'error');
-    }
-  } else {
-    const url = isEditMode ? `/api/words/${id}` : '/api/words';
-    const method = isEditMode ? 'PUT' : 'POST';
-
-    try {
-      const response = await fetch(url, {
-        method: method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      if (!response.ok) {
-        const errorMsg = await response.json();
-        throw new Error(errorMsg.error || 'Server error occurred');
+      if (!isStaticMode) {
+        try {
+          fetch(`/api/topics/${targetTopicId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ words: topic.words })
+          }).catch(console.error);
+        } catch (e) {
+          console.error(e);
+        }
       }
-
-      const savedWord = await response.json();
-      closeWordModal();
-      showToastNotification(
-        isEditMode ? `Updated "${savedWord.word}" successfully!` : `Added "${savedWord.word}" successfully!`,
-        'success'
-      );
-      await fetchWords();
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      showToastNotification(error.message || 'Operation failed.', 'error');
     }
   }
-}
 
-// Trigger edit callback from DOM onclick
-window.editWordAction = function(id) {
-  const target = words.find(w => w.id === id);
-  if (target) {
-    openWordModal(target);
-  }
-};
-
-// Trigger delete prompt callback
-window.deleteWordAction = function(id, name) {
-  deleteTargetId = id;
-  deleteWordName.textContent = name;
-  deleteDialog.style.display = 'flex';
-};
-
-function closeDeleteDialog() {
-  deleteDialog.style.display = 'none';
-  deleteTargetId = null;
-}
-
-// Confirm Delete API call
-async function confirmDeleteWord() {
-  if (!deleteTargetId) return;
-
-  if (isStaticMode) {
-    try {
-      words = words.filter(w => w.id !== deleteTargetId);
-      localStorage.setItem('lexikeep_words', JSON.stringify(words));
-      closeDeleteDialog();
-      showToastNotification('Word deleted successfully!', 'success');
-      updateDictionaryStats();
-      filterAndRenderWords();
-    } catch (error) {
-      console.error('Error deleting word (static):', error);
-      showToastNotification('Could not delete target word.', 'error');
+  // 2. Global words array sync
+  if (isEditMode) {
+    const idx = words.findIndex(w => w.id === id);
+    if (idx !== -1) {
+      words[idx] = { ...words[idx], ...payload, updatedAt: new Date().toISOString() };
     }
   } else {
-    try {
-      const response = await fetch(`/api/words/${deleteTargetId}`, {
-        method: 'DELETE'
-      });
-
-      if (!response.ok) throw new Error('Deletion request failed.');
-
-      closeDeleteDialog();
-      showToastNotification('Word deleted successfully!', 'success');
-      await fetchWords();
-    } catch (error) {
-      console.error('Error deleting word:', error);
-      showToastNotification('Could not delete target word.', 'error');
-    }
+    words.unshift({
+      id: payload.id || Date.now().toString(),
+      ...payload,
+      createdAt: new Date().toISOString()
+    });
   }
+
+  localStorage.setItem('lexikeep_topics', JSON.stringify(topics));
+  localStorage.setItem('lexikeep_words', JSON.stringify(words));
+
+  closeWordModal();
+  showToastNotification(
+    isEditMode ? `Updated "${payload.word}" successfully!` : `Added "${payload.word}" successfully!`,
+    'success'
+  );
+
+  updateTopicStats();
+  if (activeTopicId) renderTopicDetail();
 }
 
 // General Toast UI
@@ -1205,37 +1808,11 @@ function initGrammarChart() {
 }
 
 // ==========================================================================
-// 7. SENTENCE VAULT — STATE & DATA
+// 7. SENTENCE STATE & DOM ELEMENTS
 // ==========================================================================
 let sentences = [];
-let activeSentenceFilter = 'all';
-let sentenceDeleteTargetId = null;
 
-// ==========================================================================
-// 8. SENTENCE VAULT — DOM ELEMENTS
-// ==========================================================================
-const navSentencesBtn        = document.getElementById('nav-sentences-btn');
-const sentencesView          = document.getElementById('sentences-view-container');
-const panelSentenceStats     = document.getElementById('panel-sentence-stats');
-
-const sentSearchInput        = document.getElementById('sent-search-input');
-const sentClearSearchBtn     = document.getElementById('sent-clear-search');
-const addSentenceBtn         = document.getElementById('add-sentence-btn');
-const sentenceGrid           = document.getElementById('sentence-grid');
-const sentEmptyState         = document.getElementById('sent-empty-state');
-const sentEmptyAddBtn        = document.getElementById('sent-empty-add-btn');
-const sentSectionHeading     = document.getElementById('sent-section-heading');
-const sentResultsCount       = document.getElementById('sent-results-count');
-
-// Sentence Stats
-const sentStatTotal          = document.getElementById('sent-stat-total');
-const sentStatGeneral        = document.getElementById('sent-stat-general');
-const sentStatIdiom          = document.getElementById('sent-stat-idiom');
-const sentStatProverb        = document.getElementById('sent-stat-proverb');
-const sentStatCollocations   = document.getElementById('sent-stat-collocations');
-const sentStatItems          = document.querySelectorAll('#panel-sentence-stats .stat-item');
-
-// Sentence Modal
+// Sentence Modal (Used by Topic Hub & Detail)
 const sentenceModal          = document.getElementById('sentence-modal');
 const sentModalTitle         = document.getElementById('sent-modal-title');
 const sentenceForm           = document.getElementById('sentence-form');
@@ -1250,19 +1827,19 @@ const sentLinkingInput       = document.getElementById('input-sent-linking');
 const sentModalCloseBtn      = document.getElementById('sent-modal-close-btn');
 const sentModalCancelBtn     = document.getElementById('sent-modal-cancel-btn');
 
-// Sentence Delete Dialog
-const sentDeleteDialog       = document.getElementById('sent-delete-dialog');
-const sentDeleteConfirmBtn   = document.getElementById('sent-delete-confirm-btn');
-const sentDeleteCancelBtn    = document.getElementById('sent-delete-cancel-btn');
-
 // ==========================================================================
-// 9. SENTENCE VAULT — NAVIGATION INTEGRATION
+// 8. APP VIEW NAVIGATION
 // ==========================================================================
 
-// Extended app switcher — supports 'dictionary', 'grammar', 'sentences', 'videos', and 'ipa'
+// Extended app switcher — supports 'topics', 'videos', 'grammar', and 'ipa'
 function switchAppViewExtended(view) {
   // Close mobile sidebar drawer if open
   closeSidebarMobile();
+
+  // If leaving topics view, clear topic detail subview
+  if (view !== 'topics') {
+    closeTopicDetail();
+  }
 
   // Reset scroll positions of main content to prevent layout shifts
   const mainContent = document.querySelector('.main-content');
@@ -1270,17 +1847,21 @@ function switchAppViewExtended(view) {
     mainContent.scrollTop = 0;
   }
 
-  // Always reset sentences view & button
-  sentencesView.style.display      = 'none';
-  panelSentenceStats.style.display = 'none';
-  navSentencesBtn.classList.remove('active');
+  // Always reset topics view & button
+  if (topicsView) topicsView.style.display = 'none';
+  if (panelTopicStats) panelTopicStats.style.display = 'none';
+  if (navTopicsBtn) navTopicsBtn.classList.remove('active');
 
-  // Always reset videos view & button
+  // Reset grammar view & button
+  if (grammarView) grammarView.style.display = 'none';
+  if (panelGrammarNav) panelGrammarNav.style.display = 'none';
+  if (navGrammarBtn) navGrammarBtn.classList.remove('active');
+
+  // Reset videos view & button
   if (videosView) videosView.style.display = 'none';
-  if (panelVideoCategories) panelVideoCategories.style.display = 'none';
   if (navVideosBtn) navVideosBtn.classList.remove('active');
 
-  // Always reset IPA view & button
+  // Reset IPA view & button
   if (ipaView) ipaView.style.display = 'none';
   if (panelIpaCategories) panelIpaCategories.style.display = 'none';
   if (navIpaBtn) navIpaBtn.classList.remove('active');
@@ -1293,244 +1874,51 @@ function switchAppViewExtended(view) {
     activeVideoPlayer.style.display = 'none';
   }
 
-  if (view === 'sentences') {
-    // Hide other views
-    dictionaryView.style.display       = 'none';
-    grammarView.style.display          = 'none';
-    panelDictionaryStats.style.display = 'none';
-    panelGrammarNav.style.display      = 'none';
-    navDictionaryBtn.classList.remove('active');
-    navGrammarBtn.classList.remove('active');
-
-    // Show sentences
-    sentencesView.style.display      = 'flex';
-    panelSentenceStats.style.display = 'flex';
-    navSentencesBtn.classList.add('active');
+  if (view === 'topics') {
+    if (topicsView) topicsView.style.display = 'flex';
+    if (panelTopicStats) panelTopicStats.style.display = 'flex';
+    if (navTopicsBtn) navTopicsBtn.classList.add('active');
+    renderTopics();
+    updateTopicStats();
     lucide.createIcons();
   } else if (view === 'videos') {
-    // Hide other views
-    dictionaryView.style.display       = 'none';
-    grammarView.style.display          = 'none';
-    panelDictionaryStats.style.display = 'none';
-    panelGrammarNav.style.display      = 'none';
-    navDictionaryBtn.classList.remove('active');
-    navGrammarBtn.classList.remove('active');
-
-    // Show videos
     if (videosView) videosView.style.display = 'flex';
-    if (panelVideoCategories) panelVideoCategories.style.display = 'flex';
     if (navVideosBtn) navVideosBtn.classList.add('active');
     lucide.createIcons();
+  } else if (view === 'grammar') {
+    if (grammarView) grammarView.style.display = 'flex';
+    if (panelGrammarNav) panelGrammarNav.style.display = 'flex';
+    if (navGrammarBtn) navGrammarBtn.classList.add('active');
+    setTimeout(() => {
+      initGrammarChart();
+    }, 100);
+    lucide.createIcons();
   } else if (view === 'ipa') {
-    // Hide other views
-    dictionaryView.style.display       = 'none';
-    grammarView.style.display          = 'none';
-    panelDictionaryStats.style.display = 'none';
-    panelGrammarNav.style.display      = 'none';
-    navDictionaryBtn.classList.remove('active');
-    navGrammarBtn.classList.remove('active');
-
-    // Show IPA
     if (ipaView) ipaView.style.display = 'flex';
-    if (panelIpaCategories) panelIpaCategories.style.display = 'flex';
     if (navIpaBtn) navIpaBtn.classList.add('active');
-    // Render IPA symbols on first load
-    setTimeout(filterAndRenderIpa, 50);
-    lucide.createIcons();
-  } else {
-    switchAppView(view);
-  }
-}
-
-
-// ==========================================================================
-// 10. SENTENCE VAULT — EVENT LISTENERS
-// ==========================================================================
-navSentencesBtn.addEventListener('click', () => switchAppViewExtended('sentences'));
-addSentenceBtn.addEventListener('click', () => openSentenceModal());
-sentEmptyAddBtn.addEventListener('click', () => openSentenceModal());
-
-sentModalCloseBtn.addEventListener('click', closeSentenceModal);
-sentModalCancelBtn.addEventListener('click', closeSentenceModal);
-sentenceModal.addEventListener('click', (e) => {
-  if (e.target === sentenceModal) closeSentenceModal();
-});
-sentenceForm.addEventListener('submit', handleSentenceFormSubmit);
-
-sentSearchInput.addEventListener('input', () => {
-  clearTimeout(sentSearchInput._debounce);
-  sentSearchInput._debounce = setTimeout(filterAndRenderSentences, 150);
-});
-
-sentClearSearchBtn.addEventListener('click', () => {
-  sentSearchInput.value = '';
-  sentClearSearchBtn.style.display = 'none';
-  filterAndRenderSentences();
-});
-
-// Event delegation on sentence grid
-sentenceGrid.addEventListener('click', (e) => {
-  const editBtn   = e.target.closest('.edit-btn');
-  const deleteBtn = e.target.closest('.delete-btn');
-
-  if (editBtn) {
-    const id     = editBtn.getAttribute('data-id');
-    const target = sentences.find(s => s.id === id);
-    if (target) openSentenceModal(target);
-  } else if (deleteBtn) {
-    const id = deleteBtn.getAttribute('data-id');
-    sentenceDeleteTargetId = id;
-    sentDeleteDialog.style.display = 'flex';
-  }
-});
-
-// Sidebar filter clicks
-sentStatItems.forEach(item => {
-  item.addEventListener('click', () => {
-    sentStatItems.forEach(i => i.classList.remove('active'));
-    item.classList.add('active');
-    activeSentenceFilter = item.getAttribute('data-sent-filter');
-    filterAndRenderSentences();
-    closeSidebarMobile();
-  });
-});
-
-// Delete dialog
-sentDeleteCancelBtn.addEventListener('click', closeSentenceDeleteDialog);
-sentDeleteDialog.addEventListener('click', (e) => {
-  if (e.target === sentDeleteDialog) closeSentenceDeleteDialog();
-});
-sentDeleteConfirmBtn.addEventListener('click', confirmDeleteSentence);
-
-// ==========================================================================
-// 11. SENTENCE VAULT — CRUD FUNCTIONS
-// ==========================================================================
-
-async function fetchSentences() {
-  try {
-    if (isStaticMode) {
-      let storedSentences = localStorage.getItem('lexikeep_sentences');
-      let parsed = storedSentences ? JSON.parse(storedSentences) : [];
-      if (parsed && parsed.length > 0) {
-        sentences = parsed;
-      } else {
-        // Fetch default JSON from root folder
-        const response = await fetch('./sentences.json');
-        if (!response.ok) throw new Error('Could not load default sentences file.');
-        sentences = await response.json();
-        localStorage.setItem('lexikeep_sentences', JSON.stringify(sentences));
-      }
-    } else {
-      const response = await fetch('/api/sentences');
-      if (!response.ok) throw new Error('Could not load sentence data.');
-      sentences = await response.json();
-    }
-    updateSentenceStats();
-    filterAndRenderSentences();
-  } catch (error) {
-    console.error('Error fetching sentences:', error);
-    showToastNotification('Failed to connect to sentence storage.', 'error');
-  }
-}
-
-function updateSentenceStats() {
-  const counts = { all: sentences.length, general: 0, idiom: 0, proverb: 0, collocations: 0 };
-  sentences.forEach(s => {
-    if (counts[s.category] !== undefined) counts[s.category]++;
-  });
-
-  sentStatTotal.textContent        = counts.all;
-  sentStatGeneral.textContent      = counts.general;
-  sentStatIdiom.textContent        = counts.idiom;
-  sentStatProverb.textContent      = counts.proverb;
-  sentStatCollocations.textContent = counts.collocations;
-}
-
-function filterAndRenderSentences() {
-  const query = sentSearchInput.value.trim().toLowerCase();
-  sentClearSearchBtn.style.display = query.length > 0 ? 'flex' : 'none';
-
-  let filtered = sentences;
-
-  if (activeSentenceFilter !== 'all') {
-    filtered = filtered.filter(s => s.category === activeSentenceFilter);
-  }
-
-  if (query.length > 0) {
-    filtered = filtered.filter(s =>
-      s.sentence.toLowerCase().includes(query) ||
-      s.translation.toLowerCase().includes(query) ||
-      (s.pronunciation && s.pronunciation.toLowerCase().includes(query)) ||
-      (s.usageNote && s.usageNote.toLowerCase().includes(query)) ||
-      (s.linkingNote && s.linkingNote.toLowerCase().includes(query)) ||
-      (s.note && s.note.toLowerCase().includes(query))
-    );
-  }
-
-  const labelMap = {
-    all: 'All Sentences',
-    general: 'General Sentences',
-    idiom: 'Idioms',
-    proverb: 'Proverbs',
-    collocations: 'Collocations'
-  };
-  sentSectionHeading.textContent = query ? 'Search Results' : (labelMap[activeSentenceFilter] || 'Sentences');
-  sentResultsCount.textContent   = `Showing ${filtered.length} sentence${filtered.length !== 1 ? 's' : ''}`;
-
-  if (filtered.length === 0) {
-    sentenceGrid.style.display   = 'none';
-    sentEmptyState.style.display = 'flex';
-  } else {
-    sentEmptyState.style.display = 'none';
-    sentenceGrid.style.display   = 'grid';
-
-    const catLabelMap = {
-      general: 'General',
-      idiom: 'Idiom',
-      proverb: 'Proverb',
-      collocations: 'Collocations',
-      professional: 'Professional'
-    };
-
-    sentenceGrid.innerHTML = filtered.map(s => {
-      const cat        = s.category || 'general';
-      const catLabel   = catLabelMap[cat] || (cat.charAt(0).toUpperCase() + cat.slice(1));
-      const usageVal   = s.usageNote || s.note || '';
-      const linkingVal = s.linkingNote || s.linking || '';
-      const idVal      = s.id ? escapeHTMLElements(String(s.id)) : '';
-
-      return `
-        <article class="word-card ${cat}" data-id="${s.id}">
-          <div class="card-top">
-            <div class="word-name-row">
-              <span class="cat-badge">${escapeHTMLElements(catLabel)}</span>
-              ${idVal ? `<span class="card-id" title="Sentence ID: ${idVal}">${idVal}</span>` : ''}
-            </div>
-          </div>
-          <div class="card-body-content">
-            <p class="card-sentence">${escapeHTMLElements(s.sentence)}</p>
-            ${s.pronunciation ? `<span class="card-pron card-pron-block">${escapeHTMLElements(s.pronunciation)}</span>` : ''}
-            <p class="card-translation">${escapeHTMLElements(s.translation)}</p>
-            ${usageVal ? `<div class="card-usage-note">💡 <strong>Cách dùng:</strong> ${escapeHTMLElements(usageVal)}</div>` : ''}
-            ${linkingVal ? `<div class="card-linking-note">🗣️ <strong>Cách nối âm:</strong> ${escapeHTMLElements(linkingVal)}</div>` : ''}
-          </div>
-          <div class="card-actions">
-            <button class="action-btn edit-btn" data-id="${s.id}" title="Edit sentence">
-              <i data-lucide="edit-2"></i>
-            </button>
-            <button class="action-btn delete-btn" data-id="${s.id}" title="Delete sentence">
-              <i data-lucide="trash-2"></i>
-            </button>
-          </div>
-        </article>
-      `;
-    }).join('');
-
     lucide.createIcons();
   }
 }
 
-function openSentenceModal(sentObj = null) {
+// ==========================================================================
+// 9. SENTENCE MODAL & CRUD LOGIC
+// ==========================================================================
+if (sentModalCloseBtn) sentModalCloseBtn.addEventListener('click', closeSentenceModal);
+if (sentModalCancelBtn) sentModalCancelBtn.addEventListener('click', closeSentenceModal);
+if (sentenceModal) {
+  sentenceModal.addEventListener('click', (e) => {
+    if (e.target === sentenceModal) closeSentenceModal();
+  });
+}
+if (sentenceForm) sentenceForm.addEventListener('submit', handleSentenceFormSubmit);
+
+function openSentenceModal(sentObj = null, topicId = null) {
+  populateTopicSelectors();
+  const inTopicDetail = isTopicDetailActive();
+  const chosenTopicId = inTopicDetail
+    ? activeTopicId
+    : ((sentObj && sentObj.topicId) || topicId || (inputSentTopic ? inputSentTopic.value : '') || (topics[0] ? topics[0].id : ''));
+
   if (sentObj) {
     sentModalTitle.textContent   = 'Edit Sentence';
     sentIdInput.value            = sentObj.id;
@@ -1552,18 +1940,38 @@ function openSentenceModal(sentObj = null) {
     if (sentLinkingInput) sentLinkingInput.value = '';
     if (sentNoteInput) sentNoteInput.value       = '';
   }
+
+  if (inputSentTopic) {
+    if (chosenTopicId) {
+      inputSentTopic.value = chosenTopicId;
+    }
+    inputSentTopic.disabled = inTopicDetail;
+  }
+  const sentLockHint = document.getElementById('sent-topic-lock-hint');
+  if (sentLockHint) {
+    sentLockHint.style.display = inTopicDetail ? 'inline-flex' : 'none';
+  }
+
   sentenceModal.style.display = 'flex';
+  lucide.createIcons();
   sentenceInput.focus();
 }
 
 function closeSentenceModal() {
   sentenceModal.style.display = 'none';
+  if (inputSentTopic) inputSentTopic.disabled = false;
+  const sentLockHint = document.getElementById('sent-topic-lock-hint');
+  if (sentLockHint) sentLockHint.style.display = 'none';
 }
 
 async function handleSentenceFormSubmit(e) {
   e.preventDefault();
 
   const id = sentIdInput.value;
+  const inTopicDetail = isTopicDetailActive();
+  const targetTopicId = (inTopicDetail && activeTopicId)
+    ? activeTopicId
+    : (inputSentTopic ? inputSentTopic.value : activeTopicId);
   const usageVal = sentUsageInput ? sentUsageInput.value.trim() : (sentNoteInput ? sentNoteInput.value.trim() : '');
   const linkingVal = sentLinkingInput ? sentLinkingInput.value.trim() : '';
   const payload = {
@@ -1573,118 +1981,92 @@ async function handleSentenceFormSubmit(e) {
     category:      sentCategorySelect.value,
     usageNote:     usageVal,
     linkingNote:   linkingVal,
-    note:          usageVal
+    note:          usageVal,
+    topicId:       targetTopicId
   };
 
   const isEdit = id !== '';
 
-  if (isStaticMode) {
-    try {
-      if (!payload.sentence || !payload.translation) {
-        throw new Error('Sentence and translation are required');
-      }
+  if (!payload.sentence || !payload.translation) {
+    showToastNotification('Sentence and translation are required', 'error');
+    return;
+  }
 
+  // If editing outside topic detail and topic was changed, remove from old topic
+  if (isEdit) {
+    const oldSent = sentences.find(s => s.id === id);
+    if (oldSent && oldSent.topicId && oldSent.topicId !== targetTopicId) {
+      const oldTopic = topics.find(t => t.id === oldSent.topicId);
+      if (oldTopic && Array.isArray(oldTopic.sentences)) {
+        oldTopic.sentences = oldTopic.sentences.filter(s => s.id !== id);
+        if (!isStaticMode) {
+          fetch(`/api/topics/${oldTopic.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sentences: oldTopic.sentences })
+          }).catch(console.error);
+        }
+      }
+    }
+  }
+
+  // 1. Update/Add in target topic if selected
+  if (targetTopicId) {
+    const topic = topics.find(t => t.id === targetTopicId);
+    if (topic) {
+      if (!Array.isArray(topic.sentences)) topic.sentences = [];
       if (isEdit) {
-        const idx = sentences.findIndex(s => s.id === id);
-        if (idx === -1) throw new Error('Sentence not found');
-        sentences[idx] = {
-          ...sentences[idx],
-          sentence: payload.sentence,
-          translation: payload.translation,
-          pronunciation: payload.pronunciation,
-          category: payload.category,
-          usageNote: payload.usageNote,
-          linkingNote: payload.linkingNote,
-          note: payload.note,
-          updatedAt: new Date().toISOString()
-        };
+        const sIdx = topic.sentences.findIndex(s => s.id === id);
+        if (sIdx !== -1) {
+          topic.sentences[sIdx] = { ...topic.sentences[sIdx], ...payload, updatedAt: new Date().toISOString() };
+        } else {
+          topic.sentences.unshift({ id, ...payload, createdAt: new Date().toISOString() });
+        }
       } else {
-        const newItem = {
-          id: Date.now().toString(),
-          sentence: payload.sentence,
-          translation: payload.translation,
-          pronunciation: payload.pronunciation,
-          category: payload.category,
-          note: payload.note,
-          createdAt: new Date().toISOString()
-        };
-        sentences.unshift(newItem);
+        const newSentId = 's_' + Date.now();
+        topic.sentences.unshift({ id: newSentId, ...payload, createdAt: new Date().toISOString() });
+        payload.id = newSentId;
       }
 
-      localStorage.setItem('lexikeep_sentences', JSON.stringify(sentences));
-      closeSentenceModal();
-      showToastNotification(
-        isEdit ? 'Sentence updated successfully!' : 'Sentence added successfully!',
-        'success'
-      );
-      updateSentenceStats();
-      filterAndRenderSentences();
-    } catch (error) {
-      console.error('Error submitting sentence form (static):', error);
-      showToastNotification(error.message || 'Operation failed.', 'error');
-    }
-  } else {
-    const url    = isEdit ? `/api/sentences/${id}` : '/api/sentences';
-    const method = isEdit ? 'PUT' : 'POST';
-
-    try {
-      const response = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.error || 'Server error');
+      if (!isStaticMode) {
+        try {
+          fetch(`/api/topics/${targetTopicId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sentences: topic.sentences })
+          }).catch(console.error);
+        } catch (e) {
+          console.error(e);
+        }
       }
-
-      closeSentenceModal();
-      showToastNotification(
-        isEdit ? 'Sentence updated successfully!' : 'Sentence added successfully!',
-        'success'
-      );
-      await fetchSentences();
-    } catch (error) {
-      console.error('Error submitting sentence form:', error);
-      showToastNotification(error.message || 'Operation failed.', 'error');
     }
   }
-}
 
-function closeSentenceDeleteDialog() {
-  sentDeleteDialog.style.display = 'none';
-  sentenceDeleteTargetId = null;
-}
-
-async function confirmDeleteSentence() {
-  if (!sentenceDeleteTargetId) return;
-
-  if (isStaticMode) {
-    try {
-      sentences = sentences.filter(s => s.id !== sentenceDeleteTargetId);
-      localStorage.setItem('lexikeep_sentences', JSON.stringify(sentences));
-      closeSentenceDeleteDialog();
-      showToastNotification('Sentence deleted successfully!', 'success');
-      updateSentenceStats();
-      filterAndRenderSentences();
-    } catch (error) {
-      console.error('Error deleting sentence (static):', error);
-      showToastNotification('Could not delete sentence.', 'error');
+  // 2. Global sentences array sync
+  if (isEdit) {
+    const idx = sentences.findIndex(s => s.id === id);
+    if (idx !== -1) {
+      sentences[idx] = { ...sentences[idx], ...payload, updatedAt: new Date().toISOString() };
     }
   } else {
-    try {
-      const response = await fetch(`/api/sentences/${sentenceDeleteTargetId}`, { method: 'DELETE' });
-      if (!response.ok) throw new Error('Deletion request failed.');
-
-      closeSentenceDeleteDialog();
-      showToastNotification('Sentence deleted successfully!', 'success');
-      await fetchSentences();
-    } catch (error) {
-      console.error('Error deleting sentence:', error);
-      showToastNotification('Could not delete sentence.', 'error');
-    }
+    sentences.unshift({
+      id: payload.id || Date.now().toString(),
+      ...payload,
+      createdAt: new Date().toISOString()
+    });
   }
+
+  localStorage.setItem('lexikeep_topics', JSON.stringify(topics));
+  localStorage.setItem('lexikeep_sentences', JSON.stringify(sentences));
+
+  closeSentenceModal();
+  showToastNotification(
+    isEdit ? 'Sentence updated successfully!' : 'Sentence added successfully!',
+    'success'
+  );
+
+  updateTopicStats();
+  if (activeTopicId) renderTopicDetail();
 }
 
 // Mobile Sidebar Drawer Helpers
@@ -1702,9 +2084,6 @@ function closeSidebarMobile() {
   if (backdrop) backdrop.classList.remove('show');
 }
 
-// Kick off sentence data fetch on load
-fetchSentences();
-
 // ==========================================================================
 // 12. DATA BACKUP (EXPORT) & RESTORE (IMPORT) LOGIC
 // ==========================================================================
@@ -1713,20 +2092,25 @@ function exportData(isAuto = false) {
   try {
     let currentWords = [];
     let currentSentences = [];
+    let currentTopics = [];
 
     if (isStaticMode) {
       let storedWords = localStorage.getItem('lexikeep_words');
       if (storedWords) currentWords = JSON.parse(storedWords);
       let storedSentences = localStorage.getItem('lexikeep_sentences');
       if (storedSentences) currentSentences = JSON.parse(storedSentences);
+      let storedTopics = localStorage.getItem('lexikeep_topics');
+      if (storedTopics) currentTopics = JSON.parse(storedTopics);
     } else {
       currentWords = words;
       currentSentences = sentences;
+      currentTopics = topics;
     }
 
     const backupData = {
-      version: "1.0",
+      version: "2.0",
       timestamp: new Date().toISOString(),
+      topics: currentTopics,
       words: currentWords,
       sentences: currentSentences
     };
@@ -1764,12 +2148,24 @@ function handleBackupImport(e) {
     try {
       const importedData = JSON.parse(event.target.result);
       
-      if (!importedData || (!Array.isArray(importedData.words) && !Array.isArray(importedData.sentences))) {
+      if (!importedData || (!Array.isArray(importedData.topics) && !Array.isArray(importedData.words) && !Array.isArray(importedData.sentences))) {
         throw new Error('Invalid backup file structure.');
       }
 
+      let importedTopicsCount = 0;
       let importedWordsCount = 0;
       let importedSentencesCount = 0;
+
+      if (Array.isArray(importedData.topics)) {
+        if (isStaticMode) {
+          localStorage.setItem('lexikeep_topics', JSON.stringify(importedData.topics));
+        }
+        topics = importedData.topics;
+        importedTopicsCount = importedData.topics.length;
+        populateTopicSelectors();
+        updateTopicStats();
+        renderTopics();
+      }
 
       if (Array.isArray(importedData.words)) {
         if (isStaticMode) {
@@ -1787,13 +2183,12 @@ function handleBackupImport(e) {
         importedSentencesCount = importedData.sentences.length;
       }
 
-      updateDictionaryStats();
-      filterAndRenderWords();
-      
-      updateSentenceStats();
-      filterAndRenderSentences();
+      syncGlobalWordsAndSentences();
+      updateTopicStats();
+      renderTopics();
+      if (activeTopicId) renderTopicDetail();
 
-      showToastNotification(`Imported ${importedWordsCount} words and ${importedSentencesCount} sentences!`, 'success');
+      showToastNotification(`Imported ${importedTopicsCount} topics, ${importedWordsCount} words and ${importedSentencesCount} sentences!`, 'success');
     } catch (err) {
       console.error('Import backup error:', err);
       showToastNotification('Failed to import backup file. Check file format.', 'error');
@@ -1884,13 +2279,6 @@ async function fetchVideosData() {
         "description": "Learn useful English expressions and idioms for talking about food, traditional dishes, eating habits, and dining customs."
       },
       {
-        "id": "7",
-        "title": "Talking About Loneliness in English | Easy English Podcast",
-        "youtubeId": "t0ZuWDYSbpI",
-        "category": "Speaking",
-        "description": "Practice conversation skills discussing emotions, feelings of isolation, and helpful ways to connect with others in English."
-      },
-      {
         "id": "8",
         "title": "Talking About City Life & Country Life in English | Easy English Podcast",
         "youtubeId": "xDhJVuiMv7k",
@@ -1927,24 +2315,8 @@ async function fetchVideosData() {
       }
     ];
   } finally {
-    updateVideoStats();
     filterAndRenderVideos();
   }
-}
-
-function updateVideoStats() {
-  const counts = { all: videos.length, Grammar: 0, Speaking: 0, Vocabulary: 0 };
-  
-  videos.forEach(v => {
-    if (counts[v.category] !== undefined) {
-      counts[v.category]++;
-    }
-  });
-
-  if (videoStatTotal) videoStatTotal.textContent = counts.all;
-  if (videoStatGrammar) videoStatGrammar.textContent = counts.Grammar;
-  if (videoStatSpeaking) videoStatSpeaking.textContent = counts.Speaking;
-  if (videoStatVocabulary) videoStatVocabulary.textContent = counts.Vocabulary;
 }
 
 function filterAndRenderVideos() {
@@ -1952,11 +2324,6 @@ function filterAndRenderVideos() {
   videoClearSearchBtn.style.display = query.length > 0 ? 'flex' : 'none';
 
   let filtered = videos;
-
-  // Category filter
-  if (activeVideoFilter !== 'all') {
-    filtered = filtered.filter(v => v.category === activeVideoFilter);
-  }
 
   // Search query filter
   if (query.length > 0) {
@@ -1966,10 +2333,11 @@ function filterAndRenderVideos() {
     );
   }
 
-  // Update headers
-  let filterLabel = activeVideoFilter === 'all' ? 'All Videos' : `${activeVideoFilter} Videos`;
-  if (videoSectionHeading) videoSectionHeading.textContent = query ? 'Search Results' : filterLabel;
-  if (videoResultsCount) videoResultsCount.textContent = `Showing ${filtered.length} video${filtered.length !== 1 ? 's' : ''}`;
+  if (videoResultsCount) {
+    videoResultsCount.textContent = query
+      ? `Found ${filtered.length} video${filtered.length !== 1 ? 's' : ''}`
+      : `Showing ${filtered.length} video${filtered.length !== 1 ? 's' : ''}`;
+  }
 
   if (filtered.length === 0) {
     videoGrid.style.display = 'none';
@@ -1994,7 +2362,6 @@ function filterAndRenderVideos() {
             </div>
           </div>
           <div class="video-card-info">
-            <span class="video-card-tag">${v.category}</span>
             <h4 class="video-card-title">${escapedTitle}</h4>
             <p class="video-card-desc">${escapedDesc}</p>
           </div>
@@ -2006,14 +2373,13 @@ function filterAndRenderVideos() {
   }
 }
 
-function playVideo(youtubeId, title, category, description) {
-  if (!activeVideoPlayer || !mainYoutubePlayer || !playerVideoCategory || !playerVideoTitle || !playerVideoDesc) return;
+function playVideo(youtubeId, title, description) {
+  if (!activeVideoPlayer || !mainYoutubePlayer || !playerVideoTitle || !playerVideoDesc) return;
 
   // Set IFrame URL with autoplay
   mainYoutubePlayer.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1`;
   
   // Set metadata details
-  playerVideoCategory.textContent = category;
   playerVideoTitle.textContent = title;
   playerVideoDesc.textContent = description;
 

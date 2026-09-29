@@ -1,0 +1,249 @@
+[
+  {
+    "id": "topic_airport",
+    "name": "At the Airport (Tại sân bay)",
+    "description": "",
+    "icon": "plane",
+    "color": "#3b82f6",
+    "createdAt": "2026-09-28T10:00:00.000Z",
+    "sentences": [
+      {
+        "id": "s_ap_1",
+        "sentence": "Could I see your passport and boarding pass, please?",
+        "pronunciation": "/kʊd aɪ siː jɔːr ˈpɑːspɔːt ænd ˈbɔːdɪŋ pɑːs pliːz/",
+        "translation": "Tôi có thể xem hộ chiếu và thẻ lên máy bay của bạn được không?",
+        "usageNote": "Nhân viên quầy làm thủ tục (check-in) hoặc nhân viên kiểm soát an ninh dùng khi yêu cầu hành khách xuất trình giấy tờ.",
+        "linkingNote": "Nối âm: 'Could I' đọc liền thành /kʊ-daɪ/. Nuốt âm: 'and boarding' nuốt âm /d/ cuối của 'and' thành /æn ˈbɔːdɪŋ/.",
+        "createdAt": "2026-09-28T10:01:00.000Z"
+      },
+      {
+        "id": "s_ap_2",
+        "sentence": "I would like to request a window seat, if possible.",
+        "pronunciation": "/aɪ wʊd laɪk tuː rɪˈkwest ə ˈwɪndəʊ siːt ɪf ˈpɒsəbl/",
+        "translation": "Tôi muốn xin một chỗ ngồi cạnh cửa sổ nếu còn trống.",
+        "usageNote": "Hành khách dùng khi muốn chọn chỗ ngồi mong muốn tại quầy check-in sân bay.",
+        "linkingNote": "Nối âm: 'like to' nuốt nhẹ âm /k/, 'if possible' nối âm /f/ sang /p/ tự nhiên; 'request a' đọc thành /rɪˈkwe-stə/.",
+        "createdAt": "2026-09-28T10:02:00.000Z"
+      },
+      {
+        "id": "s_ap_3",
+        "sentence": "Which terminal does the flight to Tokyo depart from?",
+        "pronunciation": "/wɪtʃ ˈtɜːmɪnl dʌz ðə flaɪt tuː ˈtəʊkjəʊ dɪˈpɑːt frɒm/",
+        "translation": "Chuyến bay đi Tokyo sẽ khởi hành từ nhà ga nào vậy?",
+        "usageNote": "Hỏi nhân viên thông tin hoặc quầy trợ giúp khi chưa rõ nhà ga xuất phát.",
+        "linkingNote": "Nối âm: 'does the' đọc lướt âm /z/ sang âm /ð/; 'depart from' phát âm liền mạch không ngắt nghỉ.",
+        "createdAt": "2026-09-28T10:03:00.000Z"
+      }
+    ],
+    "words": [
+      {
+        "id": "w_ap_1",
+        "word": "Boarding pass",
+        "pronunciation": "/ˈbɔːdɪŋ pɑːs/",
+        "definition": "Thẻ lên máy bay (chứa thông tin cửa ra, số ghế và giờ bay)",
+        "type": "noun",
+        "note": "Cần giữ cẩn thận cùng giấy tờ tùy thân để quét mã tại cửa an ninh và cửa lên tàu bay.",
+        "createdAt": "2026-09-28T10:04:00.000Z"
+      },
+      {
+        "id": "w_ap_2",
+        "word": "Baggage claim",
+        "pronunciation": "/ˈbæɡɪdʒ kleɪm/",
+        "definition": "Khu vực băng chuyền nhận lại hành lý ký gửi sau chuyến bay",
+        "type": "noun",
+        "note": "Sau khi hạ cánh, xem số hiệu băng chuyền (carousel number) tương ứng với mã chuyến bay.",
+        "createdAt": "2026-09-28T10:05:00.000Z"
+      },
+      {
+        "id": "w_ap_3",
+        "word": "Carry-on",
+        "pronunciation": "/ˈkæri ɒn/",
+        "definition": "Hành lý xách tay được phép mang lên khoang máy bay",
+        "type": "noun",
+        "note": "Thường có quy định nghiêm ngặt về kích thước và trọng lượng (thường từ 7kg - 10kg).",
+        "createdAt": "2026-09-28T10:06:00.000Z"
+      },
+      {
+        "id": "w_ap_4",
+        "word": "Layover",
+        "pronunciation": "/ˈleɪəʊvər/",
+        "definition": "Thời gian dừng quá cảnh giữa hai chặng bay",
+        "type": "noun",
+        "note": "Khác với 'stopover' (thường quá cảnh dài hơn 24 giờ).",
+        "createdAt": "2026-09-28T10:07:00.000Z"
+      }
+    ],
+    "updatedAt": "2026-09-29T02:11:41.314Z"
+  },
+  {
+    "id": "topic_interview",
+    "name": "Job Interview (Phỏng vấn xin việc)",
+    "description": "Câu trả lời chuyên nghiệp, mẫu câu mở đầu và từ vựng ghi điểm với nhà tuyển dụng.",
+    "icon": "briefcase",
+    "color": "#8b5cf6",
+    "createdAt": "2026-09-28T10:10:00.000Z",
+    "sentences": [
+      {
+        "id": "s_iv_1",
+        "sentence": "Thank you for giving me the opportunity to interview today.",
+        "pronunciation": "/ˈθæŋk juː fɔːr ˈɡɪvɪŋ miː ðiː ˌɒpəˈtjuːnəti tuː ˈɪntəvjuː təˈdeɪ/",
+        "translation": "Cảm ơn quý công ty đã trao cho tôi cơ hội tham gia buổi phỏng vấn hôm nay.",
+        "usageNote": "Dùng ở phần mở đầu buổi phỏng vấn để tạo ấn tượng lịch sự, chuyên nghiệp.",
+        "linkingNote": "Nối âm: 'Thank you' đọc liền thành /ˈθæŋ-kjuː/. 'the opportunity' dùng /ðiː/ trước nguyên âm.",
+        "createdAt": "2026-09-28T10:11:00.000Z"
+      },
+      {
+        "id": "s_iv_2",
+        "sentence": "I pride myself on my problem-solving skills and adaptability.",
+        "pronunciation": "/aɪ praɪd maɪˈsɛlf ɒn maɪ ˈprɒbləm ˈsɒlvɪŋ skɪlz ænd əˌdæptəˈbɪləti/",
+        "translation": "Tôi tự hào về kỹ năng giải quyết vấn đề và khả năng thích ứng linh hoạt của mình.",
+        "usageNote": "Dùng khi được hỏi về điểm mạnh (strengths) hoặc phong cách làm việc của bạn.",
+        "linkingNote": "Nối âm: 'pride myself on' -> âm /f/ nối sang /ɒn/ tạo thành /maɪˈsɛl-fɒn/.",
+        "createdAt": "2026-09-28T10:12:00.000Z"
+      },
+      {
+        "id": "s_iv_3",
+        "sentence": "Could you tell me more about the team culture and future goals?",
+        "pronunciation": "/kʊd juː tel miː mɔːr əˈbaʊt ðə tiːm ˈkʌltʃər ænd ˈfjuːtʃər ɡəʊlz/",
+        "translation": "Anh/Chị có thể chia sẻ thêm về văn hoá đội ngũ và mục tiêu sắp tới của công ty không?",
+        "usageNote": "Dùng ở cuối buổi phỏng vấn khi người phỏng vấn hỏi 'Do you have any questions for us?'.",
+        "linkingNote": "Nối âm: 'Could you' biến âm thành /kʊ-dʒuː/. 'more about' nối âm /r/ sang /ə/.",
+        "createdAt": "2026-09-28T10:13:00.000Z"
+      }
+    ],
+    "words": [
+      {
+        "id": "w_iv_1",
+        "word": "Adaptability",
+        "pronunciation": "/əˌdæptəˈbɪləti/",
+        "definition": "Khả năng thích nghi nhanh với hoàn cảnh và thay đổi mới",
+        "type": "noun",
+        "note": "Kỹ năng mềm hàng đầu được các nhà tuyển dụng đánh giá cao.",
+        "createdAt": "2026-09-28T10:14:00.000Z"
+      },
+      {
+        "id": "w_iv_2",
+        "word": "Candidate",
+        "pronunciation": "/ˈkændɪdət/",
+        "definition": "Ứng viên tham gia dự tuyển vị trí công việc",
+        "type": "noun",
+        "note": "Thường đi kèm: 'strong candidate', 'prospective candidate'.",
+        "createdAt": "2026-09-28T10:15:00.000Z"
+      },
+      {
+        "id": "w_iv_3",
+        "word": "Collaborative",
+        "pronunciation": "/kəˈlæbərətɪv/",
+        "definition": "Có tinh thần cộng tác, hợp tác tốt trong nhóm",
+        "type": "adjective",
+        "note": "Ví dụ: 'collaborative work environment' (môi trường làm việc mang tính cộng tác).",
+        "createdAt": "2026-09-28T10:16:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "topic_coffee",
+    "name": "Coffee Shop & Dining (Cà phê & Ăn uống)",
+    "description": "Giao tiếp gọi đồ uống, đặt món ăn và thanh toán hóa đơn tự nhiên như người bản xứ.",
+    "icon": "coffee",
+    "color": "#f59e0b",
+    "createdAt": "2026-09-28T10:20:00.000Z",
+    "sentences": [
+      {
+        "id": "s_cf_1",
+        "sentence": "Could I get an iced latte with oat milk, please?",
+        "pronunciation": "/kʊd aɪ ɡet ən aɪst ˈlɑːteɪ wɪð əʊt mɪlk pliːz/",
+        "translation": "Cho tôi một ly latte đá dùng sữa yến mạch nhé.",
+        "usageNote": "Mẫu câu gọi đồ uống lịch sự, phổ biến nhất tại các quán cà phê quốc tế.",
+        "linkingNote": "Nối âm: 'Could I get an' nối thành /kʊ-daɪ ɡe-tən/. 'iced latte' nuốt nhẹ âm /t/ của 'iced'.",
+        "createdAt": "2026-09-28T10:21:00.000Z"
+      },
+      {
+        "id": "s_cf_2",
+        "sentence": "Could we split the bill, or do you prefer to pay together?",
+        "pronunciation": "/kʊd wiː splɪt ðə bɪl ɔːr duː juː prɪˈfɜːr tuː peɪ təˈɡeðər/",
+        "translation": "Chúng ta chia tiền hóa đơn nhé, hay bạn muốn thanh toán chung một lượt?",
+        "usageNote": "Dùng khi ăn uống cùng bạn bè hoặc đồng nghiệp tới lúc thanh toán tiền.",
+        "linkingNote": "Nối âm: 'split the' đọc nhanh /splɪ-ðə/, 'or do you' đọc nhịp điệu tự nhiên.",
+        "createdAt": "2026-09-28T10:22:00.000Z"
+      }
+    ],
+    "words": [
+      {
+        "id": "w_cf_1",
+        "word": "Decaf",
+        "pronunciation": "/ˈdiːkæf/",
+        "definition": "Cà phê đã được tách bỏ chất caffeine",
+        "type": "noun",
+        "note": "Rất phổ biến khi muốn thưởng thức cà phê vào buổi chiều tối mà không sợ mất ngủ.",
+        "createdAt": "2026-09-28T10:23:00.000Z"
+      },
+      {
+        "id": "w_cf_2",
+        "word": "Receipt",
+        "pronunciation": "/rɪˈsiːt/",
+        "definition": "Hóa đơn / biên lai thanh toán",
+        "type": "noun",
+        "note": "Lưu ý chữ 'p' là âm câm (silent letter), không đọc là /rɪˈsiːpt/.",
+        "createdAt": "2026-09-28T10:24:00.000Z"
+      },
+      {
+        "id": "w_cf_3",
+        "word": "Takeaway",
+        "pronunciation": "/ˈteɪkəweɪ/",
+        "definition": "Đồ ăn hoặc thức uống mua mang đi",
+        "type": "noun",
+        "note": "Người Anh-Úc thường dùng 'takeaway', người Mỹ dùng 'to go'.",
+        "createdAt": "2026-09-28T10:25:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "topic_daily",
+    "name": "Daily Small Talk (Giao tiếp hàng ngày)",
+    "description": "Các câu nói xã giao ngắn gọn, tự nhiên giúp duy trì cuộc trò chuyện thoải mái.",
+    "icon": "message-circle",
+    "color": "#10b981",
+    "createdAt": "2026-09-28T10:30:00.000Z",
+    "sentences": [
+      {
+        "id": "s_dl_1",
+        "sentence": "Long time no see! What have you been up to lately?",
+        "pronunciation": "/lɒŋ taɪm nəʊ siː | wɒt hæv juː biːn ʌp tuː ˈleɪtli/",
+        "translation": "Lâu quá không gặp! Dạo này cậu đang bận rộn với dự định gì thế?",
+        "usageNote": "Dùng khi tình cờ gặp lại bạn bè, người quen sau một khoảng thời gian.",
+        "linkingNote": "Nối âm: 'What have you' phát âm lướt /wɒ-təv-juː/, 'been up to' nối âm /n/ sang /ʌ/ thành /biː-nʌp-tuː/.",
+        "createdAt": "2026-09-28T10:31:00.000Z"
+      },
+      {
+        "id": "s_dl_2",
+        "sentence": "It totally slipped my mind; I completely forgot about it.",
+        "pronunciation": "/ɪt ˈtəʊtəli slɪpt maɪ maɪnd | aɪ kəmˈpliːtli fəˈɡɒt əˈbaʊt ɪt/",
+        "translation": "Tớ hoàn toàn đãng trí quên béng mất chuyện đó.",
+        "usageNote": "Cách nói thân mật, tự nhiên thay vì chỉ nói 'I forgot' khi lỡ quên một việc gì đó.",
+        "linkingNote": "Nối âm: 'forgot about it' nối âm đôi: /fəˈɡɒ-tə-baʊ-tɪt/ rất phổ biến trong giao tiếp.",
+        "createdAt": "2026-09-28T10:32:00.000Z"
+      }
+    ],
+    "words": [
+      {
+        "id": "w_dl_1",
+        "word": "Serendipity",
+        "pronunciation": "/ˌserənˈdɪpəti/",
+        "definition": "Sự may mắn bất ngờ tìm thấy điều tốt đẹp một cách tình cờ",
+        "type": "noun",
+        "note": "Một trong những từ đẹp nhất trong tiếng Anh, diễn tả cái duyên may mắn kỳ diệu.",
+        "createdAt": "2026-09-28T10:33:00.000Z"
+      },
+      {
+        "id": "w_dl_2",
+        "word": "Spontaneous",
+        "pronunciation": "/spɒnˈteɪniəs/",
+        "definition": "Tự phát, ngẫu hứng, không lên kế hoạch trước",
+        "type": "adjective",
+        "note": "Thường dùng mô tả một chuyến đi ngẫu hứng: 'a spontaneous road trip'.",
+        "createdAt": "2026-09-28T10:34:00.000Z"
+      }
+    ]
+  }
+]
