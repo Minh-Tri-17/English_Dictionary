@@ -1038,7 +1038,7 @@ function openTopicDetail(topicId) {
 function closeTopicDetail() {
   activeTopicId = null;
   if (topicDetailSubview) topicDetailSubview.style.display = "none";
-  if (topicsListSubview) topicsListSubview.style.display = "flex";
+  if (topicsListSubview) topicsListSubview.style.display = "block";
   updateTopicStats();
   renderTopics();
 }
@@ -1089,6 +1089,126 @@ function renderTopicDetail() {
   filterAndRenderTopicSentences();
   filterAndRenderTopicWords();
   lucide.createIcons();
+}
+
+// --- Note Parsing & Multi-line Rendering Helpers ---
+function parseNoteItems(rawText, isLinking = false) {
+  if (!rawText) return [];
+  const normalized = rawText.replace(/\r\n/g, "\n").replace(/\r/g, "\n").trim();
+  const rawLines = normalized.split("\n");
+  const items = [];
+
+  for (const line of rawLines) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+
+    if (isLinking) {
+      // Split if multiple notes exist on one line, e.g.:
+      // "having a": ... "just a": ...
+      // or • item1 • item2
+      const splitPattern = /(?<=[^\s])\s+(?=(?:["“'‘][^"”'’\n\r]{1,45}["”'’]\s*:|[•]\s+))/;
+      const parts = trimmed.split(splitPattern);
+      for (const p of parts) {
+        const pTrimmed = p.trim().replace(/^;\s*/, "");
+        if (pTrimmed) items.push(pTrimmed);
+      }
+    } else {
+      const parts = trimmed.split(/(?<=[^\s])\s+(?=[•]\s+)/);
+      for (const p of parts) {
+        const pTrimmed = p.trim().replace(/^;\s*/, "");
+        if (pTrimmed) items.push(pTrimmed);
+      }
+    }
+  }
+
+  return items;
+}
+
+function normalizeLinkingNoteForTextarea(rawText) {
+  if (!rawText) return "";
+  const items = parseNoteItems(rawText, true);
+  return items.join("\n");
+}
+
+function formatLinkingNoteHTML(val) {
+  if (!val || !val.trim()) return "";
+  const items = parseNoteItems(val, true);
+  if (items.length === 0) return "";
+
+  const renderedLines = items
+    .map((item) => {
+      let escaped = escapeHTMLElements(item);
+
+      // Highlight target phrase in quotes e.g. "having a":
+      escaped = escaped.replace(
+        /^((?:&quot;|&#039;|["'“”])[^"&“”']+?(?:&quot;|&#039;|["'“”])\s*:?)/,
+        '<strong class="linking-target">$1</strong>'
+      );
+
+      // Highlight unquoted words before arrow e.g. Could_I ->
+      escaped = escaped.replace(
+        /^([a-zA-Z0-9_]{2,30})\s*(?=(?:-&gt;|->))/,
+        '<strong class="linking-target">$1</strong> '
+      );
+
+      // Convert arrow -> to →
+      escaped = escaped.replace(/-&gt;|->/g, '<span class="linking-arrow">→</span>');
+
+      // Style IPA phonetics between slashes e.g. /v/, /ˈhæv.ɪŋ.ŋə/
+      escaped = escaped.replace(
+        /(?<!\w)\/([^\/\s<>]{1,35})\/(?!\w)/g,
+        '<span class="note-ipa-inline">/$1/</span>'
+      );
+
+      return `
+        <div class="sentence-note-line">
+          ${items.length > 1 ? '<span class="sentence-note-bullet">•</span>' : ""}
+          <div class="sentence-note-text">${escaped}</div>
+        </div>
+      `;
+    })
+    .join("");
+
+  return `
+    <div class="sentence-note-box linking">
+      <div class="sentence-note-header">
+        <strong>🗣️ Nối âm:</strong>
+      </div>
+      <div class="sentence-note-lines">
+        ${renderedLines}
+      </div>
+    </div>
+  `;
+}
+
+function formatUsageNoteHTML(val) {
+  if (!val || !val.trim()) return "";
+  const items = parseNoteItems(val, false);
+  if (items.length === 0) return "";
+
+  const renderedLines = items
+    .map((item) => {
+      let escaped = escapeHTMLElements(item);
+      escaped = escaped.replace(/-&gt;|->/g, '<span class="note-arrow">→</span>');
+      return `
+        <div class="sentence-note-line">
+          ${items.length > 1 ? '<span class="sentence-note-bullet">•</span>' : ""}
+          <div class="sentence-note-text">${escaped}</div>
+        </div>
+      `;
+    })
+    .join("");
+
+  return `
+    <div class="sentence-note-box usage">
+      <div class="sentence-note-header">
+        <strong>💡 Cách dùng:</strong>
+      </div>
+      <div class="sentence-note-lines">
+        ${renderedLines}
+      </div>
+    </div>
+  `;
 }
 
 function filterAndRenderTopicSentences() {
@@ -1142,23 +1262,9 @@ function filterAndRenderTopicSentences() {
               ${escapeHTMLElements(s.translation)}
             </div>
 
-            ${
-              usageVal
-                ? `
-            <div class="sentence-note-box usage">
-              <strong>💡 Cách dùng:</strong> ${escapeHTMLElements(usageVal)}
-            </div>`
-                : ""
-            }
+            ${usageVal ? formatUsageNoteHTML(usageVal) : ""}
 
-            ${
-              linkingVal
-                ? `
-            <div class="sentence-note-box linking">
-              <strong>🗣️ Nối âm:</strong> ${escapeHTMLElements(linkingVal)}
-            </div>`
-                : ""
-            }
+            ${linkingVal ? formatLinkingNoteHTML(linkingVal) : ""}
 
             <div class="sentence-card-actions">
               <button class="action-btn edit-topic-sent-btn" data-id="${s.id}" title="Sửa câu">
@@ -2261,7 +2367,7 @@ function openSentenceModal(sentObj = null, topicId = null) {
     const usageVal = sentObj.usageNote || sentObj.note || "";
     const linkingVal = sentObj.linkingNote || sentObj.linking || "";
     if (sentUsageInput) sentUsageInput.value = usageVal;
-    if (sentLinkingInput) sentLinkingInput.value = linkingVal;
+    if (sentLinkingInput) sentLinkingInput.value = normalizeLinkingNoteForTextarea(linkingVal);
     if (sentNoteInput) sentNoteInput.value = usageVal;
   } else {
     sentModalTitle.textContent = "Add New Sentence";
