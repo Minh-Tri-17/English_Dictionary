@@ -194,12 +194,23 @@
           <!-- SUB-VIEW B: TOPIC DETAIL (2 TABS: SENTENCES & WORDS) -->
           <div id="topic-detail-subview" class="w-100" style="display: none">
             <div class="topic-detail-wrapper">
-              <!-- Back Navigation Bar -->
+              <!-- Back Navigation Bar with Inner Search -->
               <div class="topic-back-bar">
                 <button id="topic-back-btn" class="back-link-btn">
                   <i data-lucide="arrow-left"></i>
                   <span>Quay lại danh sách chủ đề</span>
                 </button>
+
+                <!-- Inner Topic Search Bar -->
+                <div class="topic-inner-search-wrap">
+                  <div class="search-wrapper">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" id="topic-inner-search-input" placeholder="Tìm kiếm câu hoặc từ trong chủ đề này..." autocomplete="off" />
+                    <button id="topic-inner-clear-search" class="clear-btn" style="display: none">
+                      <i data-lucide="x"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
 
               <!-- Topic Hero Card -->
@@ -226,17 +237,6 @@
                     </button>
                     <button id="topic-delete-current-btn" class="btn btn-secondary btn-icon-only text-danger" title="Xóa chủ đề">
                       <i data-lucide="trash-2"></i>
-                    </button>
-                  </div>
-                </div>
-
-                <!-- Inner Topic Search Bar -->
-                <div class="topic-inner-search-wrap mt-3">
-                  <div class="search-wrapper search-sm">
-                    <i data-lucide="search" class="search-icon"></i>
-                    <input type="text" id="topic-inner-search-input" placeholder="Tìm kiếm câu hoặc từ trong chủ đề này..." autocomplete="off" />
-                    <button id="topic-inner-clear-search" class="clear-btn" style="display: none">
-                      <i data-lucide="x"></i>
                     </button>
                   </div>
                 </div>
@@ -784,20 +784,9 @@
             <textarea id="input-sentence" rows="3" placeholder="Enter the English sentence here..." required></textarea>
           </div>
 
-          <div class="form-row-2">
-            <div class="form-group">
-              <label for="input-sent-pronunciation">Pronunciation (Phiên âm)</label>
-              <input type="text" id="input-sent-pronunciation" placeholder="e.g. /kʌm wɪð miː/" autocomplete="off" />
-            </div>
-            <div class="form-group">
-              <label for="input-sent-category">Category (Thể loại)</label>
-              <select id="input-sent-category">
-                <option value="general">General (Thông thường)</option>
-                <option value="idiom">Idiom (Thành ngữ)</option>
-                <option value="proverb">Proverb (Tục ngữ)</option>
-                <option value="collocations">Collocations (Kết hợp từ)</option>
-              </select>
-            </div>
+          <div class="form-group">
+            <label for="input-sent-pronunciation">Pronunciation (Phiên âm)</label>
+            <input type="text" id="input-sent-pronunciation" placeholder="e.g. /kʌm wɪð miː/" autocomplete="off" />
           </div>
 
           <div class="form-group">

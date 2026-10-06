@@ -970,9 +970,12 @@ function renderTopics() {
           const icon = t.icon || "folder";
 
           return `
-          <article class="topic-card" data-topic-id="${t.id}">
+          <article class="topic-card" data-topic-id="${t.id}" style="--topic-color: ${color}">
+            <div class="topic-card-accent-bar" style="background: ${color}"></div>
+            <div class="topic-card-glow" style="background: radial-gradient(circle at 100% 0%, ${color} 0%, transparent 70%)"></div>
+            
             <div class="topic-card-top">
-              <div class="topic-icon-chip" style="background: ${color}">
+              <div class="topic-icon-chip" style="background: ${color}; box-shadow: 0 8px 18px -4px ${color}88, inset 0 1px 1px rgba(255, 255, 255, 0.45);">
                 <i data-lucide="${icon}"></i>
               </div>
               <div class="topic-card-actions">
@@ -984,14 +987,19 @@ function renderTopics() {
                 </button>
               </div>
             </div>
+            
             <h3 class="topic-card-title">${escapeHTMLElements(t.name)}</h3>
             <p class="topic-card-desc">${escapeHTMLElements(t.description || "Chủ đề giao tiếp và từ vựng thông dụng.")}</p>
+            
             <div class="topic-card-footer">
               <div class="topic-stats-pills">
-                <span class="topic-pill"><i data-lucide="message-square-text" style="width: 12px; height: 12px"></i> ${sentCount} câu</span>
-                <span class="topic-pill words-pill"><i data-lucide="book" style="width: 12px; height: 12px"></i> ${wordCount} từ</span>
+                <span class="topic-pill sent-pill"><i data-lucide="message-square-text" style="width: 12px; height: 12px"></i> <span>${sentCount} câu</span></span>
+                <span class="topic-pill words-pill"><i data-lucide="book-open" style="width: 12px; height: 12px"></i> <span>${wordCount} từ</span></span>
               </div>
-              <span class="topic-arrow-link">Khám phá <i data-lucide="arrow-right" style="width: 13px; height: 13px"></i></span>
+              <span class="topic-arrow-link">
+                <span>Khám phá</span>
+                <i data-lucide="arrow-right" style="width: 13px; height: 13px"></i>
+              </span>
             </div>
           </article>
         `;
@@ -1247,32 +1255,90 @@ function filterAndRenderTopicSentences() {
 
           return `
           <article class="sentence-detail-card" data-sentence-id="${s.id}">
-            <div class="sentence-card-header">
-              <div class="sentence-main-text-row">
-                <button class="btn-tts-speaker" data-tts="${escapeHTMLElements(s.sentence)}" title="Phát âm câu này">
-                  <i data-lucide="volume-2"></i>
-                </button>
-                <h4 class="sentence-text-en">${escapeHTMLElements(s.sentence)}</h4>
+            <div class="card-flip-inner">
+              <!-- FRONT FACE: Chỉ hiện text Tiếng Anh và loa -->
+              <div class="card-face card-face-front">
+                <div class="card-front-top-row">
+                  <span class="card-type-chip sentence-chip">
+                    <i data-lucide="message-square"></i>
+                    <span>Câu mẫu giao tiếp</span>
+                  </span>
+                  <span class="card-flip-badge" title="Thẻ 2 mặt flashcard">
+                    <i data-lucide="sparkles"></i>
+                    <span>Flashcard</span>
+                  </span>
+                </div>
+
+                <div class="card-front-center">
+                  <div class="front-quote-box">
+                    <span class="quote-mark open">“</span>
+                    <h3 class="front-text-en">${escapeHTMLElements(s.sentence)}</h3>
+                    <span class="quote-mark close">”</span>
+                  </div>
+
+                  <button class="btn-tts-speaker front-speaker-btn" data-tts="${escapeHTMLElements(s.sentence)}" title="Phát âm câu này">
+                    <i data-lucide="volume-2"></i>
+                  </button>
+                </div>
+
+                <div class="sentence-card-actions">
+                  <div class="flip-hint-prompt">
+                    <i data-lucide="eye" style="width: 13px; height: 13px;"></i>
+                    <span>Bấm mắt để lật xem giải nghĩa</span>
+                  </div>
+                  <div class="card-actions-right">
+                    <button class="action-btn toggle-detail-btn" data-id="${s.id}" title="Lật xem chi tiết">
+                      <i data-lucide="eye"></i>
+                    </button>
+                    <button class="action-btn edit-topic-sent-btn" data-id="${s.id}" title="Sửa câu">
+                      <i data-lucide="edit-2"></i>
+                    </button>
+                    <button class="action-btn delete-topic-sent-btn text-danger" data-id="${s.id}" title="Xóa câu">
+                      <i data-lucide="trash-2"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
 
-            ${s.pronunciation ? `<div class="sentence-ipa-badge">${escapeHTMLElements(s.pronunciation)}</div>` : ""}
+              <!-- BACK FACE: Đầy đủ thông tin -->
+              <div class="card-face card-face-back">
+                <div class="sentence-card-header back-header">
+                  <div class="sentence-main-text-row">
+                    <button class="btn-tts-speaker" data-tts="${escapeHTMLElements(s.sentence)}" title="Phát âm câu này">
+                      <i data-lucide="volume-2"></i>
+                    </button>
+                    <h4 class="sentence-text-en back-text-en">${escapeHTMLElements(s.sentence)}</h4>
+                  </div>
+                </div>
 
-            <div class="sentence-meaning-box">
-              ${escapeHTMLElements(s.translation)}
-            </div>
+                ${s.pronunciation ? `<div class="sentence-ipa-badge">${escapeHTMLElements(s.pronunciation)}</div>` : ""}
 
-            ${usageVal ? formatUsageNoteHTML(usageVal) : ""}
+                <div class="sentence-meaning-box">
+                  ${escapeHTMLElements(s.translation)}
+                </div>
 
-            ${linkingVal ? formatLinkingNoteHTML(linkingVal) : ""}
+                ${usageVal ? formatUsageNoteHTML(usageVal) : ""}
 
-            <div class="sentence-card-actions">
-              <button class="action-btn edit-topic-sent-btn" data-id="${s.id}" title="Sửa câu">
-                <i data-lucide="edit-2"></i>
-              </button>
-              <button class="action-btn delete-topic-sent-btn text-danger" data-id="${s.id}" title="Xóa câu">
-                <i data-lucide="trash-2"></i>
-              </button>
+                ${linkingVal ? formatLinkingNoteHTML(linkingVal) : ""}
+
+                <div class="sentence-card-actions">
+                  <div class="flip-hint-prompt">
+                    <i data-lucide="rotate-ccw" style="width: 13px; height: 13px;"></i>
+                    <span>Bấm mắt để lật về mặt trước</span>
+                  </div>
+                  <div class="card-actions-right">
+                    <button class="action-btn toggle-detail-btn active" data-id="${s.id}" title="Lật về mặt trước">
+                      <i data-lucide="eye-off"></i>
+                    </button>
+                    <button class="action-btn edit-topic-sent-btn" data-id="${s.id}" title="Sửa câu">
+                      <i data-lucide="edit-2"></i>
+                    </button>
+                    <button class="action-btn delete-topic-sent-btn text-danger" data-id="${s.id}" title="Xóa câu">
+                      <i data-lucide="trash-2"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </article>
         `;
@@ -1318,37 +1384,93 @@ function filterAndRenderTopicWords() {
 
           return `
           <article class="word-detail-card ${typeNormalized}" data-word-id="${w.id}">
-            <div class="word-card-top-row">
-              <div class="word-title-group">
-                <button class="btn-tts-speaker" data-tts="${escapeHTMLElements(w.word)}" title="Phát âm từ này">
-                  <i data-lucide="volume-2"></i>
-                </button>
-                <h4 class="word-text-en">${escapeHTMLElements(w.word)}</h4>
-                ${w.pronunciation ? `<span class="word-ipa-badge">${escapeHTMLElements(w.pronunciation)}</span>` : ""}
+            <div class="card-flip-inner">
+              <!-- FRONT FACE: Chỉ hiện text Tiếng Anh và loa -->
+              <div class="card-face card-face-front">
+                <div class="card-front-top-row">
+                  <span class="card-type-chip word-chip">
+                    <i data-lucide="book-open"></i>
+                    <span>Từ vựng</span>
+                  </span>
+                  <span class="card-flip-badge" title="Thẻ 2 mặt flashcard">
+                    <i data-lucide="sparkles"></i>
+                    <span>Flashcard</span>
+                  </span>
+                </div>
+
+                <div class="card-front-center">
+                  <div class="front-word-box">
+                    <h3 class="front-text-en word-mode">${escapeHTMLElements(w.word)}</h3>
+                  </div>
+
+                  <button class="btn-tts-speaker front-speaker-btn" data-tts="${escapeHTMLElements(w.word)}" title="Phát âm từ này">
+                    <i data-lucide="volume-2"></i>
+                  </button>
+                </div>
+
+                <div class="sentence-card-actions">
+                  <div class="flip-hint-prompt">
+                    <i data-lucide="eye" style="width: 13px; height: 13px;"></i>
+                    <span>Bấm mắt để lật xem nghĩa & IPA</span>
+                  </div>
+                  <div class="card-actions-right">
+                    <button class="action-btn toggle-detail-btn" data-id="${w.id}" title="Lật xem chi tiết">
+                      <i data-lucide="eye"></i>
+                    </button>
+                    <button class="action-btn edit-topic-word-btn" data-id="${w.id}" title="Sửa từ">
+                      <i data-lucide="edit-2"></i>
+                    </button>
+                    <button class="action-btn delete-topic-word-btn text-danger" data-id="${w.id}" title="Xóa từ">
+                      <i data-lucide="trash-2"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
-              <span class="pos-badge ${typeNormalized}" data-type="${typeNormalized}">${typeLabel}</span>
-            </div>
 
-            <div class="word-def-box">
-              ${escapeHTMLElements(w.definition)}
-            </div>
+              <!-- BACK FACE: Đầy đủ thông tin -->
+              <div class="card-face card-face-back">
+                <div class="word-card-top-row back-header">
+                  <div class="word-title-group">
+                    <button class="btn-tts-speaker" data-tts="${escapeHTMLElements(w.word)}" title="Phát âm từ này">
+                      <i data-lucide="volume-2"></i>
+                    </button>
+                    <h4 class="word-text-en back-text-en">${escapeHTMLElements(w.word)}</h4>
+                    ${w.pronunciation ? `<span class="word-ipa-badge">${escapeHTMLElements(w.pronunciation)}</span>` : ""}
+                  </div>
+                  <span class="pos-badge ${typeNormalized}" data-type="${typeNormalized}">${typeLabel}</span>
+                </div>
 
-            ${
-              w.note
-                ? `
-            <div class="word-note-box">
-              <strong>📌 Ghi chú:</strong> ${escapeHTMLElements(w.note)}
-            </div>`
-                : ""
-            }
+                <div class="word-def-box">
+                  ${escapeHTMLElements(w.definition)}
+                </div>
 
-            <div class="sentence-card-actions">
-              <button class="action-btn edit-topic-word-btn" data-id="${w.id}" title="Sửa từ">
-                <i data-lucide="edit-2"></i>
-              </button>
-              <button class="action-btn delete-topic-word-btn text-danger" data-id="${w.id}" title="Xóa từ">
-                <i data-lucide="trash-2"></i>
-              </button>
+                ${
+                  w.note
+                    ? `
+                <div class="word-note-box">
+                  <strong>📌 Ghi chú:</strong> ${escapeHTMLElements(w.note)}
+                </div>`
+                    : ""
+                }
+
+                <div class="sentence-card-actions">
+                  <div class="flip-hint-prompt">
+                    <i data-lucide="rotate-ccw" style="width: 13px; height: 13px;"></i>
+                    <span>Bấm mắt để lật về mặt trước</span>
+                  </div>
+                  <div class="card-actions-right">
+                    <button class="action-btn toggle-detail-btn active" data-id="${w.id}" title="Lật về mặt trước">
+                      <i data-lucide="eye-off"></i>
+                    </button>
+                    <button class="action-btn edit-topic-word-btn" data-id="${w.id}" title="Sửa từ">
+                      <i data-lucide="edit-2"></i>
+                    </button>
+                    <button class="action-btn delete-topic-word-btn text-danger" data-id="${w.id}" title="Xóa từ">
+                      <i data-lucide="trash-2"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </article>
         `;
@@ -1677,10 +1799,11 @@ function setupTopicEventListeners() {
     });
   }
 
-  // Delegated clicks on topicSentencesGrid (edit, delete, TTS)
+  // Delegated clicks on topicSentencesGrid (edit, delete, toggle detail, TTS)
   if (topicSentencesGrid) {
     topicSentencesGrid.addEventListener("click", (e) => {
       const ttsBtn = e.target.closest(".btn-tts-speaker");
+      const toggleDetailBtn = e.target.closest(".toggle-detail-btn");
       const editBtn = e.target.closest(".edit-topic-sent-btn");
       const deleteBtn = e.target.closest(".delete-topic-sent-btn");
 
@@ -1688,6 +1811,12 @@ function setupTopicEventListeners() {
         e.stopPropagation();
         const text = ttsBtn.getAttribute("data-tts");
         speakEnglish(text);
+      } else if (toggleDetailBtn) {
+        e.stopPropagation();
+        const card = toggleDetailBtn.closest(".sentence-detail-card");
+        if (card) {
+          card.classList.toggle("is-flipped");
+        }
       } else if (editBtn) {
         e.stopPropagation();
         const sid = editBtn.getAttribute("data-id");
@@ -1706,10 +1835,11 @@ function setupTopicEventListeners() {
     });
   }
 
-  // Delegated clicks on topicWordsGrid (edit, delete, TTS)
+  // Delegated clicks on topicWordsGrid (edit, delete, toggle detail, TTS)
   if (topicWordsGrid) {
     topicWordsGrid.addEventListener("click", (e) => {
       const ttsBtn = e.target.closest(".btn-tts-speaker");
+      const toggleDetailBtn = e.target.closest(".toggle-detail-btn");
       const editBtn = e.target.closest(".edit-topic-word-btn");
       const deleteBtn = e.target.closest(".delete-topic-word-btn");
 
@@ -1717,6 +1847,12 @@ function setupTopicEventListeners() {
         e.stopPropagation();
         const text = ttsBtn.getAttribute("data-tts");
         speakEnglish(text);
+      } else if (toggleDetailBtn) {
+        e.stopPropagation();
+        const card = toggleDetailBtn.closest(".word-detail-card");
+        if (card) {
+          card.classList.toggle("is-flipped");
+        }
       } else if (editBtn) {
         e.stopPropagation();
         const wid = editBtn.getAttribute("data-id");
@@ -2255,7 +2391,6 @@ const sentIdInput = document.getElementById("sent-id");
 const sentenceInput = document.getElementById("input-sentence");
 const translationInput = document.getElementById("input-translation");
 const sentPronInput = document.getElementById("input-sent-pronunciation");
-const sentCategorySelect = document.getElementById("input-sent-category");
 const sentNoteInput = document.getElementById("input-sent-note");
 const sentUsageInput = document.getElementById("input-sent-usage");
 const sentLinkingInput = document.getElementById("input-sent-linking");
@@ -2363,7 +2498,6 @@ function openSentenceModal(sentObj = null, topicId = null) {
     sentenceInput.value = sentObj.sentence;
     translationInput.value = sentObj.translation;
     sentPronInput.value = sentObj.pronunciation || "";
-    sentCategorySelect.value = sentObj.category || "general";
     const usageVal = sentObj.usageNote || sentObj.note || "";
     const linkingVal = sentObj.linkingNote || sentObj.linking || "";
     if (sentUsageInput) sentUsageInput.value = usageVal;
@@ -2373,7 +2507,6 @@ function openSentenceModal(sentObj = null, topicId = null) {
     sentModalTitle.textContent = "Add New Sentence";
     sentenceForm.reset();
     sentIdInput.value = "";
-    sentCategorySelect.value = "general";
     if (sentUsageInput) sentUsageInput.value = "";
     if (sentLinkingInput) sentLinkingInput.value = "";
     if (sentNoteInput) sentNoteInput.value = "";
@@ -2423,7 +2556,6 @@ async function handleSentenceFormSubmit(e) {
     sentence: sentenceInput.value.trim(),
     translation: translationInput.value.trim(),
     pronunciation: sentPronInput.value.trim(),
-    category: sentCategorySelect.value,
     usageNote: usageVal,
     linkingNote: linkingVal,
     note: usageVal,
