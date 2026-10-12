@@ -63,7 +63,7 @@
         <nav class="primary-nav">
           <button id="nav-topics-btn" class="nav-main-item active">
             <i data-lucide="layers"></i>
-            <span>Chủ đề (Topic Hub)</span>
+            <span>Topic Hub</span>
           </button>
           <button id="nav-videos-btn" class="nav-main-item">
             <i data-lucide="video"></i>
@@ -81,26 +81,26 @@
 
         <!-- Sub-panel: TOPIC STATS (Visible when Topics view is active) -->
         <div class="sub-panel" id="panel-topic-stats">
-          <h2 class="panel-title">Chủ đề học tập</h2>
+          <h2 class="panel-title">Study Topics</h2>
           <div class="stat-items">
             <div class="stat-item active" id="topic-stat-all" data-topic-filter="all">
-              <span class="stat-label"><i data-lucide="grid" class="mini-icon"></i> Tổng chủ đề</span>
+              <span class="stat-label"><i data-lucide="grid" class="mini-icon"></i> Total Topics</span>
               <span class="stat-count" id="stat-total-topics">0</span>
             </div>
             <div class="stat-item" id="topic-stat-sentences-count" data-topic-filter="sentences">
-              <span class="stat-label"><i data-lucide="message-square-text" class="mini-icon"></i> Tổng số câu</span>
+              <span class="stat-label"><i data-lucide="message-square-text" class="mini-icon"></i> Total Sentences</span>
               <span class="stat-count" id="stat-topics-sentences-count">0</span>
             </div>
             <div class="stat-item" id="topic-stat-words-count" data-topic-filter="words">
-              <span class="stat-label"><i data-lucide="book" class="mini-icon"></i> Tổng từ vựng</span>
+              <span class="stat-label"><i data-lucide="book" class="mini-icon"></i> Total Vocabulary</span>
               <span class="stat-count" id="stat-topics-words-count">0</span>
             </div>
           </div>
 
           <div class="sidebar-topics-quicklist mt-3">
             <div class="quicklist-header d-flex justify-content-between align-items-center mb-2 px-1">
-              <span style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px; color: var(--text-muted); text-transform: uppercase;">Danh sách chủ đề</span>
-              <button id="sidebar-add-topic-btn" class="btn btn-sm btn-icon-subtle p-0" title="Thêm chủ đề mới" style="background: none; border: none; cursor: pointer; color: var(--primary);">
+              <span style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px; color: var(--text-muted); text-transform: uppercase;">Topics List</span>
+              <button id="sidebar-add-topic-btn" class="btn btn-sm btn-icon-subtle p-0" title="Add New Topic" style="background: none; border: none; cursor: pointer; color: var(--primary);">
                 <i data-lucide="plus-circle" style="width: 16px; height: 16px"></i>
               </button>
             </div>
@@ -114,10 +114,10 @@
           <h2 class="panel-title">Grammar Index</h2>
           <div class="stat-items">
             <div class="stat-item active" data-grammar-view="dashboard">
-              <span class="stat-label"><i data-lucide="layout-dashboard" class="mini-icon"></i> Overview (Tổng quan)</span>
+              <span class="stat-label"><i data-lucide="layout-dashboard" class="mini-icon"></i> Overview</span>
             </div>
             <div class="stat-item" data-grammar-view="tenses">
-              <span class="stat-label"><i data-lucide="clock" class="mini-icon"></i> 12 Tenses (12 Thì)</span>
+              <span class="stat-label"><i data-lucide="clock" class="mini-icon"></i> 12 Tenses</span>
             </div>
             <div class="stat-item" data-grammar-view="structures">
               <span class="stat-label"><i data-lucide="shuffle" class="mini-icon"></i> Sentence Structures</span>
@@ -155,17 +155,17 @@
             <header class="header">
               <div class="search-wrapper">
                 <i data-lucide="search" class="search-icon"></i>
-                <input type="text" id="topics-search-input" placeholder="Tìm kiếm chủ đề, câu mẫu hoặc từ vựng..." autocomplete="off" />
+                <input type="text" id="topics-search-input" placeholder="Search topics, sentences, or vocabulary..." autocomplete="off" />
                 <button id="topics-clear-search" class="clear-btn" style="display: none">
                   <i data-lucide="x"></i>
                 </button>
               </div>
 
               <div class="header-actions">
-                <span class="results-indicator" id="topics-results-count">Hiển thị 0 chủ đề</span>
+                <span class="results-indicator" id="topics-results-count">Showing 0 topics</span>
                 <button id="add-topic-btn" class="btn btn-primary">
                   <i data-lucide="folder-plus"></i>
-                  <span>Thêm Chủ Đề</span>
+                  <span>Add Topic</span>
                 </button>
               </div>
             </header>
@@ -182,11 +182,11 @@
                 <div class="empty-icon">
                   <i data-lucide="folder-open"></i>
                 </div>
-                <h3>Chưa Tìm Thấy Chủ Đề</h3>
-                <p>Không có chủ đề nào khớp với từ khóa tìm kiếm. Hãy thử từ khóa khác hoặc tạo chủ đề mới!</p>
+                <h3>No Topics Found</h3>
+                <p>No topics match your search keyword. Try another keyword or create a new topic!</p>
                 <button id="empty-add-topic-btn" class="btn btn-secondary">
                   <i data-lucide="plus"></i>
-                  <span>Thêm Chủ Đề Mới</span>
+                  <span>Add New Topic</span>
                 </button>
               </div>
             </section>
@@ -199,14 +199,14 @@
               <div class="topic-back-bar">
                 <button id="topic-back-btn" class="back-link-btn">
                   <i data-lucide="arrow-left"></i>
-                  <span>Quay lại danh sách chủ đề</span>
+                  <span>Back to topics</span>
                 </button>
 
                 <!-- Inner Topic Search Bar -->
                 <div class="topic-inner-search-wrap">
                   <div class="search-wrapper">
                     <i data-lucide="search" class="search-icon"></i>
-                    <input type="text" id="topic-inner-search-input" placeholder="Tìm kiếm câu hoặc từ trong chủ đề này..." autocomplete="off" />
+                    <input type="text" id="topic-inner-search-input" placeholder="Search sentences or words in this topic..." autocomplete="off" />
                     <button id="topic-inner-clear-search" class="clear-btn" style="display: none">
                       <i data-lucide="x"></i>
                     </button>
@@ -223,7 +223,7 @@
                     </div>
                     <div class="topic-hero-text">
                       <div class="topic-hero-title-row">
-                        <h2 class="detail-topic-title" id="detail-topic-title">Tên Chủ Đề</h2>
+                        <h2 class="detail-topic-title" id="detail-topic-title">Topic Name</h2>
                       </div>
                     </div>
                   </div>
@@ -231,12 +231,12 @@
                   <div class="topic-hero-actions">
                     <button id="topic-action-add-item-btn" class="btn btn-primary d-flex align-items-center gap-2">
                       <i data-lucide="plus"></i>
-                      <span id="topic-action-add-label">Thêm Câu Mới</span>
+                      <span id="topic-action-add-label">Add New Sentence</span>
                     </button>
-                    <button id="topic-edit-meta-btn" class="btn btn-secondary btn-icon-only" title="Chỉnh sửa chủ đề">
+                    <button id="topic-edit-meta-btn" class="btn btn-secondary btn-icon-only" title="Edit Topic">
                       <i data-lucide="edit-3"></i>
                     </button>
-                    <button id="topic-delete-current-btn" class="btn btn-secondary btn-icon-only text-danger" title="Xóa chủ đề">
+                    <button id="topic-delete-current-btn" class="btn btn-secondary btn-icon-only text-danger" title="Delete Topic">
                       <i data-lucide="trash-2"></i>
                     </button>
                   </div>
@@ -246,12 +246,12 @@
                 <div class="topic-tabs-header mt-3">
                   <button class="topic-tab-nav-btn active" id="tab-btn-sentences" data-topic-tab="sentences">
                     <i data-lucide="message-square-text"></i>
-                    <span>Tab 1: Câu mẫu giao tiếp</span>
+                    <span>Tab 1: Communication Sentences</span>
                     <span class="tab-count-pill" id="tab-sentences-count">0</span>
                   </button>
                   <button class="topic-tab-nav-btn" id="tab-btn-words" data-topic-tab="words">
                     <i data-lucide="book-open"></i>
-                    <span>Tab 2: Từ vựng theo chủ đề</span>
+                    <span>Tab 2: Topic Vocabulary</span>
                     <span class="tab-count-pill" id="tab-words-count">0</span>
                   </button>
                 </div>
@@ -267,11 +267,11 @@
                 <!-- Empty State for Sentences -->
                 <div class="empty-state" id="topic-sentences-empty" style="display: none">
                   <div class="empty-icon"><i data-lucide="message-square"></i></div>
-                  <h3>Chưa Có Câu Nào Trong Chủ Đề Này</h3>
-                  <p>Hãy bổ sung các mẫu câu thông dụng kèm cách dùng và nối âm để thực hành dễ dàng hơn!</p>
+                  <h3>No Sentences in This Topic Yet</h3>
+                  <p>Add common example sentences with usage context and connected speech notes to practice easily!</p>
                   <button id="empty-add-sentence-tab-btn" class="btn btn-primary">
                     <i data-lucide="plus"></i>
-                    <span>Thêm Câu Mới</span>
+                    <span>Add New Sentence</span>
                   </button>
                 </div>
               </div>
@@ -286,11 +286,11 @@
                 <!-- Empty State for Words -->
                 <div class="empty-state" id="topic-words-empty" style="display: none">
                   <div class="empty-icon"><i data-lucide="book-open"></i></div>
-                  <h3>Chưa Có Từ Vựng Nào Trong Chủ Đề Này</h3>
-                  <p>Hãy thêm các từ vựng mới liên quan đến chủ đề để học từ vựng có hệ thống!</p>
+                  <h3>No Vocabulary in This Topic Yet</h3>
+                  <p>Add new vocabulary related to this topic to learn systematically!</p>
                   <button id="empty-add-word-tab-btn" class="btn btn-primary">
                     <i data-lucide="plus"></i>
-                    <span>Thêm Từ Vựng Mới</span>
+                    <span>Add New Word</span>
                   </button>
                 </div>
               </div>
@@ -350,9 +350,9 @@
                 <!-- Tense Filters -->
                 <div class="tense-filters" id="tense-filters">
                   <button class="filter-pill active" data-group="all">All</button>
-                  <button class="filter-pill" data-group="Present">Present (Hiện tại)</button>
-                  <button class="filter-pill" data-group="Past">Past (Quá khứ)</button>
-                  <button class="filter-pill" data-group="Future">Future (Tương lai)</button>
+                  <button class="filter-pill" data-group="Present">Present</button>
+                  <button class="filter-pill" data-group="Past">Past</button>
+                  <button class="filter-pill" data-group="Future">Future</button>
                 </div>
               </div>
 
@@ -368,9 +368,9 @@
                     <h4>Quick Formula Memory Mnemonics</h4>
                   </div>
                   <ul class="tips-list">
-                    <li><strong>Continuous (Tiếp diễn):</strong> Must contain helper <code class="tip-code">BE + V-ing</code>.</li>
-                    <li><strong>Perfect (Hoàn thành):</strong> Must contain helper <code class="tip-code">HAVE + V3/pp (Past Participle)</code>.</li>
-                    <li><strong>Future (Tương lai):</strong> Always has modal helper <code class="tip-code">WILL</code> in front of base verbs.</li>
+                    <li><strong>Continuous:</strong> Must contain helper <code class="tip-code">BE + V-ing</code>.</li>
+                    <li><strong>Perfect:</strong> Must contain helper <code class="tip-code">HAVE + V3/pp (Past Participle)</code>.</li>
+                    <li><strong>Future:</strong> Always has modal helper <code class="tip-code">WILL</code> in front of base verbs.</li>
                   </ul>
                 </div>
               </div>
@@ -383,18 +383,18 @@
               <!-- Left Panel navigation -->
               <div class="structures-nav">
                 <h4>Topics</h4>
-                <button onclick="switchStructureTopic('passive')" class="struct-nav-item active" data-topic="passive">Passive Voice (Bị động)</button>
-                <button onclick="switchStructureTopic('reported')" class="struct-nav-item" data-topic="reported">Reported Speech (Tường thuật)</button>
-                <button onclick="switchStructureTopic('conditionals')" class="struct-nav-item" data-topic="conditionals">Conditionals & Wish (Điều kiện)</button>
-                <button onclick="switchStructureTopic('relative')" class="struct-nav-item" data-topic="relative">Relative Clauses (Mệnh đề QH)</button>
-                <button onclick="switchStructureTopic('comparison')" class="struct-nav-item" data-topic="comparison">Comparisons (So sánh)</button>
+                <button onclick="switchStructureTopic('passive')" class="struct-nav-item active" data-topic="passive">Passive Voice</button>
+                <button onclick="switchStructureTopic('reported')" class="struct-nav-item" data-topic="reported">Reported Speech</button>
+                <button onclick="switchStructureTopic('conditionals')" class="struct-nav-item" data-topic="conditionals">Conditionals & Wish</button>
+                <button onclick="switchStructureTopic('relative')" class="struct-nav-item" data-topic="relative">Relative Clauses</button>
+                <button onclick="switchStructureTopic('comparison')" class="struct-nav-item" data-topic="comparison">Comparisons</button>
               </div>
 
               <!-- Right Panel Content Container -->
               <div class="structures-content">
                 <!-- Topic A: Passive Voice -->
                 <div id="struct-passive" class="topic-content">
-                  <h3>Passive Voice (Câu Bị Động)</h3>
+                  <h3>Passive Voice</h3>
                   <p class="topic-desc">General Rule: Active <code class="syntax-inline">S + V + O</code> &rarr; Passive <code class="syntax-inline">S + BE + V3/pp (+ by O)</code></p>
 
                   <div class="selector-box">
@@ -411,12 +411,12 @@
 
                 <!-- Topic B: Reported Speech -->
                 <div id="struct-reported" class="topic-content" style="display: none">
-                  <h3>Reported Speech (Câu Tường Thuật)</h3>
+                  <h3>Reported Speech</h3>
                   <p class="topic-desc">When reporting what someone said, shift tenses backward, adjust pronouns, and update time expressions.</p>
 
                   <div class="reported-guides">
                     <div class="guide-card bg-indigo-light border-indigo">
-                      <h4>1. Backshifting Tenses (Lùi Thì)</h4>
+                      <h4>1. Backshifting Tenses</h4>
                       <ul id="reported-tense-list" class="check-list"></ul>
                     </div>
                     <div class="guide-card bg-amber-light border-amber">
@@ -428,7 +428,7 @@
                   <h4 class="sub-heading">3. Sentence Construction Formulas</h4>
                   <div class="formula-deck">
                     <div class="formula-card">
-                      <span class="formula-tag">Statements (Câu kể)</span>
+                      <span class="formula-tag">Statements</span>
                       <code>S + said (that) + S + V (backshifted)</code>
                     </div>
                     <div class="formula-card">
@@ -444,7 +444,7 @@
 
                 <!-- Topic C: Conditionals & Wish -->
                 <div id="struct-conditionals" class="topic-content" style="display: none">
-                  <h3>Conditionals & Wish (Câu Điều Kiện & Ước)</h3>
+                  <h3>Conditionals & Wish</h3>
                   <p class="topic-desc">Structure matches imaginary or factual events placed in past, present, or future contexts.</p>
 
                   <div class="table-wrapper">
@@ -497,7 +497,7 @@
 
                 <!-- Topic D: Relative Clauses -->
                 <div id="struct-relative" class="topic-content" style="display: none">
-                  <h3>Relative Clauses (Mệnh Đề Quan Hệ)</h3>
+                  <h3>Relative Clauses</h3>
                   <p class="topic-desc">Adjectival clauses modifying nouns. Utilizes relative pronouns depending on grammatical roles.</p>
 
                   <div class="relative-pron-grid">
@@ -527,29 +527,29 @@
 
                 <!-- Topic E: Comparisons -->
                 <div id="struct-comparison" class="topic-content" style="display: none">
-                  <h3>Comparisons (Cấu Trúc So Sánh)</h3>
+                  <h3>Comparisons</h3>
                   <p class="topic-desc">Formulas vary depending on syllable lengths of adjectives/adverbs (Short vs. Long).</p>
 
                   <div class="comparison-grid">
                     <div class="comparison-col">
                       <h4>Short Adjectives / Adverbs</h4>
                       <div class="comp-box">
-                        <span class="comp-tag">Comparative (Hơn)</span>
+                        <span class="comp-tag">Comparative</span>
                         <code>adj-er + than</code>
                       </div>
                       <div class="comp-box">
-                        <span class="comp-tag">Superlative (Nhất)</span>
+                        <span class="comp-tag">Superlative</span>
                         <code>the + adj-est</code>
                       </div>
                     </div>
                     <div class="comparison-col">
                       <h4>Long Adjectives / Adverbs</h4>
                       <div class="comp-box">
-                        <span class="comp-tag">Comparative (Hơn)</span>
+                        <span class="comp-tag">Comparative</span>
                         <code>more + adj + than</code>
                       </div>
                       <div class="comp-box">
-                        <span class="comp-tag">Superlative (Nhất)</span>
+                        <span class="comp-tag">Superlative</span>
                         <code>the + most + adj</code>
                       </div>
                     </div>
@@ -562,7 +562,7 @@
           <!-- SUB-SECTION 4: REFERENCE -->
           <section id="gm-view-reference" class="gm-section" style="display: none">
             <div class="gm-card">
-              <h3 class="ref-section-title">Symbols & Legend (Ký hiệu viết tắt)</h3>
+              <h3 class="ref-section-title">Symbols & Legend</h3>
               <div class="symbol-deck" id="symbol-grid">
                 <!-- Dynamically populated -->
               </div>
@@ -572,19 +572,19 @@
                 <div class="aux-card">
                   <h4>So ... that / Such ... that</h4>
                   <ul class="aux-list">
-                    <li><code>So + Adj/Adv + that + clause</code> (Quá... đến nỗi mà)</li>
+                    <li><code>So + Adj/Adv + that + clause</code></li>
                     <li><code>Such + a/an + Adj + N + that + clause</code></li>
                   </ul>
                 </div>
                 <div class="aux-card">
                   <h4>Too ... to V / Enough ... to V</h4>
                   <ul class="aux-list">
-                    <li><code>Too + Adj/Adv + (for O) + to-V</code> (Quá... để làm gì)</li>
-                    <li><code>Adj/Adv + enough + (for O) + to-V</code> (Đủ... để làm gì)</li>
+                    <li><code>Too + Adj/Adv + (for O) + to-V</code></li>
+                    <li><code>Adj/Adv + enough + (for O) + to-V</code></li>
                   </ul>
                 </div>
                 <div class="aux-card">
-                  <h4>Concessions (Sự nhượng bộ)</h4>
+                  <h4>Concessions</h4>
                   <p><code>Although / Even though / Though + Clause</code> &rarr; followed by main clause.</p>
                 </div>
                 <div class="aux-card">
@@ -650,7 +650,7 @@
         <div id="ipa-view-container" class="app-view" style="display: none">
           <div class="ipa-display-wrapper">
             <div class="ipa-img-viewport">
-              <img src="IPA.jpg" alt="Bảng Phiên Âm Quốc Tế IPA" class="ipa-full-image" id="ipa-chart-image" />
+              <img src="IPA.jpg" alt="International Phonetic Alphabet (IPA) Chart" class="ipa-full-image" id="ipa-chart-image" />
             </div>
           </div>
         </div>
@@ -664,7 +664,7 @@
     <div class="custom-modal-backdrop" id="topic-modal" style="display: none">
       <div class="custom-modal">
         <div class="custom-modal-header">
-          <h3 id="topic-modal-title">Thêm Chủ Đề Mới</h3>
+          <h3 id="topic-modal-title">Add New Topic</h3>
           <button class="custom-modal-close" id="topic-modal-close-btn">
             <i data-lucide="x"></i>
           </button>
@@ -673,70 +673,70 @@
           <input type="hidden" id="topic-id" />
 
           <div class="form-group">
-            <label for="input-topic-name">Tên chủ đề (Topic Name) *</label>
-            <input type="text" id="input-topic-name" placeholder="Ví dụ: At the Airport, Job Interview..." required autocomplete="off" />
+            <label for="input-topic-name">Topic Name *</label>
+            <input type="text" id="input-topic-name" placeholder="e.g. At the Airport, Job Interview..." required autocomplete="off" />
           </div>
 
           <div class="form-group">
-            <label for="input-topic-desc">Mô tả chủ đề (Description)</label>
-            <textarea id="input-topic-desc" rows="2" placeholder="Tóm tắt ngắn gọn nội dung của chủ đề này..."></textarea>
+            <label for="input-topic-desc">Topic Description</label>
+            <textarea id="input-topic-desc" rows="2" placeholder="Brief summary of this topic..."></textarea>
           </div>
 
           <div class="form-row-2">
             <div class="form-group">
-              <label for="input-topic-icon">Biểu tượng (Icon)</label>
+              <label for="input-topic-icon">Icon</label>
               <select id="input-topic-icon">
-                <option value="plane">✈️ Máy bay / Sân bay (plane)</option>
-                <option value="briefcase">💼 Công việc / Phỏng vấn (briefcase)</option>
-                <option value="coffee">☕ Cà phê / Ăn uống (coffee)</option>
-                <option value="utensils">🍽️ Nhà hàng / Ẩm thực (utensils)</option>
-                <option value="message-circle">💬 Giao tiếp hàng ngày (message-circle)</option>
-                <option value="shopping-bag">🛍️ Mua sắm (shopping-bag)</option>
-                <option value="hotel">🏨 Khách sạn / Du lịch (hotel)</option>
-                <option value="globe">🌐 Du lịch quốc tế (globe)</option>
-                <option value="map-pin">📍 Địa điểm / Phương hướng (map-pin)</option>
-                <option value="heart">❤️ Sức khỏe / Cảm xúc (heart)</option>
-                <option value="activity">🩺 Y tế / Sức khỏe (activity)</option>
-                <option value="graduation-cap">🎓 Học tập / Thi cử (graduation-cap)</option>
-                <option value="book-open">📖 Sách / Đọc hiểu (book-open)</option>
-                <option value="laptop">💻 Công nghệ / IT (laptop)</option>
-                <option value="phone">📱 Điện thoại / Liên lạc (phone)</option>
-                <option value="music">🎵 Âm nhạc / Nghệ thuật (music)</option>
-                <option value="film">🎬 Phim ảnh / Giải trí (film)</option>
-                <option value="camera">📷 Nhiếp ảnh / Kỷ niệm (camera)</option>
-                <option value="dumbbell">🏋️ Thể thao / Rèn luyện (dumbbell)</option>
-                <option value="car">🚗 Giao thông / Xe cộ (car)</option>
-                <option value="home">🏠 Gia đình / Nhà cửa (home)</option>
-                <option value="landmark">🏛️ Lịch sử / Văn hóa (landmark)</option>
-                <option value="dollar-sign">💰 Tài chính / Tiền tệ (dollar-sign)</option>
-                <option value="sun">☀️ Thời tiết / Tự nhiên (sun)</option>
-                <option value="sparkles">✨ Sở thích / Phong cách (sparkles)</option>
-                <option value="smile">😊 Tính cách / Cảm xúc (smile)</option>
-                <option value="users">👥 Bạn bè / Xã hội (users)</option>
-                <option value="gift">🎁 Quà tặng / Lễ hội (gift)</option>
-                <option value="compass">🧭 Khám phá / Định hướng (compass)</option>
-                <option value="shield">🛡️ An toàn / Pháp luật (shield)</option>
-                <option value="folder">📁 Chủ đề chung (folder)</option>
+                <option value="plane">✈️ Airport / Travel (plane)</option>
+                <option value="briefcase">💼 Career / Interview (briefcase)</option>
+                <option value="coffee">☕ Coffee / Drinks (coffee)</option>
+                <option value="utensils">🍽️ Restaurant / Dining (utensils)</option>
+                <option value="message-circle">💬 Daily Conversation (message-circle)</option>
+                <option value="shopping-bag">🛍️ Shopping (shopping-bag)</option>
+                <option value="hotel">🏨 Hotel / Travel (hotel)</option>
+                <option value="globe">🌐 International / Travel (globe)</option>
+                <option value="map-pin">📍 Location / Directions (map-pin)</option>
+                <option value="heart">❤️ Health / Feelings (heart)</option>
+                <option value="activity">🩺 Medical / Healthcare (activity)</option>
+                <option value="graduation-cap">🎓 Education / Academics (graduation-cap)</option>
+                <option value="book-open">📖 Books / Reading (book-open)</option>
+                <option value="laptop">💻 Technology / IT (laptop)</option>
+                <option value="phone">📱 Phone / Communication (phone)</option>
+                <option value="music">🎵 Music / Arts (music)</option>
+                <option value="film">🎬 Movies / Entertainment (film)</option>
+                <option value="camera">📷 Photography / Media (camera)</option>
+                <option value="dumbbell">🏋️ Sports / Fitness (dumbbell)</option>
+                <option value="car">🚗 Transport / Vehicles (car)</option>
+                <option value="home">🏠 Home / Family (home)</option>
+                <option value="landmark">🏛️ History / Culture (landmark)</option>
+                <option value="dollar-sign">💰 Finance / Money (dollar-sign)</option>
+                <option value="sun">☀️ Weather / Nature (sun)</option>
+                <option value="sparkles">✨ Hobbies / Lifestyle (sparkles)</option>
+                <option value="smile">😊 Personality / Mood (smile)</option>
+                <option value="users">👥 Friends / Social (users)</option>
+                <option value="gift">🎁 Gifts / Holidays (gift)</option>
+                <option value="compass">🧭 Exploration / Navigation (compass)</option>
+                <option value="shield">🛡️ Safety / Law (shield)</option>
+                <option value="folder">📁 General Topic (folder)</option>
               </select>
             </div>
 
             <div class="form-group">
-              <label for="input-topic-color">Màu sắc chủ đề (Color Accent)</label>
+              <label for="input-topic-color">Color Accent</label>
               <select id="input-topic-color">
-                <option value="#3b82f6" selected>🔵 Blue (Xanh dương)</option>
-                <option value="#8b5cf6">🟣 Purple (Tím)</option>
-                <option value="#f59e0b">🟠 Amber (Cam)</option>
-                <option value="#10b981">🟢 Emerald (Xanh lá)</option>
-                <option value="#ec4899">🌸 Pink (Hồng)</option>
-                <option value="#06b6d4">🌊 Cyan (Xanh ngọc)</option>
-                <option value="#6366f1">🔮 Indigo (Chàm)</option>
+                <option value="#3b82f6" selected>🔵 Blue</option>
+                <option value="#8b5cf6">🟣 Purple</option>
+                <option value="#f59e0b">🟠 Amber</option>
+                <option value="#10b981">🟢 Emerald</option>
+                <option value="#ec4899">🌸 Pink</option>
+                <option value="#06b6d4">🌊 Cyan</option>
+                <option value="#6366f1">🔮 Indigo</option>
               </select>
             </div>
           </div>
 
           <div class="custom-modal-footer">
-            <button type="button" class="btn btn-secondary" id="topic-modal-cancel-btn">Hủy</button>
-            <button type="submit" class="btn btn-primary" id="topic-modal-submit-btn">Lưu Chủ Đề</button>
+            <button type="button" class="btn btn-secondary" id="topic-modal-cancel-btn">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="topic-modal-submit-btn">Save Topic</button>
           </div>
         </form>
       </div>
@@ -748,11 +748,11 @@
         <div class="custom-dialog-icon danger">
           <i data-lucide="trash-2"></i>
         </div>
-        <h3>Xóa Chủ Đề</h3>
-        <p>Bạn có chắc chắn muốn xóa chủ đề "<strong id="delete-topic-name"></strong>"? Tất cả các câu và từ vựng thuộc chủ đề này cũng sẽ bị xóa vĩnh viễn.</p>
+        <h3>Delete Topic</h3>
+        <p>Are you sure you want to delete topic "<strong id="delete-topic-name"></strong>"? All sentences and vocabulary within this topic will also be permanently deleted.</p>
         <div class="custom-dialog-footer">
-          <button class="btn btn-secondary" id="topic-delete-cancel-btn">Hủy</button>
-          <button class="btn btn-danger" id="topic-delete-confirm-btn">Có, Xóa Chủ Đề</button>
+          <button class="btn btn-secondary" id="topic-delete-cancel-btn">Cancel</button>
+          <button class="btn btn-danger" id="topic-delete-confirm-btn">Yes, Delete Topic</button>
         </div>
       </div>
     </div>
@@ -770,39 +770,39 @@
           <input type="hidden" id="sent-id" />
 
           <div class="form-group" id="sent-topic-group">
-            <label for="input-sent-topic">Chủ đề (Topic) *</label>
+            <label for="input-sent-topic">Topic *</label>
             <select id="input-sent-topic" required>
               <!-- Filled dynamically with topics -->
             </select>
             <small id="sent-topic-lock-hint" class="topic-lock-hint" style="display: none;">
               <i data-lucide="lock" style="width: 12px; height: 12px;"></i>
-              Cố định theo chủ đề đang xem
+              Locked to current topic
             </small>
           </div>
 
           <div class="form-group">
-            <label for="input-sentence">English Sentence (Câu tiếng Anh) *</label>
+            <label for="input-sentence">English Sentence *</label>
             <textarea id="input-sentence" rows="3" placeholder="Enter the English sentence here..." required></textarea>
           </div>
 
           <div class="form-group">
-            <label for="input-sent-pronunciation">Pronunciation (Phiên âm)</label>
+            <label for="input-sent-pronunciation">Pronunciation</label>
             <input type="text" id="input-sent-pronunciation" placeholder="e.g. /kʌm wɪð miː/" autocomplete="off" />
           </div>
 
           <div class="form-group">
-            <label for="input-translation">Translation (Ý nghĩa) *</label>
-            <textarea id="input-translation" rows="2" placeholder="Nhập nghĩa tiếng Việt của câu..." required></textarea>
+            <label for="input-translation">Translation *</label>
+            <textarea id="input-translation" rows="2" placeholder="Enter translation or meaning of the sentence..." required></textarea>
           </div>
 
           <div class="form-group">
-            <label for="input-sent-usage">Usage Note (Ghi chú cách dùng trong trường hợp nào)</label>
-            <textarea id="input-sent-usage" rows="2" placeholder="Ghi chú về ngữ cảnh sử dụng, tình huống áp dụng (hỗ trợ xuống dòng)..."></textarea>
+            <label for="input-sent-usage">Usage Note</label>
+            <textarea id="input-sent-usage" rows="2" placeholder="Notes on usage context, situations (press Enter for new lines)..."></textarea>
           </div>
 
           <div class="form-group">
-            <label for="input-sent-linking">Connected Speech Note (Ghi chú cách nối âm trong câu) <span class="label-hint">(hỗ trợ xuống dòng)</span></label>
-            <textarea id="input-sent-linking" rows="3" placeholder="Ghi chú cách nối âm, nuốt âm (nhấn Enter để xuống dòng cho từng quy tắc)&#10;VD:&#10;&quot;having a&quot;: /v/ nối sang /ə/ -&gt; /ˈhæv.ɪŋ.ŋə/&#10;&quot;just a&quot;: Flap T -&gt; /ˈdʒʌs.t̬ə/"></textarea>
+            <label for="input-sent-linking">Connected Speech Note <span class="label-hint">(supports line breaks)</span></label>
+            <textarea id="input-sent-linking" rows="3" placeholder="Notes on connected speech, linking, reductions (press Enter for each rule)&#10;e.g.:&#10;&quot;having a&quot;: /v/ links to /ə/ -&gt; /ˈhæv.ɪŋ.ŋə/&#10;&quot;just a&quot;: Flap T -&gt; /ˈdʒʌs.t̬ə/"></textarea>
           </div>
 
           <div class="custom-modal-footer">
@@ -826,52 +826,52 @@
           <input type="hidden" id="word-id" />
 
           <div class="form-group" id="word-topic-group">
-            <label for="input-word-topic">Chủ đề (Topic) *</label>
+            <label for="input-word-topic">Topic *</label>
             <select id="input-word-topic" required>
               <!-- Filled dynamically with topics -->
             </select>
             <small id="word-topic-lock-hint" class="topic-lock-hint" style="display: none;">
               <i data-lucide="lock" style="width: 12px; height: 12px;"></i>
-              Cố định theo chủ đề đang xem
+              Locked to current topic
             </small>
           </div>
 
           <div class="form-row-2">
             <div class="form-group">
-              <label for="input-word">Word (Từ tiếng Anh) *</label>
+              <label for="input-word">Word *</label>
               <input type="text" id="input-word" placeholder="e.g. Boarding pass" required autocomplete="off" />
             </div>
 
             <div class="form-group">
-              <label for="input-pronunciation">Pronunciation (Phiên âm)</label>
+              <label for="input-pronunciation">Pronunciation</label>
               <input type="text" id="input-pronunciation" placeholder="e.g. /ˈbɔːdɪŋ pɑːs/" autocomplete="off" />
             </div>
           </div>
 
           <div class="form-group">
-            <label for="input-type">Part of Speech (Từ loại)</label>
+            <label for="input-type">Part of Speech</label>
             <select id="input-type">
-              <option value="noun">Noun (Danh từ)</option>
-              <option value="verb">Verb (Động từ)</option>
-              <option value="adjective">Adjective (Tính từ)</option>
-              <option value="adverb">Adverb (Trạng từ)</option>
-              <option value="pronoun">Pronoun (Đại từ)</option>
-              <option value="determiner">Determiner (Mạo từ)</option>
-              <option value="preposition">Preposition (Giới từ)</option>
-              <option value="conjunction">Conjunction (Liên từ)</option>
-              <option value="interjection">Interjection (Thán từ)</option>
-              <option value="other">Other (Khác)</option>
+              <option value="noun">Noun</option>
+              <option value="verb">Verb</option>
+              <option value="adjective">Adjective</option>
+              <option value="adverb">Adverb</option>
+              <option value="pronoun">Pronoun</option>
+              <option value="determiner">Determiner</option>
+              <option value="preposition">Preposition</option>
+              <option value="conjunction">Conjunction</option>
+              <option value="interjection">Interjection</option>
+              <option value="other">Other</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label for="input-definition">Definition (Ý nghĩa) *</label>
-            <textarea id="input-definition" rows="3" placeholder="Explain the meaning of the word in Vietnamese..." required></textarea>
+            <label for="input-definition">Definition *</label>
+            <textarea id="input-definition" rows="3" placeholder="Explain the meaning of the word..." required></textarea>
           </div>
 
           <div class="form-group">
-            <label for="input-word-note">Note (Ghi chú về từ)</label>
-            <textarea id="input-word-note" rows="2" placeholder="Ghi chú về cách dùng, ngữ cảnh, lưu ý hoặc cụm từ thường gặp..."></textarea>
+            <label for="input-word-note">Note</label>
+            <textarea id="input-word-note" rows="2" placeholder="Notes on usage, context, collocations or tips..."></textarea>
           </div>
 
           <div class="custom-modal-footer">

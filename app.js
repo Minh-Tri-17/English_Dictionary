@@ -35,7 +35,7 @@ const grammarData = {
   tenses: [
     {
       id: 1,
-      name: "Hiện tại Đơn (Present Simple)",
+      name: "Present Simple",
       group: "Present",
       formula: "S + V(s/es)",
       neg: "S + do/does + not + Vo",
@@ -46,7 +46,7 @@ const grammarData = {
     },
     {
       id: 2,
-      name: "Hiện tại Tiếp diễn (Present Continuous)",
+      name: "Present Continuous",
       group: "Present",
       formula: "S + am/is/are + V-ing",
       neg: "S + am/is/are + not + V-ing",
@@ -57,7 +57,7 @@ const grammarData = {
     },
     {
       id: 3,
-      name: "Hiện tại Hoàn thành (Present Perfect)",
+      name: "Present Perfect",
       group: "Present",
       formula: "S + have/has + V3/pp",
       neg: "S + have/has + not + V3/pp",
@@ -68,7 +68,7 @@ const grammarData = {
     },
     {
       id: 4,
-      name: "HT Hoàn thành TD (Present Perfect Continuous)",
+      name: "Present Perfect Continuous",
       group: "Present",
       formula: "S + have/has + been + V-ing",
       neg: "S + have/has + not + been + V-ing",
@@ -79,7 +79,7 @@ const grammarData = {
     },
     {
       id: 5,
-      name: "Quá khứ Đơn (Past Simple)",
+      name: "Past Simple",
       group: "Past",
       formula: "S + V2/ed",
       neg: "S + did + not + Vo",
@@ -90,7 +90,7 @@ const grammarData = {
     },
     {
       id: 6,
-      name: "Quá khứ Tiếp diễn (Past Continuous)",
+      name: "Past Continuous",
       group: "Past",
       formula: "S + was/were + V-ing",
       neg: "S + was/were + not + V-ing",
@@ -101,7 +101,7 @@ const grammarData = {
     },
     {
       id: 7,
-      name: "Quá khứ Hoàn thành (Past Perfect)",
+      name: "Past Perfect",
       group: "Past",
       formula: "S + had + V3/pp",
       neg: "S + had + not + V3/pp",
@@ -112,7 +112,7 @@ const grammarData = {
     },
     {
       id: 8,
-      name: "QK Hoàn thành TD (Past Perfect Continuous)",
+      name: "Past Perfect Continuous",
       group: "Past",
       formula: "S + had + been + V-ing",
       neg: "S + had + not + been + V-ing",
@@ -123,7 +123,7 @@ const grammarData = {
     },
     {
       id: 9,
-      name: "Tương lai Đơn (Future Simple)",
+      name: "Future Simple",
       group: "Future",
       formula: "S + will + Vo",
       neg: "S + will + not + Vo",
@@ -134,7 +134,7 @@ const grammarData = {
     },
     {
       id: 10,
-      name: "Tương lai Tiếp diễn (Future Continuous)",
+      name: "Future Continuous",
       group: "Future",
       formula: "S + will + be + V-ing",
       neg: "S + will + not + be + V-ing",
@@ -145,7 +145,7 @@ const grammarData = {
     },
     {
       id: 11,
-      name: "Tương lai Hoàn thành (Future Perfect)",
+      name: "Future Perfect",
       group: "Future",
       formula: "S + will + have + V3/pp",
       neg: "S + will + not + have + V3/pp",
@@ -156,7 +156,7 @@ const grammarData = {
     },
     {
       id: 12,
-      name: "TL Hoàn thành TD (Future Perfect Continuous)",
+      name: "Future Perfect Continuous",
       group: "Future",
       formula: "S + will + have + been + V-ing",
       neg: "S + will + not + have + been + V-ing",
@@ -167,57 +167,57 @@ const grammarData = {
     },
   ],
   symbols: [
-    { k: "S", t: "Subject", d: "Chủ ngữ (Người hoặc vật thực hiện hành động)" },
-    { k: "V / Vo", t: "Verb / Base Verb", d: "Động từ chính / Động từ nguyên mẫu không chia" },
+    { k: "S", t: "Subject", d: "Subject (Person or thing performing the action)" },
+    { k: "V / Vo", t: "Verb / Base Verb", d: "Main verb / Base form without conjugation" },
     {
       k: "V3/pp",
       t: "Past Participle",
-      d: "Động từ cột 3 hoặc thêm đuôi -ed (dùng trong hoàn thành & bị động)",
+      d: "Past participle (V3 / -ed form used in perfect & passive tenses)",
     },
-    { k: "O", t: "Object", d: "Tân ngữ (Đối tượng chịu tác động của hành động)" },
+    { k: "O", t: "Object", d: "Object (Entity receiving or affected by the action)" },
     {
       k: "Aux.V",
       t: "Auxiliary Verb",
-      d: "Trợ động từ (do, does, did, have, has, had, will, am, is, are...)",
+      d: "Auxiliary verb (do, does, did, have, has, had, will, am, is, are...)",
     },
   ],
   passiveRules: [
-    { tense: "Hiện tại đơn (Present Simple)", active: "V(s/es)", passive: "am / is / are + V3/pp" },
+    { tense: "Present Simple", active: "V(s/es)", passive: "am / is / are + V3/pp" },
     {
-      tense: "Hiện tại tiếp diễn (Present Continuous)",
+      tense: "Present Continuous",
       active: "am / is / are + V-ing",
       passive: "am / is / are + being + V3/pp",
     },
     {
-      tense: "Hiện tại hoàn thành (Present Perfect)",
+      tense: "Present Perfect",
       active: "have / has + V3/pp",
       passive: "have / has + been + V3/pp",
     },
-    { tense: "Quá khứ đơn (Past Simple)", active: "V2 / ed", passive: "was / were + V3/pp" },
+    { tense: "Past Simple", active: "V2 / ed", passive: "was / were + V3/pp" },
     {
-      tense: "Quá khứ tiếp diễn (Past Continuous)",
+      tense: "Past Continuous",
       active: "was / were + V-ing",
       passive: "was / were + being + V3/pp",
     },
     {
-      tense: "Quá khứ hoàn thành (Past Perfect)",
+      tense: "Past Perfect",
       active: "had + V3/pp",
       passive: "had + been + V3/pp",
     },
-    { tense: "Tương lai đơn (Future Simple)", active: "will + Vo", passive: "will + be + V3/pp" },
+    { tense: "Future Simple", active: "will + Vo", passive: "will + be + V3/pp" },
     {
-      tense: "Động từ khuyết thiếu (Modal Verbs)",
+      tense: "Modal Verbs",
       active: "can / must / may + Vo",
       passive: "can / must / may + be + V3/pp",
     },
   ],
   reportedChanges: {
     tense: [
-      "Hiện tại đơn → Quá khứ đơn (V/s/es → V2/ed)",
-      "Hiện tại tiếp diễn → Quá khứ tiếp diễn (am/is/are V-ing → was/were V-ing)",
-      "Hiện tại hoàn thành → Quá khứ hoàn thành (have/has V3 → had V3)",
-      "Quá khứ đơn → Quá khứ hoàn thành (V2/ed → had V3)",
-      "Tương lai đơn (will) → Điều kiện hiện tại (would)",
+      "Present Simple → Past Simple (V/s/es → V2/ed)",
+      "Present Continuous → Past Continuous (am/is/are V-ing → was/were V-ing)",
+      "Present Perfect → Past Perfect (have/has V3 → had V3)",
+      "Past Simple → Past Perfect (V2/ed → had V3)",
+      "Future Simple (will) → Conditional (would)",
       "Can / May → Could / Might",
     ],
     adv: [
@@ -235,294 +235,294 @@ const grammarData = {
       symbol: "iː",
       category: "vowels",
       example: "see, machine, beat, team, green",
-      note: "i (dài, căng môi)",
+      note: "Long vowel, spread lips",
     },
     {
       symbol: "ɪ",
       category: "vowels",
       example: "sit, ship, big, city, swim",
-      note: "i (ngắn, lỏng)",
+      note: "Short vowel, relaxed lips",
     },
     {
       symbol: "e",
       category: "vowels",
       example: "bed, head, ten, best, left",
-      note: "e (giống 'e' tiếng Việt)",
+      note: "Short front vowel",
     },
     {
       symbol: "æ",
       category: "vowels",
       example: "cat, bad, man, hat, hand",
-      note: "a (lai giữa 'a' và 'e', miệng mở rộng)",
+      note: "Open front vowel, wide mouth",
     },
     {
       symbol: "ɑː",
       category: "vowels",
       example: "car, father, class, plant, half",
-      note: "a (dài, cổ họng mở)",
+      note: "Long open back vowel",
     },
     {
       symbol: "ɒ",
       category: "vowels",
       example: "hot, not, dog, shop, wrong",
-      note: "o (ngắn, dẹt)",
+      note: "Short open back rounded vowel",
     },
     {
       symbol: "ɔː",
       category: "vowels",
       example: "saw, law, all, call, walk",
-      note: "o (dài, tròn môi)",
+      note: "Long rounded back vowel",
     },
     {
       symbol: "ʊ",
       category: "vowels",
       example: "book, put, good, look, would",
-      note: "ư (ngắn, hơi tròn môi)",
+      note: "Short rounded near-back vowel",
     },
     {
       symbol: "uː",
       category: "vowels",
       example: "blue, food, moon, pool, school",
-      note: "u (dài, chu môi)",
+      note: "Long rounded back vowel",
     },
     {
       symbol: "ʌ",
       category: "vowels",
       example: "cup, love, run, bus, summer",
-      note: "ă (ngắn, dứt khoát)",
+      note: "Short open-mid back vowel",
     },
     {
       symbol: "ɜː",
       category: "vowels",
       example: "bird, learn, turn, work, word",
-      note: "ơ (dài, cuộn lưỡi nhẹ)",
+      note: "Long mid-central vowel",
     },
     {
       symbol: "ə",
       category: "vowels",
       example: "about, teacher, common, modern, nation",
-      note: "ơ (âm lướt, nhẹ, không nhấn)",
+      note: "Schwa, neutral unstressed vowel",
     },
     {
       symbol: "eɪ",
       category: "diphthongs",
       example: "day, make, name, game, wait",
-      note: "e-i (đọc từ /e/ sang /ɪ/)",
+      note: "Glide from /e/ to /ɪ/",
     },
     {
       symbol: "aɪ",
       category: "diphthongs",
       example: "my, time, like, mind, find",
-      note: "a-i (đọc từ /a/ sang /ɪ/)",
+      note: "Glide from /a/ to /ɪ/",
     },
     {
       symbol: "ɔɪ",
       category: "diphthongs",
       example: "boy, coin, join, noise, enjoy",
-      note: "o-i (đọc từ /ɔː/ sang /ɪ/)",
+      note: "Glide from /ɔː/ to /ɪ/",
     },
     {
       symbol: "aʊ",
       category: "diphthongs",
       example: "now, house, out, loud, found",
-      note: "a-u (đọc từ /a/ sang /ʊ/)",
+      note: "Glide from /a/ to /ʊ/",
     },
     {
       symbol: "əʊ",
       category: "diphthongs",
       example: "go, home, know, phone, show",
-      note: "ơ-u (đọc từ /ə/ sang /ʊ/)",
+      note: "Glide from /ə/ to /ʊ/",
     },
     {
       symbol: "ɪə",
       category: "diphthongs",
       example: "here, idea, dear, near, year",
-      note: "i-ơ (đọc từ /ɪ/ sang /ə/)",
+      note: "Glide from /ɪ/ to /ə/",
     },
     {
       symbol: "eə",
       category: "diphthongs",
       example: "air, care, fair, there, where",
-      note: "e-ơ (đọc từ /e/ sang /ə/)",
+      note: "Glide from /e/ to /ə/",
     },
     {
       symbol: "ʊə",
       category: "diphthongs",
       example: "tour, sure, pure, fewer, jury",
-      note: "u-ơ (đọc từ /ʊ/ sang /ə/)",
+      note: "Glide from /ʊ/ to /ə/",
     },
-    // --- Plosives (âm tắc) ---
+    // --- Plosives ---
     {
       symbol: "p",
       category: "consonants",
       voiced: false,
       example: "pen, happy, stop, apple, cup",
-      note: "p (vô thanh, bật hơi)",
+      note: "Voiceless bilabial plosive",
     },
     {
       symbol: "b",
       category: "consonants",
       voiced: true,
       example: "book, baby, big, rubber, job",
-      note: "b (hữu thanh, bật hơi)",
+      note: "Voiced bilabial plosive",
     },
     {
       symbol: "t",
       category: "consonants",
       voiced: false,
       example: "ten, water, better, button, city",
-      note: "t (vô thanh, đầu lưỡi chạm lợi trên)",
+      note: "Voiceless alveolar plosive",
     },
     {
       symbol: "d",
       category: "consonants",
       voiced: true,
       example: "day, ladder, red, add, needed",
-      note: "d (hữu thanh, đầu lưỡi chạm lợi trên)",
+      note: "Voiced alveolar plosive",
     },
     {
       symbol: "k",
       category: "consonants",
       voiced: false,
       example: "cat, school, take, back, book",
-      note: "k (vô thanh, bật hơi mạnh)",
+      note: "Voiceless velar plosive",
     },
     {
       symbol: "g",
       category: "consonants",
       voiced: true,
       example: "go, game, big, egg, beg",
-      note: "g (hữu thanh)",
+      note: "Voiced velar plosive",
     },
-    // --- Fricatives (âm xát) ---
+    // --- Fricatives ---
     {
       symbol: "f",
       category: "consonants",
       voiced: false,
       example: "fish, fine, coffee, leaf, of",
-      note: "f (vô thanh, răng trên chạm môi dưới)",
+      note: "Voiceless labiodental fricative",
     },
     {
       symbol: "v",
       category: "consonants",
       voiced: true,
       example: "van, love, very, give, five",
-      note: "v (hữu thanh, rung)",
+      note: "Voiced labiodental fricative",
     },
     {
       symbol: "θ",
       category: "consonants",
       voiced: false,
       example: "think, bath, both, thought, thing",
-      note: "th (vô thanh, lưỡi kẹp răng, thổi hơi)",
+      note: "Voiceless dental fricative",
     },
     {
       symbol: "ð",
       category: "consonants",
       voiced: true,
       example: "this, mother, the, brother, weather",
-      note: "th (hữu thanh, lưỡi kẹp răng, rung)",
+      note: "Voiced dental fricative",
     },
     {
       symbol: "s",
       category: "consonants",
       voiced: false,
       example: "see, pass, class, bus, miss",
-      note: "s (vô thanh)",
+      note: "Voiceless alveolar fricative",
     },
     {
       symbol: "z",
       category: "consonants",
       voiced: true,
       example: "zoo, is, his, please, was",
-      note: "z (hữu thanh, rung)",
+      note: "Voiced alveolar fricative",
     },
     {
       symbol: "ʃ",
       category: "consonants",
       voiced: false,
       example: "she, sure, shop, nation, special",
-      note: "sh (vô thanh, chu môi)",
+      note: "Voiceless postalveolar fricative",
     },
     {
       symbol: "ʒ",
       category: "consonants",
       voiced: true,
       example: "vision, beige, measure, usual, pleasure",
-      note: "zh (hữu thanh, chu môi, rung)",
+      note: "Voiced postalveolar fricative",
     },
     {
       symbol: "h",
       category: "consonants",
       voiced: false,
       example: "he, hello, hat, who, ahead",
-      note: "h (vô thanh, thở ra)",
+      note: "Voiceless glottal fricative",
     },
-    // --- Affricates (âm tắc-xát) ---
+    // --- Affricates ---
     {
       symbol: "tʃ",
       category: "consonants",
       voiced: false,
       example: "church, choose, chin, match, each",
-      note: "ch (vô thanh, kết hợp /t/ và /ʃ/)",
+      note: "Voiceless postalveolar affricate",
     },
     {
       symbol: "dʒ",
       category: "consonants",
       voiced: true,
       example: "judge, job, giant, age, bridge",
-      note: "j (hữu thanh, kết hợp /d/ và /ʒ/)",
+      note: "Voiced postalveolar affricate",
     },
-    // --- Nasals (âm mũi) ---
+    // --- Nasals ---
     {
       symbol: "m",
       category: "consonants",
       voiced: true,
       example: "man, summer, swim, come, room",
-      note: "m (môi chạm nhau)",
+      note: "Bilabial nasal",
     },
     {
       symbol: "n",
       category: "consonants",
       voiced: true,
       example: "no, dinner, sun, ten, on",
-      note: "n (đầu lưỡi chạm lợi trên)",
+      note: "Alveolar nasal",
     },
     {
       symbol: "ŋ",
       category: "consonants",
       voiced: true,
       example: "sing, long, bring, ring, bank",
-      note: "ng (cuối từ, cuống lưỡi chạm vòm miệng)",
+      note: "Velar nasal",
     },
-    // --- Approximants (âm tiếp cận) ---
+    // --- Approximants ---
     {
       symbol: "l",
       category: "consonants",
       voiced: true,
       example: "let, fall, tell, will, all",
-      note: "l (đầu lưỡi chạm lợi trên)",
+      note: "Alveolar lateral approximant",
     },
     {
       symbol: "r",
       category: "consonants",
       voiced: true,
       example: "red, carry, very, arrange, brother",
-      note: "r (cuộn lưỡi, không rung lưỡi)",
+      note: "Postalveolar approximant",
     },
     {
       symbol: "j",
       category: "consonants",
       voiced: true,
       example: "yes, yellow, use, music, few",
-      note: "y (đầu lưỡi chạm vòm miệng, hơi /i/)",
+      note: "Palatal approximant",
     },
     {
       symbol: "w",
       category: "consonants",
       voiced: true,
       example: "we, water, way, one, queen",
-      note: "w (chu môi, hơi /u/)",
+      note: "Labio-velar approximant",
     },
   ],
 };
@@ -905,7 +905,7 @@ function updateTopicStats() {
   if (sidebarTopicMiniList) {
     if (topics.length === 0) {
       sidebarTopicMiniList.innerHTML =
-        '<span class="text-muted" style="font-size: 0.8rem; padding: 4px 8px;">Chưa có chủ đề</span>';
+        '<span class="text-muted" style="font-size: 0.8rem; padding: 4px 8px;">No topics yet</span>';
     } else {
       sidebarTopicMiniList.innerHTML = topics
         .map((t) => {
@@ -949,10 +949,10 @@ function renderTopics() {
   }
 
   if (topicsResultsCount) {
-    topicsResultsCount.textContent = `Hiển thị ${filtered.length} chủ đề`;
+    topicsResultsCount.textContent = `Showing ${filtered.length} topic${filtered.length === 1 ? "" : "s"}`;
   }
   if (topicsSectionHeading) {
-    topicsSectionHeading.textContent = query ? "Kết Quả Tìm Kiếm Chủ Đề" : "Tất Cả Chủ Đề Học Tập";
+    topicsSectionHeading.textContent = query ? "Topic Search Results" : "All Study Topics";
   }
 
   if (filtered.length === 0) {
@@ -979,25 +979,25 @@ function renderTopics() {
                 <i data-lucide="${icon}"></i>
               </div>
               <div class="topic-card-actions">
-                <button class="action-btn edit-topic-btn" data-id="${t.id}" title="Sửa chủ đề">
+                <button class="action-btn edit-topic-btn" data-id="${t.id}" title="Edit topic">
                   <i data-lucide="edit-2"></i>
                 </button>
-                <button class="action-btn delete-topic-btn text-danger" data-id="${t.id}" title="Xóa chủ đề">
+                <button class="action-btn delete-topic-btn text-danger" data-id="${t.id}" title="Delete topic">
                   <i data-lucide="trash-2"></i>
                 </button>
               </div>
             </div>
             
             <h3 class="topic-card-title">${escapeHTMLElements(t.name)}</h3>
-            <p class="topic-card-desc">${escapeHTMLElements(t.description || "Chủ đề giao tiếp và từ vựng thông dụng.")}</p>
+            <p class="topic-card-desc">${escapeHTMLElements(t.description || "General conversation and vocabulary topic.")}</p>
             
             <div class="topic-card-footer">
               <div class="topic-stats-pills">
-                <span class="topic-pill sent-pill"><i data-lucide="message-square-text" style="width: 12px; height: 12px"></i> <span>${sentCount} câu</span></span>
-                <span class="topic-pill words-pill"><i data-lucide="book-open" style="width: 12px; height: 12px"></i> <span>${wordCount} từ</span></span>
+                <span class="topic-pill sent-pill"><i data-lucide="message-square-text" style="width: 12px; height: 12px"></i> <span>${sentCount} sentence${sentCount === 1 ? "" : "s"}</span></span>
+                <span class="topic-pill words-pill"><i data-lucide="book-open" style="width: 12px; height: 12px"></i> <span>${wordCount} word${wordCount === 1 ? "" : "s"}</span></span>
               </div>
               <span class="topic-arrow-link">
-                <span>Khám phá</span>
+                <span>Explore</span>
                 <i data-lucide="arrow-right" style="width: 13px; height: 13px"></i>
               </span>
             </div>
@@ -1024,7 +1024,7 @@ function openTopicDetail(topicId) {
   const breadcrumbEl = document.getElementById("breadcrumb-topic-name");
   if (breadcrumbEl) breadcrumbEl.textContent = topic.name;
 
-  if (detailTopicDesc) detailTopicDesc.textContent = topic.description || "Chủ đề học tập";
+  if (detailTopicDesc) detailTopicDesc.textContent = topic.description || "Study topic";
   if (detailTopicIconBox) {
     detailTopicIconBox.style.background = topic.color || "#6366f1";
   }
@@ -1071,13 +1071,13 @@ function switchTopicTab(tab) {
       tabBtnWords.classList.remove("active");
       if (topicTabSentences) topicTabSentences.style.display = "flex";
       if (topicTabWords) topicTabWords.style.display = "none";
-      if (topicActionAddLabel) topicActionAddLabel.textContent = "Thêm Câu Mới";
+      if (topicActionAddLabel) topicActionAddLabel.textContent = "Add New Sentence";
     } else {
       tabBtnWords.classList.add("active");
       tabBtnSentences.classList.remove("active");
       if (topicTabWords) topicTabWords.style.display = "flex";
       if (topicTabSentences) topicTabSentences.style.display = "none";
-      if (topicActionAddLabel) topicActionAddLabel.textContent = "Thêm Từ Vựng Mới";
+      if (topicActionAddLabel) topicActionAddLabel.textContent = "Add New Word";
     }
   }
 
@@ -1180,7 +1180,7 @@ function formatLinkingNoteHTML(val) {
   return `
     <div class="sentence-note-box linking">
       <div class="sentence-note-header">
-        <strong>🗣️ Nối âm:</strong>
+        <strong>🗣️ Connected Speech:</strong>
       </div>
       <div class="sentence-note-lines">
         ${renderedLines}
@@ -1210,7 +1210,7 @@ function formatUsageNoteHTML(val) {
   return `
     <div class="sentence-note-box usage">
       <div class="sentence-note-header">
-        <strong>💡 Cách dùng:</strong>
+        <strong>💡 Usage Note:</strong>
       </div>
       <div class="sentence-note-lines">
         ${renderedLines}
@@ -1256,14 +1256,14 @@ function filterAndRenderTopicSentences() {
           return `
           <article class="sentence-detail-card" data-sentence-id="${s.id}">
             <div class="card-flip-inner">
-              <!-- FRONT FACE: Chỉ hiện text Tiếng Anh và loa -->
+              <!-- FRONT FACE: Only English sentence and speaker -->
               <div class="card-face card-face-front">
                 <div class="card-front-top-row">
                   <span class="card-type-chip sentence-chip">
                     <i data-lucide="message-square"></i>
-                    <span>Câu mẫu giao tiếp</span>
+                    <span>Sentence</span>
                   </span>
-                  <span class="card-flip-badge" title="Thẻ 2 mặt flashcard">
+                  <span class="card-flip-badge" title="Two-sided flashcard">
                     <i data-lucide="sparkles"></i>
                     <span>Flashcard</span>
                   </span>
@@ -1276,7 +1276,7 @@ function filterAndRenderTopicSentences() {
                     <span class="quote-mark close">”</span>
                   </div>
 
-                  <button class="btn-tts-speaker front-speaker-btn" data-tts="${escapeHTMLElements(s.sentence)}" title="Phát âm câu này">
+                  <button class="btn-tts-speaker front-speaker-btn" data-tts="${escapeHTMLElements(s.sentence)}" title="Listen to pronunciation">
                     <i data-lucide="volume-2"></i>
                   </button>
                 </div>
@@ -1284,27 +1284,27 @@ function filterAndRenderTopicSentences() {
                 <div class="sentence-card-actions">
                   <div class="flip-hint-prompt">
                     <i data-lucide="eye" style="width: 13px; height: 13px;"></i>
-                    <span>Bấm mắt để lật xem giải nghĩa</span>
+                    <span>Click eye to view translation</span>
                   </div>
                   <div class="card-actions-right">
-                    <button class="action-btn toggle-detail-btn" data-id="${s.id}" title="Lật xem chi tiết">
+                    <button class="action-btn toggle-detail-btn" data-id="${s.id}" title="View details">
                       <i data-lucide="eye"></i>
                     </button>
-                    <button class="action-btn edit-topic-sent-btn" data-id="${s.id}" title="Sửa câu">
+                    <button class="action-btn edit-topic-sent-btn" data-id="${s.id}" title="Edit sentence">
                       <i data-lucide="edit-2"></i>
                     </button>
-                    <button class="action-btn delete-topic-sent-btn text-danger" data-id="${s.id}" title="Xóa câu">
+                    <button class="action-btn delete-topic-sent-btn text-danger" data-id="${s.id}" title="Delete sentence">
                       <i data-lucide="trash-2"></i>
                     </button>
                   </div>
                 </div>
               </div>
 
-              <!-- BACK FACE: Đầy đủ thông tin -->
+              <!-- BACK FACE: Full information -->
               <div class="card-face card-face-back">
                 <div class="sentence-card-header back-header">
                   <div class="sentence-main-text-row">
-                    <button class="btn-tts-speaker" data-tts="${escapeHTMLElements(s.sentence)}" title="Phát âm câu này">
+                    <button class="btn-tts-speaker" data-tts="${escapeHTMLElements(s.sentence)}" title="Listen to pronunciation">
                       <i data-lucide="volume-2"></i>
                     </button>
                     <h4 class="sentence-text-en back-text-en">${escapeHTMLElements(s.sentence)}</h4>
@@ -1324,16 +1324,16 @@ function filterAndRenderTopicSentences() {
                 <div class="sentence-card-actions">
                   <div class="flip-hint-prompt">
                     <i data-lucide="rotate-ccw" style="width: 13px; height: 13px;"></i>
-                    <span>Bấm mắt để lật về mặt trước</span>
+                    <span>Click eye to flip to front</span>
                   </div>
                   <div class="card-actions-right">
-                    <button class="action-btn toggle-detail-btn active" data-id="${s.id}" title="Lật về mặt trước">
+                    <button class="action-btn toggle-detail-btn active" data-id="${s.id}" title="Flip to front">
                       <i data-lucide="eye-off"></i>
                     </button>
-                    <button class="action-btn edit-topic-sent-btn" data-id="${s.id}" title="Sửa câu">
+                    <button class="action-btn edit-topic-sent-btn" data-id="${s.id}" title="Edit sentence">
                       <i data-lucide="edit-2"></i>
                     </button>
-                    <button class="action-btn delete-topic-sent-btn text-danger" data-id="${s.id}" title="Xóa câu">
+                    <button class="action-btn delete-topic-sent-btn text-danger" data-id="${s.id}" title="Delete sentence">
                       <i data-lucide="trash-2"></i>
                     </button>
                   </div>
@@ -1385,14 +1385,14 @@ function filterAndRenderTopicWords() {
           return `
           <article class="word-detail-card ${typeNormalized}" data-word-id="${w.id}">
             <div class="card-flip-inner">
-              <!-- FRONT FACE: Chỉ hiện text Tiếng Anh và loa -->
+              <!-- FRONT FACE: Only English word and speaker -->
               <div class="card-face card-face-front">
                 <div class="card-front-top-row">
                   <span class="card-type-chip word-chip">
                     <i data-lucide="book-open"></i>
-                    <span>Từ vựng</span>
+                    <span>Vocabulary</span>
                   </span>
-                  <span class="card-flip-badge" title="Thẻ 2 mặt flashcard">
+                  <span class="card-flip-badge" title="Two-sided flashcard">
                     <i data-lucide="sparkles"></i>
                     <span>Flashcard</span>
                   </span>
@@ -1403,7 +1403,7 @@ function filterAndRenderTopicWords() {
                     <h3 class="front-text-en word-mode">${escapeHTMLElements(w.word)}</h3>
                   </div>
 
-                  <button class="btn-tts-speaker front-speaker-btn" data-tts="${escapeHTMLElements(w.word)}" title="Phát âm từ này">
+                  <button class="btn-tts-speaker front-speaker-btn" data-tts="${escapeHTMLElements(w.word)}" title="Listen to pronunciation">
                     <i data-lucide="volume-2"></i>
                   </button>
                 </div>
@@ -1411,27 +1411,27 @@ function filterAndRenderTopicWords() {
                 <div class="sentence-card-actions">
                   <div class="flip-hint-prompt">
                     <i data-lucide="eye" style="width: 13px; height: 13px;"></i>
-                    <span>Bấm mắt để lật xem nghĩa & IPA</span>
+                    <span>Click eye to view definition & IPA</span>
                   </div>
                   <div class="card-actions-right">
-                    <button class="action-btn toggle-detail-btn" data-id="${w.id}" title="Lật xem chi tiết">
+                    <button class="action-btn toggle-detail-btn" data-id="${w.id}" title="View details">
                       <i data-lucide="eye"></i>
                     </button>
-                    <button class="action-btn edit-topic-word-btn" data-id="${w.id}" title="Sửa từ">
+                    <button class="action-btn edit-topic-word-btn" data-id="${w.id}" title="Edit word">
                       <i data-lucide="edit-2"></i>
                     </button>
-                    <button class="action-btn delete-topic-word-btn text-danger" data-id="${w.id}" title="Xóa từ">
+                    <button class="action-btn delete-topic-word-btn text-danger" data-id="${w.id}" title="Delete word">
                       <i data-lucide="trash-2"></i>
                     </button>
                   </div>
                 </div>
               </div>
 
-              <!-- BACK FACE: Đầy đủ thông tin -->
+              <!-- BACK FACE: Full information -->
               <div class="card-face card-face-back">
                 <div class="word-card-top-row back-header">
                   <div class="word-title-group">
-                    <button class="btn-tts-speaker" data-tts="${escapeHTMLElements(w.word)}" title="Phát âm từ này">
+                    <button class="btn-tts-speaker" data-tts="${escapeHTMLElements(w.word)}" title="Listen to pronunciation">
                       <i data-lucide="volume-2"></i>
                     </button>
                     <h4 class="word-text-en back-text-en">${escapeHTMLElements(w.word)}</h4>
@@ -1448,7 +1448,7 @@ function filterAndRenderTopicWords() {
                   w.note
                     ? `
                 <div class="word-note-box">
-                  <strong>📌 Ghi chú:</strong> ${escapeHTMLElements(w.note)}
+                  <strong>📌 Note:</strong> ${escapeHTMLElements(w.note)}
                 </div>`
                     : ""
                 }
@@ -1456,16 +1456,16 @@ function filterAndRenderTopicWords() {
                 <div class="sentence-card-actions">
                   <div class="flip-hint-prompt">
                     <i data-lucide="rotate-ccw" style="width: 13px; height: 13px;"></i>
-                    <span>Bấm mắt để lật về mặt trước</span>
+                    <span>Click eye to flip to front</span>
                   </div>
                   <div class="card-actions-right">
-                    <button class="action-btn toggle-detail-btn active" data-id="${w.id}" title="Lật về mặt trước">
+                    <button class="action-btn toggle-detail-btn active" data-id="${w.id}" title="Flip to front">
                       <i data-lucide="eye-off"></i>
                     </button>
-                    <button class="action-btn edit-topic-word-btn" data-id="${w.id}" title="Sửa từ">
+                    <button class="action-btn edit-topic-word-btn" data-id="${w.id}" title="Edit word">
                       <i data-lucide="edit-2"></i>
                     </button>
-                    <button class="action-btn delete-topic-word-btn text-danger" data-id="${w.id}" title="Xóa từ">
+                    <button class="action-btn delete-topic-word-btn text-danger" data-id="${w.id}" title="Delete word">
                       <i data-lucide="trash-2"></i>
                     </button>
                   </div>
@@ -1484,14 +1484,14 @@ function filterAndRenderTopicWords() {
 
 function openTopicModal(topicObj = null) {
   if (topicObj) {
-    if (topicModalTitle) topicModalTitle.textContent = "Chỉnh Sửa Chủ Đề";
+    if (topicModalTitle) topicModalTitle.textContent = "Edit Topic";
     if (topicIdInput) topicIdInput.value = topicObj.id;
     if (inputTopicName) inputTopicName.value = topicObj.name;
     if (inputTopicDesc) inputTopicDesc.value = topicObj.description || "";
     if (inputTopicIcon) inputTopicIcon.value = topicObj.icon || "folder";
     if (inputTopicColor) inputTopicColor.value = topicObj.color || "#3b82f6";
   } else {
-    if (topicModalTitle) topicModalTitle.textContent = "Thêm Chủ Đề Mới";
+    if (topicModalTitle) topicModalTitle.textContent = "Add New Topic";
     if (topicForm) topicForm.reset();
     if (topicIdInput) topicIdInput.value = "";
     if (inputTopicIcon) inputTopicIcon.value = "message-circle";
@@ -1516,7 +1516,7 @@ async function handleTopicFormSubmit(e) {
   };
 
   if (!payload.name) {
-    showToastNotification("Vui lòng nhập tên chủ đề", "error");
+    showToastNotification("Please enter a topic name", "error");
     return;
   }
 
@@ -1541,7 +1541,7 @@ async function handleTopicFormSubmit(e) {
     localStorage.setItem("lexikeep_topics", JSON.stringify(topics));
     closeTopicModal();
     showToastNotification(
-      isEdit ? "Cập nhật chủ đề thành công!" : "Thêm chủ đề mới thành công!",
+      isEdit ? "Topic updated successfully!" : "New topic created successfully!",
       "success",
     );
     populateTopicSelectors();
@@ -1560,13 +1560,13 @@ async function handleTopicFormSubmit(e) {
       if (!res.ok) throw new Error("Could not save topic");
       closeTopicModal();
       showToastNotification(
-        isEdit ? "Cập nhật chủ đề thành công!" : "Thêm chủ đề mới thành công!",
+        isEdit ? "Topic updated successfully!" : "New topic created successfully!",
         "success",
       );
       await fetchTopics();
     } catch (err) {
       console.error("Topic save error:", err);
-      showToastNotification("Không thể lưu chủ đề.", "error");
+      showToastNotification("Unable to save topic.", "error");
     }
   }
 }
@@ -1593,7 +1593,7 @@ async function confirmDeleteTopic() {
     localStorage.setItem("lexikeep_topics", JSON.stringify(topics));
     closeTopicDeleteDialog();
     if (activeTopicId === id) closeTopicDetail();
-    showToastNotification("Đã xóa chủ đề thành công!", "success");
+    showToastNotification("Topic deleted successfully!", "success");
     populateTopicSelectors();
     updateTopicStats();
     renderTopics();
@@ -1603,11 +1603,11 @@ async function confirmDeleteTopic() {
       if (!res.ok) throw new Error("Could not delete topic");
       closeTopicDeleteDialog();
       if (activeTopicId === id) closeTopicDetail();
-      showToastNotification("Đã xóa chủ đề thành công!", "success");
+      showToastNotification("Topic deleted successfully!", "success");
       await fetchTopics();
     } catch (err) {
       console.error("Topic delete error:", err);
-      showToastNotification("Không thể xóa chủ đề.", "error");
+      showToastNotification("Unable to delete topic.", "error");
     }
   }
 }
@@ -1623,7 +1623,7 @@ async function deleteSentenceFromTopic(topicId, sentenceId) {
     syncGlobalWordsAndSentences();
     updateTopicStats();
     renderTopicDetail();
-    showToastNotification("Đã xóa câu thành công!", "success");
+    showToastNotification("Sentence deleted successfully!", "success");
   } else {
     try {
       const res = await fetch(`/api/topics/${topicId}/sentences/${sentenceId}`, {
@@ -1633,10 +1633,10 @@ async function deleteSentenceFromTopic(topicId, sentenceId) {
       syncGlobalWordsAndSentences();
       updateTopicStats();
       renderTopicDetail();
-      showToastNotification("Đã xóa câu thành công!", "success");
+      showToastNotification("Sentence deleted successfully!", "success");
     } catch (err) {
       console.error("Delete sentence error:", err);
-      showToastNotification("Không thể xóa câu.", "error");
+      showToastNotification("Unable to delete sentence.", "error");
     }
   }
 }
@@ -1652,7 +1652,7 @@ async function deleteWordFromTopic(topicId, wordId) {
     syncGlobalWordsAndSentences();
     updateTopicStats();
     renderTopicDetail();
-    showToastNotification("Đã xóa từ thành công!", "success");
+    showToastNotification("Word deleted successfully!", "success");
   } else {
     try {
       const res = await fetch(`/api/topics/${topicId}/words/${wordId}`, { method: "DELETE" });
@@ -1660,10 +1660,10 @@ async function deleteWordFromTopic(topicId, wordId) {
       syncGlobalWordsAndSentences();
       updateTopicStats();
       renderTopicDetail();
-      showToastNotification("Đã xóa từ thành công!", "success");
+      showToastNotification("Word deleted successfully!", "success");
     } catch (err) {
       console.error("Delete word error:", err);
-      showToastNotification("Không thể xóa từ.", "error");
+      showToastNotification("Unable to delete word.", "error");
     }
   }
 }
@@ -1828,7 +1828,7 @@ function setupTopicEventListeners() {
       } else if (deleteBtn) {
         e.stopPropagation();
         const sid = deleteBtn.getAttribute("data-id");
-        if (confirm("Bạn có chắc chắn muốn xóa câu này khỏi chủ đề?")) {
+        if (confirm("Are you sure you want to delete this sentence from this topic?")) {
           deleteSentenceFromTopic(activeTopicId, sid);
         }
       }
@@ -1864,7 +1864,7 @@ function setupTopicEventListeners() {
       } else if (deleteBtn) {
         e.stopPropagation();
         const wid = deleteBtn.getAttribute("data-id");
-        if (confirm("Bạn có chắc chắn muốn xóa từ vựng này khỏi chủ đề?")) {
+        if (confirm("Are you sure you want to delete this word from this topic?")) {
           deleteWordFromTopic(activeTopicId, wid);
         }
       }
@@ -2170,27 +2170,27 @@ function renderGrammarTenses(group = "all") {
         </div>
         <div class="tense-card-body">
           <div onclick="selectTenseForm(this)" class="tense-form active">
-            <div class="form-label">(+) Affirmative (Khẳng định)</div>
+            <div class="form-label">(+) Affirmative</div>
             <code>${escapeHTMLElements(t.formula)}</code>
           </div>
           <div onclick="selectTenseForm(this)" class="tense-form">
-            <div class="form-label">(-) Negative (Phủ định)</div>
+            <div class="form-label">(-) Negative</div>
             <code>${escapeHTMLElements(t.neg)}</code>
           </div>
           <div onclick="selectTenseForm(this)" class="tense-form">
-            <div class="form-label">(?) Interrogative (Nghi vấn)</div>
+            <div class="form-label">(?) Interrogative</div>
             <code>${escapeHTMLElements(t.q)}</code>
           </div>
 
           <div class="tense-tip-box">
             <div class="tense-tip-title">
-              📝 Mẹo chia ngôi / ghi nhớ
+              📝 Conjugation Notes & Tips
             </div>
             <p>${escapeHTMLElements(t.tip)}</p>
           </div>
 
           <div class="tense-signals">
-            <div class="signals-label">Dấu hiệu nhận biết</div>
+            <div class="signals-label">Signal Words</div>
             <div class="signals-text">${escapeHTMLElements(t.signal)}</div>
           </div>
         </div>
@@ -2244,12 +2244,12 @@ function updateGrammarPassiveRule(index) {
   passiveResultBox.innerHTML = `
     <div class="conversion-cards">
       <div class="conversion-card active-card">
-        <span class="conv-tag">Active Formula (Chủ động)</span>
+        <span class="conv-tag">Active Formula</span>
         <code class="conv-code">${escapeHTMLElements(rule.active)}</code>
       </div>
       <div class="conv-arrow">&rarr;</div>
       <div class="conversion-card passive-card">
-        <span class="conv-tag">Passive Formula (Bị động)</span>
+        <span class="conv-tag">Passive Formula</span>
         <code class="conv-code">${escapeHTMLElements(rule.passive)}</code>
       </div>
     </div>
@@ -2284,18 +2284,20 @@ function initGrammarChart() {
   }
 
   const complexityValues = grammarData.tenses.map((t) => t.complexity);
-  const labels = grammarData.tenses.map((t) => t.name.split(" (")[0]);
+  const labels = grammarData.tenses.map((t) =>
+    t.name.replace(" Continuous", " Cont.").replace(" Perfect", " Perf."),
+  );
 
   // Color mapping based on theme
   const backgroundColors = labels.map((label) => {
-    if (label.includes("Hiện tại") || label.includes("HT")) return "rgba(22, 163, 74, 0.4)"; // green
-    if (label.includes("Quá khứ") || label.includes("QK")) return "rgba(217, 119, 6, 0.4)"; // amber
+    if (label.includes("Present")) return "rgba(22, 163, 74, 0.4)"; // green
+    if (label.includes("Past")) return "rgba(217, 119, 6, 0.4)"; // amber
     return "rgba(147, 51, 234, 0.4)"; // purple
   });
 
   const borderColors = labels.map((label) => {
-    if (label.includes("Hiện tại") || label.includes("HT")) return "#16a34a";
-    if (label.includes("Quá khứ") || label.includes("QK")) return "#d97706";
+    if (label.includes("Present")) return "#16a34a";
+    if (label.includes("Past")) return "#d97706";
     return "#9333ea";
   });
 
@@ -2305,7 +2307,7 @@ function initGrammarChart() {
       labels: labels,
       datasets: [
         {
-          label: "Số thành phần công thức (Độ phức tạp)",
+          label: "Formula Complexity (Elements)",
           data: complexityValues,
           backgroundColor: backgroundColors,
           borderColor: borderColors,
@@ -2330,7 +2332,7 @@ function initGrammarChart() {
           cornerRadius: 8,
           callbacks: {
             label: function (context) {
-              return ` Công thức có ${context.raw} thành phần cấu trúc`;
+              return ` Formula has ${context.raw} structural elements`;
             },
           },
         },
@@ -2364,7 +2366,7 @@ function initGrammarChart() {
           },
           title: {
             display: true,
-            text: "Số lượng từ/trợ động từ",
+            text: "Word / Auxiliary Count",
             font: {
               family: "Plus Jakarta Sans",
               size: 11,
@@ -3070,7 +3072,7 @@ function filterAndRenderIpa() {
             ? "ipa-badge-consonant"
             : "ipa-badge-diphthong";
       const firstExample = s.example ? s.example.split(",")[0].trim() : "";
-      // Âm vô thanh (voiced: false) → thêm class để làm mờ
+      // Voiceless sound (voiced: false) → add class to dim
       const voicingClass =
         s.category === "consonants" && s.voiced === false ? "voiceless-card" : "";
 
@@ -3085,7 +3087,7 @@ function filterAndRenderIpa() {
         </div>
         <div class="ipa-details">
           ${s.example ? `<p class="ipa-example"><em>Ex:</em> ${escapeHTMLElements(s.example)}</p>` : ""}
-          ${s.note ? `<p class="ipa-note"><em>VN:</em> ${escapeHTMLElements(s.note)}</p>` : ""}
+          ${s.note ? `<p class="ipa-note"><em>Note:</em> ${escapeHTMLElements(s.note)}</p>` : ""}
         </div>
       </article>
     `;

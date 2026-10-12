@@ -3031,7 +3031,7 @@ form {
   border-left: 4px solid #06b6d4;
 }
 
-/* Âm vô thanh (voiceless) – hiển thị mờ hơn âm hữu thanh, theo chuẩn bảng IPA */
+/* Voiceless sounds - displayed dimmer than voiced sounds according to standard IPA chart */
 .ipa-card.voiceless-card {
   opacity: 0.62;
   border-left-color: #94a3b8;
@@ -3935,10 +3935,10 @@ form {
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr));
   gap: 20px;
   align-content: start;
-  align-items: start;
+  align-items: stretch;
 }
 
-/* Thẻ từ vựng giảm width đi 1 xíu so với câu */
+/* Vocabulary cards slightly narrower than sentence cards */
 #topic-words-grid {
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
   gap: 18px;
@@ -3953,7 +3953,9 @@ form {
   border-radius: var(--radius-lg);
   padding: 0;
   position: relative;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   box-shadow: var(--shadow-sm);
   transition:
     box-shadow 0.2s ease,
@@ -3970,8 +3972,10 @@ form {
   position: relative;
   width: 100%;
   height: 100%;
+  flex: 1;
   display: grid;
   grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
   transform-style: preserve-3d;
   -webkit-transform-style: preserve-3d;
   transition: transform 0.42s cubic-bezier(0.25, 1, 0.5, 1);
@@ -3989,6 +3993,7 @@ form {
 .card-face {
   grid-area: 1 / 1 / 2 / 2;
   width: 100%;
+  height: 100%;
   box-sizing: border-box;
   background: linear-gradient(165deg, #ffffff 0%, #fbfaff 60%, #f5f4ff 100%);
   border: 1px solid var(--border-color);
