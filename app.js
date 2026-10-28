@@ -1189,34 +1189,21 @@ function formatLinkingNoteHTML(val) {
   `;
 }
 
-function formatUsageNoteHTML(val) {
-  if (!val || !val.trim()) return "";
-  const items = parseNoteItems(val, false);
-  if (items.length === 0) return "";
+function formatSentenceWithPauses(text) {
+  if (!text) return "";
+  let escaped = escapeHTMLElements(text);
+  // Highlight pause separator | or || directly in the sentence
+  escaped = escaped.replace(
+    /(\|{1,2})/g,
+    '<span class="pause-symbol" title="Pause">$1</span>'
+  );
+  return escaped;
+}
 
-  const renderedLines = items
-    .map((item) => {
-      let escaped = escapeHTMLElements(item);
-      escaped = escaped.replace(/-&gt;|->/g, '<span class="note-arrow">→</span>');
-      return `
-        <div class="sentence-note-line">
-          ${items.length > 1 ? '<span class="sentence-note-bullet">•</span>' : ""}
-          <div class="sentence-note-text">${escaped}</div>
-        </div>
-      `;
-    })
-    .join("");
-
-  return `
-    <div class="sentence-note-box usage">
-      <div class="sentence-note-header">
-        <strong>💡 Usage Note:</strong>
-      </div>
-      <div class="sentence-note-lines">
-        ${renderedLines}
-      </div>
-    </div>
-  `;
+function cleanSentenceForTTS(text) {
+  if (!text) return "";
+  // Strip | pause markers so speech synthesis pauses naturally without saying "pipe"
+  return escapeHTMLElements(text.replace(/\|+/g, ", ").replace(/\s+/g, " ").trim());
 }
 
 function filterAndRenderTopicSentences() {
@@ -1236,7 +1223,6 @@ function filterAndRenderTopicSentences() {
         s.sentence.toLowerCase().includes(query) ||
         s.translation.toLowerCase().includes(query) ||
         (s.pronunciation && s.pronunciation.toLowerCase().includes(query)) ||
-        (s.usageNote && s.usageNote.toLowerCase().includes(query)) ||
         (s.linkingNote && s.linkingNote.toLowerCase().includes(query)),
     );
   }
@@ -1250,7 +1236,6 @@ function filterAndRenderTopicSentences() {
       topicSentencesGrid.style.display = "grid";
       topicSentencesGrid.innerHTML = filtered
         .map((s) => {
-          const usageVal = s.usageNote || s.note || "";
           const linkingVal = s.linkingNote || s.linking || "";
 
           return `
@@ -1272,11 +1257,11 @@ function filterAndRenderTopicSentences() {
                 <div class="card-front-center">
                   <div class="front-quote-box">
                     <span class="quote-mark open">“</span>
-                    <h3 class="front-text-en">${escapeHTMLElements(s.sentence)}</h3>
+                    <h3 class="front-text-en">${formatSentenceWithPauses(s.sentence)}</h3>
                     <span class="quote-mark close">”</span>
                   </div>
 
-                  <button class="btn-tts-speaker front-speaker-btn" data-tts="${escapeHTMLElements(s.sentence)}" title="Listen to pronunciation">
+                  <button class="btn-tts-speaker front-speaker-btn" data-tts="${cleanSentenceForTTS(s.sentence)}" title="Listen to pronunciation">
                     <i data-lucide="volume-2"></i>
                   </button>
                 </div>
@@ -1304,10 +1289,10 @@ function filterAndRenderTopicSentences() {
               <div class="card-face card-face-back">
                 <div class="sentence-card-header back-header">
                   <div class="sentence-main-text-row">
-                    <button class="btn-tts-speaker" data-tts="${escapeHTMLElements(s.sentence)}" title="Listen to pronunciation">
+                    <button class="btn-tts-speaker" data-tts="${cleanSentenceForTTS(s.sentence)}" title="Listen to pronunciation">
                       <i data-lucide="volume-2"></i>
                     </button>
-                    <h4 class="sentence-text-en back-text-en">${escapeHTMLElements(s.sentence)}</h4>
+                    <h4 class="sentence-text-en back-text-en">${formatSentenceWithPauses(s.sentence)}</h4>
                   </div>
                 </div>
 
@@ -1316,8 +1301,6 @@ function filterAndRenderTopicSentences() {
                 <div class="sentence-meaning-box">
                   ${escapeHTMLElements(s.translation)}
                 </div>
-
-                ${usageVal ? formatUsageNoteHTML(usageVal) : ""}
 
                 ${linkingVal ? formatLinkingNoteHTML(linkingVal) : ""}
 
@@ -2500,18 +2483,15 @@ function openSentenceModal(sentObj = null, topicId = null) {
     sentenceInput.value = sentObj.sentence;
     translationInput.value = sentObj.translation;
     sentPronInput.value = sentObj.pronunciation || "";
-    const usageVal = sentObj.usageNote || sentObj.note || "";
     const linkingVal = sentObj.linkingNote || sentObj.linking || "";
-    if (sentUsageInput) sentUsageInput.value = usageVal;
+    if (sentUsageInput) sentUsageInput.value = "";
     if (sentLinkingInput) sentLinkingInput.value = normalizeLinkingNoteForTextarea(linkingVal);
-    if (sentNoteInput) sentNoteInput.value = usageVal;
   } else {
     sentModalTitle.textContent = "Add New Sentence";
     sentenceForm.reset();
     sentIdInput.value = "";
     if (sentUsageInput) sentUsageInput.value = "";
     if (sentLinkingInput) sentLinkingInput.value = "";
-    if (sentNoteInput) sentNoteInput.value = "";
   }
 
   if (inputSentTopic) {
@@ -2548,19 +2528,14 @@ async function handleSentenceFormSubmit(e) {
       : inputSentTopic
         ? inputSentTopic.value
         : activeTopicId;
-  const usageVal = sentUsageInput
-    ? sentUsageInput.value.trim()
-    : sentNoteInput
-      ? sentNoteInput.value.trim()
-      : "";
   const linkingVal = sentLinkingInput ? sentLinkingInput.value.trim() : "";
   const payload = {
     sentence: sentenceInput.value.trim(),
     translation: translationInput.value.trim(),
     pronunciation: sentPronInput.value.trim(),
-    usageNote: usageVal,
+    usageNote: "",
     linkingNote: linkingVal,
-    note: usageVal,
+    note: "",
     topicId: targetTopicId,
   };
 

@@ -4102,8 +4102,8 @@ form {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 16px 10px 20px;
-  gap: 14px;
+  padding: 22px 10px 24px;
+  gap: 16px;
 }
 
 .front-quote-box {
@@ -4136,10 +4136,10 @@ form {
 }
 
 .front-text-en {
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   font-weight: 750;
-  color: #1e293b;
-  line-height: 1.45;
+  color: #0f172a;
+  line-height: 1.48;
   margin: 0;
   word-break: break-word;
 }
@@ -4152,8 +4152,8 @@ form {
 }
 
 .front-speaker-btn {
-  width: 44px !important;
-  height: 44px !important;
+  width: 42px !important;
+  height: 42px !important;
   border-radius: 50% !important;
   background: var(--primary-light) !important;
   color: var(--primary) !important;
@@ -4162,7 +4162,7 @@ form {
   align-items: center !important;
   justify-content: center !important;
   cursor: pointer !important;
-  box-shadow: 0 2px 8px rgba(95, 91, 246, 0.1) !important;
+  box-shadow: 0 2px 8px rgba(95, 91, 246, 0.12) !important;
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
   flex-shrink: 0 !important;
 }
@@ -4171,13 +4171,13 @@ form {
   background: var(--primary) !important;
   color: #ffffff !important;
   border-color: var(--primary) !important;
-  transform: scale(1.15) !important;
+  transform: scale(1.12) !important;
   box-shadow: 0 6px 18px rgba(95, 91, 246, 0.35) !important;
 }
 
 .front-speaker-btn i {
-  width: 20px !important;
-  height: 20px !important;
+  width: 19px !important;
+  height: 19px !important;
   color: inherit !important;
   stroke: currentColor !important;
 }
@@ -4289,12 +4289,6 @@ form {
   line-height: 1.5;
 }
 
-.sentence-note-box.usage {
-  background: #fffbeb;
-  border: 1px solid #fef3c7;
-  color: #92400e;
-}
-
 .sentence-note-box.linking {
   background: #ecfdf5;
   border: 1px solid #a7f3d0;
@@ -4316,6 +4310,10 @@ form {
   gap: 4px;
   font-size: 0.88rem;
   letter-spacing: 0.2px;
+}
+
+.sentence-note-box.pausing .sentence-note-header strong {
+  color: #0f172a;
 }
 
 .sentence-note-box .sentence-note-lines {
@@ -4343,6 +4341,10 @@ form {
   color: #d97706;
 }
 
+.sentence-note-box.pausing .sentence-note-bullet {
+  color: #64748b;
+}
+
 .sentence-note-box .sentence-note-text {
   flex: 1;
   word-break: break-word;
@@ -4365,6 +4367,31 @@ form {
   padding: 1px 6px;
   border-radius: 4px;
   margin-right: 2px;
+}
+
+/* Pause mark | or || inside sentence - deep indigo (màu tràm), bold and breathable */
+.pause-symbol {
+  display: inline-block;
+  font-family: var(--font-main), -apple-system, sans-serif;
+  font-weight: 900;
+  font-size: 1.25em;
+  line-height: 1;
+  color: #312e81; /* Màu tràm (Deep Indigo) */
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  margin: 0 8px;
+  vertical-align: baseline;
+  box-shadow: none;
+  user-select: none;
+  cursor: default;
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), color 0.18s ease;
+}
+
+.pause-symbol:hover {
+  color: #1e1b4b;
+  transform: scale(1.22);
 }
 
 .sentence-note-box .linking-arrow,
