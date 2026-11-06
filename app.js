@@ -1296,8 +1296,6 @@ function filterAndRenderTopicSentences() {
                   </div>
                 </div>
 
-                ${s.pronunciation ? `<div class="sentence-ipa-badge">${escapeHTMLElements(s.pronunciation)}</div>` : ""}
-
                 <div class="sentence-meaning-box">
                   ${escapeHTMLElements(s.translation)}
                 </div>
@@ -2375,7 +2373,6 @@ const sentenceForm = document.getElementById("sentence-form");
 const sentIdInput = document.getElementById("sent-id");
 const sentenceInput = document.getElementById("input-sentence");
 const translationInput = document.getElementById("input-translation");
-const sentPronInput = document.getElementById("input-sent-pronunciation");
 const sentNoteInput = document.getElementById("input-sent-note");
 const sentUsageInput = document.getElementById("input-sent-usage");
 const sentLinkingInput = document.getElementById("input-sent-linking");
@@ -2482,7 +2479,6 @@ function openSentenceModal(sentObj = null, topicId = null) {
     sentIdInput.value = sentObj.id;
     sentenceInput.value = sentObj.sentence;
     translationInput.value = sentObj.translation;
-    sentPronInput.value = sentObj.pronunciation || "";
     const linkingVal = sentObj.linkingNote || sentObj.linking || "";
     if (sentUsageInput) sentUsageInput.value = "";
     if (sentLinkingInput) sentLinkingInput.value = normalizeLinkingNoteForTextarea(linkingVal);
@@ -2532,7 +2528,7 @@ async function handleSentenceFormSubmit(e) {
   const payload = {
     sentence: sentenceInput.value.trim(),
     translation: translationInput.value.trim(),
-    pronunciation: sentPronInput.value.trim(),
+    pronunciation: "",
     usageNote: "",
     linkingNote: linkingVal,
     note: "",
