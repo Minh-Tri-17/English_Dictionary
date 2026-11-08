@@ -95,6 +95,10 @@
               <span class="stat-label"><i data-lucide="book" class="mini-icon"></i> Total Vocabulary</span>
               <span class="stat-count" id="stat-topics-words-count">0</span>
             </div>
+            <div class="stat-item" id="topic-stat-learned-item">
+              <span class="stat-label"><i data-lucide="bookmark-check" class="mini-icon text-success"></i> Mastered / Đã thuộc</span>
+              <span class="stat-count" id="stat-topics-learned-count">0</span>
+            </div>
           </div>
 
           <div class="sidebar-topics-quicklist mt-3">
@@ -242,18 +246,34 @@
                   </div>
                 </div>
 
-                <!-- 2 Tabs Segment Control -->
+                <!-- 2 Tabs Segment Control & Status Filters -->
                 <div class="topic-tabs-header mt-3">
-                  <button class="topic-tab-nav-btn active" id="tab-btn-sentences" data-topic-tab="sentences">
-                    <i data-lucide="message-square-text"></i>
-                    <span>Tab 1: Communication Sentences</span>
-                    <span class="tab-count-pill" id="tab-sentences-count">0</span>
-                  </button>
-                  <button class="topic-tab-nav-btn" id="tab-btn-words" data-topic-tab="words">
-                    <i data-lucide="book-open"></i>
-                    <span>Tab 2: Topic Vocabulary</span>
-                    <span class="tab-count-pill" id="tab-words-count">0</span>
-                  </button>
+                  <div class="topic-tabs-left">
+                    <button class="topic-tab-nav-btn active" id="tab-btn-sentences" data-topic-tab="sentences">
+                      <i data-lucide="message-square-text"></i>
+                      <span>Tab 1: Communication Sentences</span>
+                      <span class="tab-count-pill" id="tab-sentences-count">0</span>
+                    </button>
+                    <button class="topic-tab-nav-btn" id="tab-btn-words" data-topic-tab="words">
+                      <i data-lucide="book-open"></i>
+                      <span>Tab 2: Topic Vocabulary</span>
+                      <span class="tab-count-pill" id="tab-words-count">0</span>
+                    </button>
+                  </div>
+
+                  <!-- Status Filter Pills (Chưa học / Đã học) -->
+                  <div class="status-filter-pills" id="topic-status-filter-pills">
+                    <button class="status-filter-pill active" data-filter="unlearned">
+                      <i data-lucide="clock" style="width: 14px; height: 14px"></i>
+                      <span>Chưa học</span>
+                      <span class="status-pill-count" id="pill-count-unlearned">0</span>
+                    </button>
+                    <button class="status-filter-pill" data-filter="learned">
+                      <i data-lucide="bookmark-check" style="width: 14px; height: 14px"></i>
+                      <span>Đã học</span>
+                      <span class="status-pill-count" id="pill-count-learned">0</span>
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -795,6 +815,16 @@
             <textarea id="input-sent-linking" rows="3" placeholder="Notes on connected speech, linking, reductions (press Enter for each rule)&#10;e.g.:&#10;&quot;having a&quot;: /v/ links to /ə/ -&gt; /ˈhæv.ɪŋ.ŋə/&#10;&quot;just a&quot;: Flap T -&gt; /ˈdʒʌs.t̬ə/"></textarea>
           </div>
 
+          <div class="form-group mb-2">
+            <div class="custom-checkbox-wrapper">
+              <input type="checkbox" id="input-sent-learned" class="styled-checkbox" />
+              <label for="input-sent-learned" class="checkbox-label">
+                <i data-lucide="bookmark-check" class="checkbox-icon"></i>
+                <span>Đã thuộc câu này (Bookmark)</span>
+              </label>
+            </div>
+          </div>
+
           <div class="custom-modal-footer">
             <button type="button" class="btn btn-secondary" id="sent-modal-cancel-btn">Cancel</button>
             <button type="submit" class="btn btn-primary" id="sent-modal-submit-btn">Save Sentence</button>
@@ -862,6 +892,16 @@
           <div class="form-group">
             <label for="input-word-note">Note</label>
             <textarea id="input-word-note" rows="2" placeholder="Notes on usage, context, collocations or tips..."></textarea>
+          </div>
+
+          <div class="form-group mb-2">
+            <div class="custom-checkbox-wrapper">
+              <input type="checkbox" id="input-word-learned" class="styled-checkbox" />
+              <label for="input-word-learned" class="checkbox-label">
+                <i data-lucide="bookmark-check" class="checkbox-icon"></i>
+                <span>Đã thuộc từ này (Bookmark)</span>
+              </label>
+            </div>
           </div>
 
           <div class="custom-modal-footer">

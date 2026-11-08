@@ -1,1 +1,501 @@
-[]
+[
+  {
+    "id": "topic_1792673541478",
+    "name": "English Learning",
+    "description": "",
+    "icon": "graduation-cap",
+    "color": "#3b82f6",
+    "sentences": [
+      {
+        "id": "s_1793199422412",
+        "sentence": "My ears are tired. My brain is tired.",
+        "translation": "Tai tôi mỏi nhừ rồi, não tôi cũng kiệt sức luôn rồi.",
+        "pronunciation": "/maɪ ɪrz ɚ ˈtaɪ.ɚd | maɪ breɪn ɪz ˈtaɪ.ɚd/",
+        "usageNote": "",
+        "linkingNote": "\"Ears are\" nối âm mượt thành /ɪr.zɚ/.\n\"Brain is\" nối đuôi /n/ sang /ɪz/ thành /ˈbreɪ.nɪz/.",
+        "note": "",
+        "topicId": "topic_1792673541478",
+        "createdAt": "2026-10-28T14:57:02.412Z",
+        "updatedAt": "2026-11-08T13:56:18.810Z",
+        "learned": false
+      },
+      {
+        "id": "s_1793199250840",
+        "sentence": "I've been listening for | 6 months.",
+        "translation": "Tôi đã kiên trì nghe suốt 6 tháng nay rồi.",
+        "pronunciation": "/aɪv bɪn ˈlɪs.ən.ɪŋ fɚ sɪks mʌnθs/",
+        "usageNote": "",
+        "linkingNote": "\"I've been\" đọc lướt thành /aɪv bɪn/ với âm /ɪ/ ngắn.\n\"Listening for\" đọc lướt \"for\" dạng yếu (weak form) thành /fɚ/.\n\"Months\" giữ âm vô thanh /θs/, tránh nhầm sang /s/ thuần.",
+        "note": "",
+        "topicId": "topic_1792673541478",
+        "createdAt": "2026-10-28T14:54:10.840Z",
+        "updatedAt": "2026-10-28T14:54:53.130Z"
+      },
+      {
+        "id": "s_1792935685217",
+        "sentence": "But I still don't | understand.",
+        "translation": "Nhưng tôi vẫn không hiểu được / Vẫn chẳng hiểu gì cả",
+        "pronunciation": "/bʌt aɪ stɪl doʊnt ˌʌn.dɚˈstænd/",
+        "usageNote": "",
+        "linkingNote": "\"But I\" nối âm flap T thành /bʌ.daɪ/ mượt mà.\n\"Don't\" giữ âm stop T, chặn hơi trước \"understand\".",
+        "note": "",
+        "topicId": "topic_1792673541478",
+        "createdAt": "2026-10-25T13:41:25.217Z",
+        "updatedAt": "2026-10-28T14:16:40.545Z"
+      },
+      {
+        "id": "s_1792935470771",
+        "sentence": "I listen to podcasts, watch videos and listen to music, everything.",
+        "translation": "Tôi nghe podcast, xem video, rồi nghe nhạc, đủ mọi thứ.",
+        "pronunciation": "/aɪ ˈlɪs.ən tu ˈpɑːd.kæsts wɑːtʃ ˈvɪd.i.oʊz ænd ˈlɪs.ən tu ˈmjuː.zɪk ˈev.ri.θɪŋ/",
+        "usageNote": "",
+        "linkingNote": "\"Listen to\" đọc lướt thành /ˈlɪs.ən.tə/, âm \"listen\" câm T.\n\"And listen\" nối mượt, đọc lướt /ən/ không ngắt nghỉ.",
+        "note": "",
+        "topicId": "topic_1792673541478",
+        "createdAt": "2026-10-25T13:37:50.771Z",
+        "updatedAt": "2026-10-28T14:18:19.498Z"
+      },
+      {
+        "id": "s_1792842138541",
+        "sentence": "No, I really listen",
+        "translation": "Không thật đấy, tôi thực sự có nghe mà / Tôi chăm nghe thật mà",
+        "pronunciation": "/noʊ aɪ ˈrɪə.li ˈlɪs.ən/",
+        "usageNote": "",
+        "linkingNote": "\"No, I\" lướt nhẹ thêm âm /w/ thành /noʊ-waɪ/.\n\n\"Listen\" phát âm câm T, nhấn âm tiết đầu.",
+        "note": "",
+        "topicId": "topic_1792673541478",
+        "createdAt": "2026-10-24T11:42:18.541Z",
+        "updatedAt": "2026-10-25T13:44:16.502Z"
+      },
+      {
+        "id": "s_1792841899766",
+        "sentence": "I listen every day, but my listening | is still terrible.",
+        "translation": "Ngày nào tôi cũng nghe, nhưng khả năng nghe vẫn tệ như thường.",
+        "pronunciation": "/aɪ ˈlɪs.ən ˈev.ri deɪ bʌt maɪ ˈlɪs.ən.ɪŋ ɪz stɪl ˈter.ə.bəl/",
+        "usageNote": "",
+        "linkingNote": "\"But my\" giữ âm stop T, chặn hơi trước phụ âm /m/.\n\"Listening is\" nối mượt thành /ˈlɪs.ən.ɪ.ŋɪz/, \"terrible\" kết thúc dark L.",
+        "note": "",
+        "topicId": "topic_1792673541478",
+        "createdAt": "2026-10-24T11:38:19.766Z",
+        "updatedAt": "2026-10-28T14:21:22.498Z"
+      },
+      {
+        "id": "s_1792673971680",
+        "sentence": "Everyone says listen more | and your English'll get better.",
+        "translation": "Ai cũng bảo nghe nhiều hơn thì tiếng Anh sẽ khá lên.",
+        "pronunciation": "/ˈev.ri.wʌn sez ˈlɪs.ən mɔːr ænd jʊr ˈɪŋ.ɡlɪ.ʃəl ɡet ˈbet̬.ɚ/",
+        "usageNote": "",
+        "linkingNote": "\"English'll\" phát âm dính liền thành /ˈɪŋ.ɡlɪ.ʃəl/ với âm /l/ tối.\n\"Better\" phát âm âm /t/ thành flap T nhẹ giống âm /d/.",
+        "note": "",
+        "topicId": "topic_1792673541478",
+        "createdAt": "2026-10-22T12:59:31.680Z",
+        "updatedAt": "2026-10-28T14:22:44.948Z"
+      },
+      {
+        "id": "s_1792673679000",
+        "sentence": "I'm so tired of | learning english",
+        "translation": "Tôi chán ngấy / mệt mỏi với việc học tiếng Anh quá rồi",
+        "pronunciation": "/aɪm soʊ ˈtaɪ.ɚd əv ˈlɝː.nɪŋ ˈɪŋ.ɡlɪʃ/",
+        "usageNote": "",
+        "linkingNote": "Cụm \"tired of\" nối thành /ˈtaɪ.ɚ.dəv/, âm /v/ lướt sang \"learning\".",
+        "note": "",
+        "topicId": "topic_1792673541478",
+        "createdAt": "2026-10-22T12:54:39.000Z",
+        "updatedAt": "2026-10-28T14:33:15.609Z"
+      }
+    ],
+    "words": [
+      {
+        "id": "w_1792935993950",
+        "word": "Understand",
+        "pronunciation": "/ˌʌn.dɚˈstænd/",
+        "type": "verb",
+        "definition": "Hiểu / Thấu hiểu / Nắm bắt được",
+        "note": "Trọng âm chính rơi vào \"STAND\", âm tiết giữa đọc lướt schwa /ɚ/.",
+        "topicId": "topic_1792673541478",
+        "createdAt": "2026-10-25T13:46:33.950Z"
+      },
+      {
+        "id": "w_1792935921980",
+        "word": "Podcast",
+        "pronunciation": "/ˈpɑːd.kæst/",
+        "type": "noun",
+        "definition": "Tệp âm thanh kỹ thuật số / Bản ghi âm phát sóng trực tuyến",
+        "note": "Trọng âm rơi vào \"POD\", âm /t/ cuối nhả hơi nhẹ hoặc chặn hơi stop T.",
+        "topicId": "topic_1792673541478",
+        "createdAt": "2026-10-25T13:45:21.980Z"
+      },
+      {
+        "id": "w_1792842533015",
+        "word": "Listen",
+        "pronunciation": "/ˈlɪs.ən/",
+        "type": "verb",
+        "definition": "Lắng nghe / Nghe",
+        "note": "Âm /t/ hoàn toàn câm (silent T), nguyên âm đầu là /ɪ/ ngắn và âm tiết thứ hai lướt nhẹ thành schwa /ən/.",
+        "topicId": "topic_1792673541478",
+        "createdAt": "2026-10-24T11:48:53.015Z"
+      },
+      {
+        "id": "w_1792842274030",
+        "word": "still",
+        "pronunciation": "/stɪl/",
+        "type": "adverb",
+        "definition": "Vẫn / Vẫn còn",
+        "note": "Âm nguyên âm ngắn /ɪ/ (không kéo dài thành /iː/), kết thúc bằng âm dark L (/l/ tối) giữ cuống lưỡi cong nhẹ chạm vòm miệng trên.",
+        "topicId": "topic_1792673541478",
+        "createdAt": "2026-10-24T11:44:34.030Z"
+      },
+      {
+        "id": "w_1792842214041",
+        "word": "Terrible",
+        "pronunciation": "/ˈter.ə.bəl/",
+        "type": "adjective",
+        "definition": "Tồi tệ / Rất tệ / Kinh khủng",
+        "note": "Trọng âm rơi vào âm tiết đầu \"TER-uh-ble\", âm tiết giữa giảm thành schwa /ə/, và kết thúc bằng âm /l/ tối (dark L) chặn nhẹ ở cuống họng.",
+        "topicId": "topic_1792673541478",
+        "createdAt": "2026-10-24T11:43:34.041Z"
+      },
+      {
+        "id": "w_1792675376686",
+        "word": "Learning",
+        "pronunciation": "/ˈlɝː.nɪŋ/",
+        "type": "noun",
+        "definition": "Việc học / Sự học hỏi",
+        "note": "Trọng âm rơi vào âm tiết đầu \"LEARN-ing\", âm /ɝː/ uốn lưỡi nhẹ, đuôi \"-ing\" đọc lướt /ɪŋ/.",
+        "topicId": "topic_1792673541478",
+        "createdAt": "2026-10-22T13:22:56.686Z"
+      },
+      {
+        "id": "w_1792675217047",
+        "word": "Better",
+        "pronunciation": "",
+        "type": "adverb",
+        "definition": "Tốt hơn / Khá hơn",
+        "note": "Âm /t/ giữa hai nguyên âm phát âm là flap T (đọc lướt nhanh giống âm /d/ nhẹ).",
+        "topicId": "topic_1792673541478",
+        "createdAt": "2026-10-22T13:20:17.047Z"
+      }
+    ],
+    "createdAt": "2026-10-22T12:52:21.478Z",
+    "updatedAt": "2026-11-08T13:56:18.815Z"
+  },
+  {
+    "id": "topic_1791811012468",
+    "name": "Everyday English phrases",
+    "description": "",
+    "icon": "message-circle",
+    "color": "#f59e0b",
+    "sentences": [
+      {
+        "id": "s_1792936076420",
+        "sentence": "I get it",
+        "translation": "Tôi hiểu rồi / Tôi nắm được rồi.",
+        "pronunciation": "/aɪ ˈɡet̬ ɪt/",
+        "usageNote": "",
+        "linkingNote": "Âm /t/ trong \"get\" nối với \"it\" thành flap T (/ˈɡet̬.ɪt/), nghe giống /ɡedɪt/.",
+        "note": "",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-25T13:47:56.420Z"
+      },
+      {
+        "id": "s_1792593244168",
+        "sentence": "That's a good goal",
+        "translation": "Mục tiêu hay đó",
+        "pronunciation": "/ðæts ə ɡʊd ɡoʊl/",
+        "usageNote": "",
+        "linkingNote": "Âm /ts/ của \"That's\" nối mượt sang schwa /ə/, âm /d/ trong \"good\" thường unreleased trước phụ âm /ɡ/",
+        "note": "",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-21T14:34:04.168Z"
+      },
+      {
+        "id": "s_1792589193156",
+        "sentence": "What's going on?",
+        "translation": "Có chuyện gì thế? / Dạo này sao rồi?",
+        "pronunciation": "/wʌts ɡoʊ.ɪŋ ɑːn/",
+        "usageNote": "",
+        "linkingNote": "Âm /s/ cuối của \"What's\" nối liền sang âm /ɡ/ của \"going\", \"going on\" nối mượt thành /ɡoʊ.ɪ.ŋɑːn/.",
+        "note": "",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-21T13:26:33.156Z",
+        "updatedAt": "2026-10-21T14:30:01.465Z"
+      },
+      {
+        "id": "s_1792330517403",
+        "sentence": "I'm not kidding",
+        "translation": "Tôi không đùa đâu / Nói thật đấy",
+        "pronunciation": "/aɪm nɑːt ˈkɪd.ɪŋ/",
+        "usageNote": "",
+        "linkingNote": "Âm /t/ trong \"not\" thường chuyển thành flap T nhẹ nối sang \"kidding\" hoặc giữ dạng stop T chặn hơi.",
+        "note": "",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-18T13:35:17.403Z",
+        "updatedAt": "2026-10-21T14:29:22.827Z"
+      },
+      {
+        "id": "s_1792329283192",
+        "sentence": "Maybe not",
+        "translation": "Chắc là không / Có lẽ là không",
+        "pronunciation": "/ˈmeɪ.bi nɑːt/",
+        "usageNote": "",
+        "linkingNote": "Âm /t/ cuối ở \"not\" thường là unreleased T (chặn luồng hơi, không bật mạnh).",
+        "note": "",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-18T13:14:43.192Z",
+        "updatedAt": "2026-10-21T14:28:40.981Z"
+      },
+      {
+        "id": "s_1792329093611",
+        "sentence": "Good idea",
+        "translation": "Ý hay đấy",
+        "pronunciation": "/ˌɡʊd aɪˈdiː.ə/",
+        "usageNote": "",
+        "linkingNote": "Âm /d/ cuối ở \"good\" nối mượt sang nguyên âm đôi /aɪ/ thành /ˌɡʊ.daɪˈdiː.ə/",
+        "note": "",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-18T13:11:33.611Z",
+        "updatedAt": "2026-10-21T14:27:07.671Z"
+      },
+      {
+        "id": "s_1792328967232",
+        "sentence": "I'm serious",
+        "translation": "Tôi nói nghiêm túc đấy / Không đùa đâu",
+        "pronunciation": "/aɪm ˈsɪr.i.əs/",
+        "usageNote": "",
+        "linkingNote": "Trọng âm rơi mạnh vào âm tiết đầu \"SEER-ee-us\", đuôi \"-ous\" đọc lướt thành schwa /əs/",
+        "note": "",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-18T13:09:27.232Z",
+        "updatedAt": "2026-10-21T14:30:54.034Z"
+      },
+      {
+        "id": "s_1792328810745",
+        "sentence": "So dramatic!",
+        "translation": "Làm quá lên rồi đấy! / Làm màu ghê!",
+        "pronunciation": "/soʊ drəˈmæt̬.ɪk/",
+        "usageNote": "Dùng để trêu chọc hoặc nhận xét ai đó đang phản ứng thái quá, nghiêm trọng hóa một chuyện nhỏ nhặt",
+        "linkingNote": "Âm /t/ giữa hai nguyên âm trong \"dramatic\" là flap T (đọc lướt nhẹ như âm /d/)",
+        "note": "Dùng để trêu chọc hoặc nhận xét ai đó đang phản ứng thái quá, nghiêm trọng hóa một chuyện nhỏ nhặt",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-18T13:06:50.745Z",
+        "updatedAt": "2026-10-21T14:31:02.865Z"
+      },
+      {
+        "id": "s_1791990986121",
+        "sentence": "Tomorrow never comes",
+        "translation": "Đừng để ngày mai / Việc hôm nay chớ để ngày mai",
+        "pronunciation": "/təˈmɔːroʊ ˈnevər kʌmz./",
+        "usageNote": "Thành ngữ nhắc nhở đừng trì hoãn",
+        "linkingNote": "Trọng âm chính nhấn rõ ở âm tiết đầu của \"NEVer\" và âm duy nhất của \"comes\".",
+        "note": "Thành ngữ nhắc nhở đừng trì hoãn",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-14T15:16:26.121Z",
+        "updatedAt": "2026-10-21T14:22:59.061Z"
+      },
+      {
+        "id": "s_1791990760564",
+        "sentence": "I want to cry",
+        "translation": "Tôi muốn khóc quá / Tủi thân muốn khóc ghê",
+        "pronunciation": "/aɪ wɑːnt tə kraɪ/",
+        "usageNote": "",
+        "linkingNote": "\"want to\" thường giảm âm trong giao tiếp tự nhiên thành \"wanna\" (/ˈwɑːnə/)",
+        "note": "",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-14T15:12:40.564Z",
+        "updatedAt": "2026-10-21T14:21:59.676Z"
+      },
+      {
+        "id": "s_1791990234287",
+        "sentence": "That's normal",
+        "translation": "Chuyện đó bình thường thôi mà",
+        "pronunciation": "/ðæts ˈnɔːr.məl/",
+        "usageNote": "",
+        "linkingNote": "Trọng âm rơi vào âm tiết đầu \"NOR-mal\", đuôi /məl/ phát âm lướt nhẹ với âm schwa /ə/",
+        "note": "",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-14T15:03:54.287Z",
+        "updatedAt": "2026-10-21T14:05:29.606Z"
+      },
+      {
+        "id": "s_1791901613267",
+        "sentence": "Calm down",
+        "translation": "Bình tĩnh lại nào",
+        "pronunciation": "/kɑːm daʊn/",
+        "usageNote": "",
+        "linkingNote": "Âm /l/ câm hoàn toàn trong \"calm\" (/kɑːm/), không phát âm thành âm \"l\"",
+        "note": "",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-13T14:26:53.267Z",
+        "updatedAt": "2026-10-21T14:02:51.907Z"
+      },
+      {
+        "id": "s_1791901446089",
+        "sentence": "It takes time",
+        "translation": "Cần có thời gian / Cứ từ từ thôi",
+        "pronunciation": "/ɪt teɪks taɪm/",
+        "usageNote": "Dùng để động viên, nhắc nhở  kiên nhẫn vì một kỹ năng hay kết quả nào đó",
+        "linkingNote": "Âm /t/ cuối ở \"It\" đồng hóa với /t/ đầu của \"takes\" thành một âm /t/ duy nhất kéo dài nhẹ.",
+        "note": "Dùng để động viên, nhắc nhở  kiên nhẫn vì một kỹ năng hay kết quả nào đó",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-13T14:24:06.089Z",
+        "updatedAt": "2026-10-21T14:01:02.446Z"
+      },
+      {
+        "id": "s_1791901231642",
+        "sentence": "Don't worry",
+        "translation": "Đừng lo / Không sao đâu",
+        "pronunciation": "/doʊnt ˈwɜːr.i/",
+        "usageNote": "",
+        "linkingNote": "Âm /t/ ở \"don't\" thường bị nuốt (elision) trước bán nguyên âm /w/ (/doʊn ˈwɜːr.i/)",
+        "note": "",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-13T14:20:31.642Z",
+        "updatedAt": "2026-10-21T13:59:59.854Z"
+      },
+      {
+        "id": "s_1791901061082",
+        "sentence": "No, it's not",
+        "translation": "Không, đâu phải vậy / Không hề",
+        "pronunciation": "/noʊ, ɪts nɑːt./",
+        "usageNote": "",
+        "linkingNote": "Âm /t/ cuối ở \"not\" thường là glottal stop hoặc unreleased T (chặn luồng hơi, không bật rõ /t/)",
+        "note": "",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-13T14:17:41.083Z",
+        "updatedAt": "2026-10-21T13:59:01.585Z"
+      },
+      {
+        "id": "s_1791812180386",
+        "sentence": "That's right",
+        "translation": "Đúng rồi / Chính xác",
+        "pronunciation": "/ðæts raɪt/",
+        "usageNote": "Dùng cho Logic, Thông tin & Tính Đúng/Sai",
+        "linkingNote": "Âm /t/ cuối ở \"right\" thường là stop/unreleased T (chặn hơi, không bật mạnh)",
+        "note": "Dùng cho Logic, Thông tin & Tính Đúng/Sai",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-12T13:36:20.386Z",
+        "updatedAt": "2026-10-21T13:58:00.596Z"
+      },
+      {
+        "id": "s_1791812098754",
+        "sentence": "That's true",
+        "translation": "Đúng vậy / Chuẩn rồi",
+        "pronunciation": "/ðæts truː/",
+        "usageNote": "Dùng cho Trải nghiệm, Quan điểm & Sự Đồng cảm",
+        "linkingNote": "Âm /ts/ nối mượt sang cụm /tr/ (phát âm giống /tʃr/), không ngắt quãng giữa hai từ",
+        "note": "Dùng cho Trải nghiệm, Quan điểm & Sự Đồng cảm",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-12T13:34:58.754Z",
+        "updatedAt": "2026-10-21T13:57:11.789Z"
+      },
+      {
+        "id": "s_1791811838470",
+        "sentence": "It's just so hard",
+        "translation": "Thật sự khó quá / Nản thật đấy",
+        "pronunciation": "/ɪts dʒʌst soʊ hɑːrd/",
+        "usageNote": "",
+        "linkingNote": "Âm /t/ trong \"just\" thường bị nuốt (elision) khi nối sang /s/ của \"so\" (/dʒʌs soʊ/)",
+        "note": "",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-12T13:30:38.470Z",
+        "updatedAt": "2026-10-21T13:55:47.414Z"
+      },
+      {
+        "id": "s_1791811456559",
+        "sentence": "Why, what happened?",
+        "translation": "Sao thế, có chuyện gì xảy ra vậy?",
+        "pronunciation": "/waɪ, wʌt ˈhæp.ənd/",
+        "usageNote": "",
+        "linkingNote": "Âm /t/ trong \"what\" thường là unreleased /t/ (ngậm âm t) trước /h/",
+        "note": "",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-12T13:24:16.559Z",
+        "updatedAt": "2026-10-21T13:53:34.481Z"
+      }
+    ],
+    "words": [
+      {
+        "id": "w_1792418941238",
+        "word": "Normal",
+        "pronunciation": "/ˈnɔːr.məl/",
+        "type": "noun",
+        "definition": "Bình thường / Trạng thái bình thường",
+        "note": "",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-19T14:09:01.238Z"
+      },
+      {
+        "id": "w_1792418854781",
+        "word": "Even",
+        "pronunciation": "/ˈiː.vən/",
+        "type": "adverb",
+        "definition": "Thậm chí",
+        "note": "",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-19T14:07:34.781Z"
+      },
+      {
+        "id": "w_1792418784631",
+        "word": "Dramatic",
+        "pronunciation": "/drəˈmæt̬.ɪk/",
+        "type": "adjective",
+        "definition": "Làm quá",
+        "note": "",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-19T14:06:24.631Z"
+      },
+      {
+        "id": "w_1792418698332",
+        "word": "Serious",
+        "pronunciation": "/ˈsɪr.i.əs/",
+        "type": "adjective",
+        "definition": "Nghiêm túc",
+        "note": "",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-19T14:04:58.332Z"
+      },
+      {
+        "id": "w_1792418647697",
+        "word": "Kidding",
+        "pronunciation": "/ˈkɪd.ɪŋ/",
+        "type": "verb",
+        "definition": "Giỡn thôi mà",
+        "note": "",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-19T14:04:07.697Z"
+      },
+      {
+        "id": "w_1791902706733",
+        "word": "Worry",
+        "pronunciation": "/ˈwɝː.i/",
+        "type": "verb",
+        "definition": "Lo lắng",
+        "note": "",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-13T14:45:06.733Z"
+      },
+      {
+        "id": "w_1791812773429",
+        "word": "Happened",
+        "pronunciation": "/ˈhæp.ənd/",
+        "type": "verb",
+        "definition": "Đã xảy ra",
+        "note": "Âm chặn đuôi /d/ (Stop D) => /ˈhæp.ən(d̚)/",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-12T13:46:13.429Z"
+      },
+      {
+        "id": "w_1791812657295",
+        "word": "Hard",
+        "pronunciation": "/hɑːrd/",
+        "type": "adjective",
+        "definition": "Khó khăn",
+        "note": "Âm chặn đuôi /d/ (Stop D) => /hɑːr(d̚)/",
+        "topicId": "topic_1791811012468",
+        "createdAt": "2026-10-12T13:44:17.295Z"
+      }
+    ],
+    "createdAt": "2026-10-12T13:16:52.468Z",
+    "updatedAt": "2026-10-12T13:18:58.941Z"
+  }
+]

@@ -4,6 +4,7 @@
 let topics = [];
 let activeTopicId = null;
 let activeTopicTab = "sentences"; // 'sentences' | 'words'
+let activeLearnedFilter = "unlearned"; // 'unlearned' | 'learned'
 let topicDeleteTargetId = null;
 
 // ==========================================================================
@@ -537,6 +538,7 @@ const panelTopicStats = document.getElementById("panel-topic-stats");
 const statTotalTopics = document.getElementById("stat-total-topics");
 const statTopicsSentencesCount = document.getElementById("stat-topics-sentences-count");
 const statTopicsWordsCount = document.getElementById("stat-topics-words-count");
+const statTopicsLearnedCount = document.getElementById("stat-topics-learned-count");
 const sidebarTopicMiniList = document.getElementById("sidebar-topic-mini-list");
 const sidebarAddTopicBtn = document.getElementById("sidebar-add-topic-btn");
 
@@ -576,6 +578,7 @@ const topicSentencesGrid = document.getElementById("topic-sentences-grid");
 const topicWordsGrid = document.getElementById("topic-words-grid");
 const topicSentencesEmpty = document.getElementById("topic-sentences-empty");
 const topicWordsEmpty = document.getElementById("topic-words-empty");
+const topicStatusFilterPills = document.getElementById("topic-status-filter-pills");
 const btnAddSentenceTab = document.getElementById("btn-add-sentence-tab");
 const btnAddWordTab = document.getElementById("btn-add-word-tab");
 const emptyAddSentenceTabBtn = document.getElementById("empty-add-sentence-tab-btn");
@@ -603,6 +606,7 @@ const topicDeleteCancelBtn = document.getElementById("topic-delete-cancel-btn");
 const inputSentTopic = document.getElementById("input-sent-topic");
 const inputWordTopic = document.getElementById("input-word-topic");
 const inputWordNote = document.getElementById("input-word-note");
+const inputWordLearned = document.getElementById("input-word-learned");
 
 // Main Switchers
 const navGrammarBtn = document.getElementById("nav-grammar-btn");
@@ -893,14 +897,20 @@ function populateTopicSelectors() {
 function updateTopicStats() {
   let totalSentences = 0;
   let totalWords = 0;
+  let totalLearned = 0;
   topics.forEach((t) => {
-    totalSentences += (t.sentences || []).length;
-    totalWords += (t.words || []).length;
+    const sList = t.sentences || [];
+    const wList = t.words || [];
+    totalSentences += sList.length;
+    totalWords += wList.length;
+    totalLearned += sList.filter((s) => Boolean(s.learned)).length;
+    totalLearned += wList.filter((w) => Boolean(w.learned)).length;
   });
 
   if (statTotalTopics) statTotalTopics.textContent = topics.length;
   if (statTopicsSentencesCount) statTopicsSentencesCount.textContent = totalSentences;
   if (statTopicsWordsCount) statTopicsWordsCount.textContent = totalWords;
+  if (statTopicsLearnedCount) statTopicsLearnedCount.textContent = totalLearned;
 
   if (sidebarTopicMiniList) {
     if (topics.length === 0) {
@@ -966,6 +976,9 @@ function renderTopics() {
         .map((t) => {
           const sentCount = (t.sentences || []).length;
           const wordCount = (t.words || []).length;
+          const learnedCount =
+            (t.sentences || []).filter((s) => Boolean(s.learned)).length +
+            (t.words || []).filter((w) => Boolean(w.learned)).length;
           const color = t.color || "#6366f1";
           const icon = t.icon || "folder";
 
@@ -995,6 +1008,7 @@ function renderTopics() {
               <div class="topic-stats-pills">
                 <span class="topic-pill sent-pill"><i data-lucide="message-square-text" style="width: 12px; height: 12px"></i> <span>${sentCount} sentence${sentCount === 1 ? "" : "s"}</span></span>
                 <span class="topic-pill words-pill"><i data-lucide="book-open" style="width: 12px; height: 12px"></i> <span>${wordCount} word${wordCount === 1 ? "" : "s"}</span></span>
+                ${learnedCount > 0 ? `<span class="topic-pill learned-pill" title="${learnedCount} items mastered"><i data-lucide="bookmark-check" style="width: 12px; height: 12px"></i> <span>${learnedCount} mastered</span></span>` : ""}
               </div>
               <span class="topic-arrow-link">
                 <span>Explore</span>
@@ -1035,6 +1049,13 @@ function openTopicDetail(topicId) {
   if (topicInnerSearchInput) {
     topicInnerSearchInput.value = "";
     if (topicInnerClearSearch) topicInnerClearSearch.style.display = "none";
+  }
+
+  activeLearnedFilter = "unlearned";
+  if (topicStatusFilterPills) {
+    topicStatusFilterPills.querySelectorAll(".status-filter-pill").forEach((btn) => {
+      btn.classList.toggle("active", btn.getAttribute("data-filter") === "unlearned");
+    });
   }
 
   updateTopicStats();
@@ -1093,6 +1114,18 @@ function renderTopicDetail() {
   const wCount = (topic.words || []).length;
   if (tabSentencesCount) tabSentencesCount.textContent = sCount;
   if (tabWordsCount) tabWordsCount.textContent = wCount;
+
+  // Update status filter pills counts based on active tab
+  const currentItems = (activeTopicTab === "words" ? topic.words : topic.sentences) || [];
+  const countAll = currentItems.length;
+  const countLearned = currentItems.filter((item) => Boolean(item.learned)).length;
+  const countUnlearned = countAll - countLearned;
+
+  const pillCountUnlearned = document.getElementById("pill-count-unlearned");
+  const pillCountLearned = document.getElementById("pill-count-learned");
+
+  if (pillCountUnlearned) pillCountUnlearned.textContent = countUnlearned;
+  if (pillCountLearned) pillCountLearned.textContent = countLearned;
 
   filterAndRenderTopicSentences();
   filterAndRenderTopicWords();
@@ -1227,9 +1260,32 @@ function filterAndRenderTopicSentences() {
     );
   }
 
+  if (activeLearnedFilter === "learned") {
+    filtered = filtered.filter((s) => Boolean(s.learned));
+  } else {
+    filtered = filtered.filter((s) => !s.learned);
+  }
+
   if (filtered.length === 0) {
     if (topicSentencesGrid) topicSentencesGrid.style.display = "none";
-    if (topicSentencesEmpty) topicSentencesEmpty.style.display = "flex";
+    if (topicSentencesEmpty) {
+      topicSentencesEmpty.style.display = "flex";
+      const emptyTitle = topicSentencesEmpty.querySelector("h3");
+      const emptyDesc = topicSentencesEmpty.querySelector("p");
+      if (activeLearnedFilter === "learned") {
+        if (emptyTitle) emptyTitle.textContent = "Chưa có câu nào được đánh dấu đã học";
+        if (emptyDesc) emptyDesc.textContent = "Hãy nhấn vào biểu tượng bookmark trên card để lưu các câu bạn đã thuộc vào đây nhé!";
+      } else if (activeLearnedFilter === "unlearned") {
+        if (emptyTitle) emptyTitle.textContent = "Tuyệt vời! Bạn đã thuộc tất cả các câu";
+        if (emptyDesc) emptyDesc.textContent = "Không còn câu nào chưa học trong chủ đề này. Hãy chuyển sang mục 'Đã học' để xem lại nhé!";
+      } else if (query.length > 0) {
+        if (emptyTitle) emptyTitle.textContent = "Không tìm thấy câu phù hợp";
+        if (emptyDesc) emptyDesc.textContent = "Thử tìm kiếm với từ khóa khác hoặc thêm câu mới.";
+      } else {
+        if (emptyTitle) emptyTitle.textContent = "No Sentences in This Topic Yet";
+        if (emptyDesc) emptyDesc.textContent = "Add common example sentences with usage context and connected speech notes to practice easily!";
+      }
+    }
   } else {
     if (topicSentencesEmpty) topicSentencesEmpty.style.display = "none";
     if (topicSentencesGrid) {
@@ -1239,15 +1295,27 @@ function filterAndRenderTopicSentences() {
           const linkingVal = s.linkingNote || s.linking || "";
 
           return `
-          <article class="sentence-detail-card" data-sentence-id="${s.id}">
+          <article class="sentence-detail-card ${s.learned ? "is-learned" : ""}" data-sentence-id="${s.id}">
             <div class="card-flip-inner">
               <!-- FRONT FACE: Only English sentence and speaker -->
               <div class="card-face card-face-front">
                 <div class="card-front-top-row">
-                  <span class="card-type-chip sentence-chip">
-                    <i data-lucide="message-square"></i>
-                    <span>Sentence</span>
-                  </span>
+                  <div class="card-top-left-badges">
+                    <span class="card-type-chip sentence-chip">
+                      <i data-lucide="message-square"></i>
+                      <span>Sentence</span>
+                    </span>
+                    ${
+                      s.learned
+                        ? `
+                      <span class="card-learned-badge" title="Đã thuộc câu này">
+                        <i data-lucide="bookmark-check"></i>
+                        <span>Đã thuộc</span>
+                      </span>
+                    `
+                        : ""
+                    }
+                  </div>
                   <span class="card-flip-badge" title="Two-sided flashcard">
                     <i data-lucide="sparkles"></i>
                     <span>Flashcard</span>
@@ -1272,6 +1340,9 @@ function filterAndRenderTopicSentences() {
                     <span>Click eye to view translation</span>
                   </div>
                   <div class="card-actions-right">
+                    <button class="action-btn bookmark-btn bookmark-topic-sent-btn ${s.learned ? "bookmarked active" : ""}" data-id="${s.id}" title="${s.learned ? "Đã thuộc (Bấm để bỏ đánh dấu)" : "Đánh dấu đã thuộc"}">
+                      <i data-lucide="${s.learned ? "bookmark-check" : "bookmark"}"></i>
+                    </button>
                     <button class="action-btn toggle-detail-btn" data-id="${s.id}" title="View details">
                       <i data-lucide="eye"></i>
                     </button>
@@ -1294,6 +1365,16 @@ function filterAndRenderTopicSentences() {
                     </button>
                     <h4 class="sentence-text-en back-text-en">${formatSentenceWithPauses(s.sentence)}</h4>
                   </div>
+                  ${
+                    s.learned
+                      ? `
+                    <span class="card-learned-badge" title="Đã thuộc câu này">
+                      <i data-lucide="bookmark-check"></i>
+                      <span>Đã thuộc</span>
+                    </span>
+                  `
+                      : ""
+                  }
                 </div>
 
                 <div class="sentence-meaning-box">
@@ -1308,6 +1389,9 @@ function filterAndRenderTopicSentences() {
                     <span>Click eye to flip to front</span>
                   </div>
                   <div class="card-actions-right">
+                    <button class="action-btn bookmark-btn bookmark-topic-sent-btn ${s.learned ? "bookmarked active" : ""}" data-id="${s.id}" title="${s.learned ? "Đã thuộc (Bấm để bỏ đánh dấu)" : "Đánh dấu đã thuộc"}">
+                      <i data-lucide="${s.learned ? "bookmark-check" : "bookmark"}"></i>
+                    </button>
                     <button class="action-btn toggle-detail-btn active" data-id="${s.id}" title="Flip to front">
                       <i data-lucide="eye-off"></i>
                     </button>
@@ -1349,9 +1433,32 @@ function filterAndRenderTopicWords() {
     );
   }
 
+  if (activeLearnedFilter === "learned") {
+    filtered = filtered.filter((w) => Boolean(w.learned));
+  } else {
+    filtered = filtered.filter((w) => !w.learned);
+  }
+
   if (filtered.length === 0) {
     if (topicWordsGrid) topicWordsGrid.style.display = "none";
-    if (topicWordsEmpty) topicWordsEmpty.style.display = "flex";
+    if (topicWordsEmpty) {
+      topicWordsEmpty.style.display = "flex";
+      const emptyTitle = topicWordsEmpty.querySelector("h3");
+      const emptyDesc = topicWordsEmpty.querySelector("p");
+      if (activeLearnedFilter === "learned") {
+        if (emptyTitle) emptyTitle.textContent = "Chưa có từ nào được đánh dấu đã học";
+        if (emptyDesc) emptyDesc.textContent = "Hãy nhấn vào biểu tượng bookmark trên card để lưu các từ bạn đã thuộc vào đây nhé!";
+      } else if (activeLearnedFilter === "unlearned") {
+        if (emptyTitle) emptyTitle.textContent = "Tuyệt vời! Bạn đã thuộc tất cả từ vựng";
+        if (emptyDesc) emptyDesc.textContent = "Không còn từ nào chưa học trong chủ đề này. Hãy chuyển sang mục 'Đã học' để xem lại nhé!";
+      } else if (query.length > 0) {
+        if (emptyTitle) emptyTitle.textContent = "Không tìm thấy từ phù hợp";
+        if (emptyDesc) emptyDesc.textContent = "Thử tìm kiếm với từ khóa khác hoặc thêm từ mới.";
+      } else {
+        if (emptyTitle) emptyTitle.textContent = "No Vocabulary in This Topic Yet";
+        if (emptyDesc) emptyDesc.textContent = "Add new vocabulary related to this topic to learn systematically!";
+      }
+    }
   } else {
     if (topicWordsEmpty) topicWordsEmpty.style.display = "none";
     if (topicWordsGrid) {
@@ -1364,15 +1471,27 @@ function filterAndRenderTopicWords() {
           const typeLabel = typeNormalized.charAt(0).toUpperCase() + typeNormalized.slice(1);
 
           return `
-          <article class="word-detail-card ${typeNormalized}" data-word-id="${w.id}">
+          <article class="word-detail-card ${typeNormalized} ${w.learned ? "is-learned" : ""}" data-word-id="${w.id}">
             <div class="card-flip-inner">
               <!-- FRONT FACE: Only English word and speaker -->
               <div class="card-face card-face-front">
                 <div class="card-front-top-row">
-                  <span class="card-type-chip word-chip">
-                    <i data-lucide="book-open"></i>
-                    <span>Vocabulary</span>
-                  </span>
+                  <div class="card-top-left-badges">
+                    <span class="card-type-chip word-chip">
+                      <i data-lucide="book-open"></i>
+                      <span>Vocabulary</span>
+                    </span>
+                    ${
+                      w.learned
+                        ? `
+                      <span class="card-learned-badge" title="Đã thuộc từ này">
+                        <i data-lucide="bookmark-check"></i>
+                        <span>Đã thuộc</span>
+                      </span>
+                    `
+                        : ""
+                    }
+                  </div>
                   <span class="card-flip-badge" title="Two-sided flashcard">
                     <i data-lucide="sparkles"></i>
                     <span>Flashcard</span>
@@ -1395,6 +1514,9 @@ function filterAndRenderTopicWords() {
                     <span>Click eye to view definition & IPA</span>
                   </div>
                   <div class="card-actions-right">
+                    <button class="action-btn bookmark-btn bookmark-topic-word-btn ${w.learned ? "bookmarked active" : ""}" data-id="${w.id}" title="${w.learned ? "Đã thuộc (Bấm để bỏ đánh dấu)" : "Đánh dấu đã thuộc"}">
+                      <i data-lucide="${w.learned ? "bookmark-check" : "bookmark"}"></i>
+                    </button>
                     <button class="action-btn toggle-detail-btn" data-id="${w.id}" title="View details">
                       <i data-lucide="eye"></i>
                     </button>
@@ -1417,6 +1539,16 @@ function filterAndRenderTopicWords() {
                     </button>
                     <h4 class="word-text-en back-text-en">${escapeHTMLElements(w.word)}</h4>
                     ${w.pronunciation ? `<span class="word-ipa-badge">${escapeHTMLElements(w.pronunciation)}</span>` : ""}
+                    ${
+                      w.learned
+                        ? `
+                      <span class="card-learned-badge" title="Đã thuộc từ này">
+                        <i data-lucide="bookmark-check"></i>
+                        <span>Đã thuộc</span>
+                      </span>
+                    `
+                        : ""
+                    }
                   </div>
                   <span class="pos-badge ${typeNormalized}" data-type="${typeNormalized}">${typeLabel}</span>
                 </div>
@@ -1440,6 +1572,9 @@ function filterAndRenderTopicWords() {
                     <span>Click eye to flip to front</span>
                   </div>
                   <div class="card-actions-right">
+                    <button class="action-btn bookmark-btn bookmark-topic-word-btn ${w.learned ? "bookmarked active" : ""}" data-id="${w.id}" title="${w.learned ? "Đã thuộc (Bấm để bỏ đánh dấu)" : "Đánh dấu đã thuộc"}">
+                      <i data-lucide="${w.learned ? "bookmark-check" : "bookmark"}"></i>
+                    </button>
                     <button class="action-btn toggle-detail-btn active" data-id="${w.id}" title="Flip to front">
                       <i data-lucide="eye-off"></i>
                     </button>
@@ -1649,6 +1784,88 @@ async function deleteWordFromTopic(topicId, wordId) {
   }
 }
 
+async function toggleSentenceLearned(topicId, sentenceId) {
+  const topic = topics.find((t) => t.id === topicId);
+  if (!topic || !Array.isArray(topic.sentences)) return;
+
+  const sent = topic.sentences.find((s) => String(s.id) === String(sentenceId));
+  if (!sent) return;
+
+  sent.learned = !sent.learned;
+  sent.updatedAt = new Date().toISOString();
+
+  if (isStaticMode) {
+    localStorage.setItem("lexikeep_topics", JSON.stringify(topics));
+    syncGlobalWordsAndSentences();
+    updateTopicStats();
+    renderTopicDetail();
+    showToastNotification(
+      sent.learned ? "Đã đánh dấu đã thuộc câu!" : "Đã bỏ đánh dấu thuộc câu.",
+      "success"
+    );
+  } else {
+    try {
+      const res = await fetch(`/api/topics/${topicId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sentences: topic.sentences }),
+      });
+      if (!res.ok) throw new Error("Could not update sentence");
+      syncGlobalWordsAndSentences();
+      updateTopicStats();
+      renderTopicDetail();
+      showToastNotification(
+        sent.learned ? "Đã đánh dấu đã thuộc câu!" : "Đã bỏ đánh dấu thuộc câu.",
+        "success"
+      );
+    } catch (err) {
+      console.error("Toggle sentence learned error:", err);
+      showToastNotification("Unable to update bookmark status.", "error");
+    }
+  }
+}
+
+async function toggleWordLearned(topicId, wordId) {
+  const topic = topics.find((t) => t.id === topicId);
+  if (!topic || !Array.isArray(topic.words)) return;
+
+  const word = topic.words.find((w) => String(w.id) === String(wordId));
+  if (!word) return;
+
+  word.learned = !word.learned;
+  word.updatedAt = new Date().toISOString();
+
+  if (isStaticMode) {
+    localStorage.setItem("lexikeep_topics", JSON.stringify(topics));
+    syncGlobalWordsAndSentences();
+    updateTopicStats();
+    renderTopicDetail();
+    showToastNotification(
+      word.learned ? "Đã đánh dấu đã thuộc từ!" : "Đã bỏ đánh dấu thuộc từ.",
+      "success"
+    );
+  } else {
+    try {
+      const res = await fetch(`/api/topics/${topicId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ words: topic.words }),
+      });
+      if (!res.ok) throw new Error("Could not update word");
+      syncGlobalWordsAndSentences();
+      updateTopicStats();
+      renderTopicDetail();
+      showToastNotification(
+        word.learned ? "Đã đánh dấu đã thuộc từ!" : "Đã bỏ đánh dấu thuộc từ.",
+        "success"
+      );
+    } catch (err) {
+      console.error("Toggle word learned error:", err);
+      showToastNotification("Unable to update bookmark status.", "error");
+    }
+  }
+}
+
 function setupTopicEventListeners() {
   if (navTopicsBtn) {
     navTopicsBtn.addEventListener("click", () => {
@@ -1780,10 +1997,11 @@ function setupTopicEventListeners() {
     });
   }
 
-  // Delegated clicks on topicSentencesGrid (edit, delete, toggle detail, TTS)
+  // Delegated clicks on topicSentencesGrid (edit, delete, toggle detail, TTS, bookmark)
   if (topicSentencesGrid) {
     topicSentencesGrid.addEventListener("click", (e) => {
       const ttsBtn = e.target.closest(".btn-tts-speaker");
+      const bookmarkBtn = e.target.closest(".bookmark-topic-sent-btn");
       const toggleDetailBtn = e.target.closest(".toggle-detail-btn");
       const editBtn = e.target.closest(".edit-topic-sent-btn");
       const deleteBtn = e.target.closest(".delete-topic-sent-btn");
@@ -1792,6 +2010,12 @@ function setupTopicEventListeners() {
         e.stopPropagation();
         const text = ttsBtn.getAttribute("data-tts");
         speakEnglish(text);
+      } else if (bookmarkBtn) {
+        e.stopPropagation();
+        const sid = bookmarkBtn.getAttribute("data-id");
+        if (activeTopicId && sid) {
+          toggleSentenceLearned(activeTopicId, sid);
+        }
       } else if (toggleDetailBtn) {
         e.stopPropagation();
         const card = toggleDetailBtn.closest(".sentence-detail-card");
@@ -1816,10 +2040,11 @@ function setupTopicEventListeners() {
     });
   }
 
-  // Delegated clicks on topicWordsGrid (edit, delete, toggle detail, TTS)
+  // Delegated clicks on topicWordsGrid (edit, delete, toggle detail, TTS, bookmark)
   if (topicWordsGrid) {
     topicWordsGrid.addEventListener("click", (e) => {
       const ttsBtn = e.target.closest(".btn-tts-speaker");
+      const bookmarkBtn = e.target.closest(".bookmark-topic-word-btn");
       const toggleDetailBtn = e.target.closest(".toggle-detail-btn");
       const editBtn = e.target.closest(".edit-topic-word-btn");
       const deleteBtn = e.target.closest(".delete-topic-word-btn");
@@ -1828,6 +2053,12 @@ function setupTopicEventListeners() {
         e.stopPropagation();
         const text = ttsBtn.getAttribute("data-tts");
         speakEnglish(text);
+      } else if (bookmarkBtn) {
+        e.stopPropagation();
+        const wid = bookmarkBtn.getAttribute("data-id");
+        if (activeTopicId && wid) {
+          toggleWordLearned(activeTopicId, wid);
+        }
       } else if (toggleDetailBtn) {
         e.stopPropagation();
         const card = toggleDetailBtn.closest(".word-detail-card");
@@ -1848,6 +2079,27 @@ function setupTopicEventListeners() {
         if (confirm("Are you sure you want to delete this word from this topic?")) {
           deleteWordFromTopic(activeTopicId, wid);
         }
+      }
+    });
+  }
+
+  // Topic Status Filter Pills listener
+  if (topicStatusFilterPills) {
+    topicStatusFilterPills.addEventListener("click", (e) => {
+      const btn = e.target.closest(".status-filter-pill");
+      if (!btn) return;
+      const filter = btn.getAttribute("data-filter");
+      if (!filter) return;
+
+      activeLearnedFilter = filter;
+      topicStatusFilterPills.querySelectorAll(".status-filter-pill").forEach((b) => {
+        b.classList.toggle("active", b === btn);
+      });
+
+      if (activeTopicTab === "sentences") {
+        filterAndRenderTopicSentences();
+      } else {
+        filterAndRenderTopicWords();
       }
     });
   }
@@ -1890,12 +2142,14 @@ function openWordModal(wordObj = null, topicId = null) {
     typeSelect.value = wordObj.type || "noun";
     defInput.value = wordObj.definition;
     if (inputWordNote) inputWordNote.value = wordObj.note || "";
+    if (inputWordLearned) inputWordLearned.checked = Boolean(wordObj.learned);
   } else {
     modalTitle.textContent = "Add New Word";
     wordForm.reset();
     wordIdInput.value = "";
     typeSelect.value = "noun";
     if (inputWordNote) inputWordNote.value = "";
+    if (inputWordLearned) inputWordLearned.checked = false;
   }
 
   if (inputWordTopic) {
@@ -1940,6 +2194,7 @@ async function handleWordFormSubmit(e) {
     type: typeSelect.value,
     definition: defInput.value.trim(),
     note: noteVal,
+    learned: inputWordLearned ? inputWordLearned.checked : false,
     topicId: targetTopicId,
   };
 
@@ -2376,6 +2631,7 @@ const translationInput = document.getElementById("input-translation");
 const sentNoteInput = document.getElementById("input-sent-note");
 const sentUsageInput = document.getElementById("input-sent-usage");
 const sentLinkingInput = document.getElementById("input-sent-linking");
+const sentLearnedInput = document.getElementById("input-sent-learned");
 const sentModalCloseBtn = document.getElementById("sent-modal-close-btn");
 const sentModalCancelBtn = document.getElementById("sent-modal-cancel-btn");
 
@@ -2479,6 +2735,7 @@ function openSentenceModal(sentObj = null, topicId = null) {
     sentIdInput.value = sentObj.id;
     sentenceInput.value = sentObj.sentence;
     translationInput.value = sentObj.translation;
+    if (sentLearnedInput) sentLearnedInput.checked = Boolean(sentObj.learned);
     const linkingVal = sentObj.linkingNote || sentObj.linking || "";
     if (sentUsageInput) sentUsageInput.value = "";
     if (sentLinkingInput) sentLinkingInput.value = normalizeLinkingNoteForTextarea(linkingVal);
@@ -2486,6 +2743,7 @@ function openSentenceModal(sentObj = null, topicId = null) {
     sentModalTitle.textContent = "Add New Sentence";
     sentenceForm.reset();
     sentIdInput.value = "";
+    if (sentLearnedInput) sentLearnedInput.checked = false;
     if (sentUsageInput) sentUsageInput.value = "";
     if (sentLinkingInput) sentLinkingInput.value = "";
   }
@@ -2529,6 +2787,7 @@ async function handleSentenceFormSubmit(e) {
     sentence: sentenceInput.value.trim(),
     translation: translationInput.value.trim(),
     pronunciation: "",
+    learned: sentLearnedInput ? sentLearnedInput.checked : false,
     usageNote: "",
     linkingNote: linkingVal,
     note: "",
@@ -2721,6 +2980,16 @@ function handleBackupImport(e) {
       if (Array.isArray(importedData.topics)) {
         if (isStaticMode) {
           localStorage.setItem("lexikeep_topics", JSON.stringify(importedData.topics));
+        } else {
+          try {
+            await fetch("/api/topics", {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(importedData.topics),
+            });
+          } catch (e) {
+            console.error("Error saving imported topics to server:", e);
+          }
         }
         topics = importedData.topics;
         importedTopicsCount = importedData.topics.length;

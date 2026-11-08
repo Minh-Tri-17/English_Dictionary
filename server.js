@@ -89,6 +89,25 @@ const server = http.createServer(async (req, res) => {
       return res.end(JSON.stringify(db));
     }
 
+    // PUT /api/topics (bulk replace/restore topics)
+    if (method === 'PUT' && parts.length === 2) {
+      try {
+        const body = await getRequestBody(req);
+        if (Array.isArray(body)) {
+          if (writeTopicsDB(body)) {
+            res.statusCode = 200;
+            return res.end(JSON.stringify({ success: true, count: body.length }));
+          } else {
+            res.statusCode = 500;
+            return res.end(JSON.stringify({ error: 'Could not write topics database' }));
+          }
+        }
+      } catch (err) {
+        res.statusCode = 400;
+        return res.end(JSON.stringify({ error: 'Invalid JSON payload' }));
+      }
+    }
+
     // POST /api/topics
     if (method === 'POST' && parts.length === 2) {
       try {
@@ -202,6 +221,7 @@ const server = http.createServer(async (req, res) => {
           sentence: body.sentence.trim(),
           pronunciation: (body.pronunciation || '').trim(),
           translation: body.translation.trim(),
+          learned: Boolean(body.learned),
           usageNote: (body.usageNote || body.note || '').trim(),
           linkingNote: (body.linkingNote || body.linking || '').trim(),
           createdAt: new Date().toISOString()
@@ -245,6 +265,7 @@ const server = http.createServer(async (req, res) => {
           sentence: body.sentence !== undefined ? body.sentence.trim() : topic.sentences[idx].sentence,
           pronunciation: body.pronunciation !== undefined ? body.pronunciation.trim() : topic.sentences[idx].pronunciation,
           translation: body.translation !== undefined ? body.translation.trim() : topic.sentences[idx].translation,
+          learned: body.learned !== undefined ? Boolean(body.learned) : (topic.sentences[idx].learned || false),
           usageNote: body.usageNote !== undefined ? body.usageNote.trim() : topic.sentences[idx].usageNote,
           linkingNote: body.linkingNote !== undefined ? body.linkingNote.trim() : topic.sentences[idx].linkingNote,
           updatedAt: new Date().toISOString()
@@ -315,6 +336,7 @@ const server = http.createServer(async (req, res) => {
           pronunciation: (body.pronunciation || '').trim(),
           definition: body.definition.trim(),
           type: (body.type || 'noun').toLowerCase(),
+          learned: Boolean(body.learned),
           note: (body.note || '').trim(),
           createdAt: new Date().toISOString()
         };
@@ -358,6 +380,7 @@ const server = http.createServer(async (req, res) => {
           pronunciation: body.pronunciation !== undefined ? body.pronunciation.trim() : topic.words[idx].pronunciation,
           definition: body.definition !== undefined ? body.definition.trim() : topic.words[idx].definition,
           type: body.type !== undefined ? (body.type || 'noun').toLowerCase() : topic.words[idx].type,
+          learned: body.learned !== undefined ? Boolean(body.learned) : (topic.words[idx].learned || false),
           note: body.note !== undefined ? body.note.trim() : topic.words[idx].note,
           updatedAt: new Date().toISOString()
         };
