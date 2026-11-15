@@ -4925,3 +4925,12 @@ form {
     justify-content: center;
   }
 }
+
+.word-pos-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}

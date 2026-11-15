@@ -418,11 +418,13 @@
         "id": "w_1792418941238",
         "word": "Normal",
         "pronunciation": "/ˈnɔːr.məl/",
-        "type": "noun",
+        "type": "noun, verb",
         "definition": "Bình thường / Trạng thái bình thường",
         "note": "",
         "topicId": "topic_1791811012468",
-        "createdAt": "2026-10-19T14:09:01.238Z"
+        "createdAt": "2026-10-19T14:09:01.238Z",
+        "learned": false,
+        "updatedAt": "2026-11-15T12:52:41.160Z"
       },
       {
         "id": "w_1792418854781",
@@ -496,6 +498,6 @@
       }
     ],
     "createdAt": "2026-10-12T13:16:52.468Z",
-    "updatedAt": "2026-10-12T13:18:58.941Z"
+    "updatedAt": "2026-11-15T12:52:41.170Z"
   }
 ]

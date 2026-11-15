@@ -649,7 +649,19 @@ const wordIdInput = document.getElementById("word-id");
 const wordInput = document.getElementById("input-word");
 const pronInput = document.getElementById("input-pronunciation");
 const typeSelect = document.getElementById("input-type");
+const typeSelect2 = document.getElementById("input-type-2");
 const defInput = document.getElementById("input-definition");
+
+function parseWordTypes(typeStr) {
+  if (!typeStr) return ["noun"];
+  const parts = String(typeStr)
+    .split(/[,/]+/)
+    .map((t) => t.trim().toLowerCase())
+    .filter(Boolean)
+    .map((t) => (t === "adj" ? "adjective" : t === "adv" ? "adverb" : t));
+  const unique = [...new Set(parts)];
+  return unique.length > 0 ? unique : ["noun"];
+}
 const modalCloseBtn = document.getElementById("modal-close-btn");
 const modalCancelBtn = document.getElementById("modal-cancel-btn");
 
@@ -1465,13 +1477,17 @@ function filterAndRenderTopicWords() {
       topicWordsGrid.style.display = "grid";
       topicWordsGrid.innerHTML = filtered
         .map((w) => {
-          const typeRaw = (w.type || "noun").toLowerCase();
-          const typeNormalized =
-            typeRaw === "adj" ? "adjective" : typeRaw === "adv" ? "adverb" : typeRaw;
-          const typeLabel = typeNormalized.charAt(0).toUpperCase() + typeNormalized.slice(1);
+          const types = parseWordTypes(w.type);
+          const primaryType = types[0];
+          const posBadgesHtml = types
+            .map((t) => {
+              const label = t.charAt(0).toUpperCase() + t.slice(1);
+              return `<span class="pos-badge ${t}" data-type="${t}">${label}</span>`;
+            })
+            .join("");
 
           return `
-          <article class="word-detail-card ${typeNormalized} ${w.learned ? "is-learned" : ""}" data-word-id="${w.id}">
+          <article class="word-detail-card ${primaryType} ${w.learned ? "is-learned" : ""}" data-word-id="${w.id}">
             <div class="card-flip-inner">
               <!-- FRONT FACE: Only English word and speaker -->
               <div class="card-face card-face-front">
@@ -1550,7 +1566,7 @@ function filterAndRenderTopicWords() {
                         : ""
                     }
                   </div>
-                  <span class="pos-badge ${typeNormalized}" data-type="${typeNormalized}">${typeLabel}</span>
+                  <div class="word-pos-badges">${posBadgesHtml}</div>
                 </div>
 
                 <div class="word-def-box">
@@ -2139,7 +2155,9 @@ function openWordModal(wordObj = null, topicId = null) {
     wordIdInput.value = wordObj.id;
     wordInput.value = wordObj.word;
     pronInput.value = wordObj.pronunciation || "";
-    typeSelect.value = wordObj.type || "noun";
+    const types = parseWordTypes(wordObj.type);
+    typeSelect.value = types[0] || "noun";
+    if (typeSelect2) typeSelect2.value = types[1] || "";
     defInput.value = wordObj.definition;
     if (inputWordNote) inputWordNote.value = wordObj.note || "";
     if (inputWordLearned) inputWordLearned.checked = Boolean(wordObj.learned);
@@ -2148,6 +2166,7 @@ function openWordModal(wordObj = null, topicId = null) {
     wordForm.reset();
     wordIdInput.value = "";
     typeSelect.value = "noun";
+    if (typeSelect2) typeSelect2.value = "";
     if (inputWordNote) inputWordNote.value = "";
     if (inputWordLearned) inputWordLearned.checked = false;
   }
@@ -2188,10 +2207,13 @@ async function handleWordFormSubmit(e) {
         ? inputWordTopic.value
         : activeTopicId;
   const noteVal = inputWordNote ? inputWordNote.value.trim() : "";
+  const t1 = typeSelect ? typeSelect.value : "noun";
+  const t2 = typeSelect2 ? typeSelect2.value : "";
+  const combinedType = t2 && t2 !== t1 ? `${t1}, ${t2}` : t1;
   const payload = {
     word: wordInput.value.trim(),
     pronunciation: pronInput.value.trim(),
-    type: typeSelect.value,
+    type: combinedType,
     definition: defInput.value.trim(),
     note: noteVal,
     learned: inputWordLearned ? inputWordLearned.checked : false,
